@@ -52,14 +52,14 @@ def connecting_to_db():
 
 
 def read_in_file(filename):
-    with open(filename, 'rb') as file:
+    with open(filename, 'r') as file:
         return file.read()
 
 
 def read_in_rdf_file(filename):
     """Returns read in rdf file(s)."""
     cleaned_rdf = []
-    with open(filename, 'rb') as file:
+    with open(filename, 'r') as file:
         data = file.read()
         rdf_data = data.splitlines()
         for data in rdf_data:
@@ -263,7 +263,7 @@ def push_pattern_snippets(current_pattern_id, current_snippet_id):
 
 
 def get_db_text(size):
-    for text in db.fackel_corpus.find():
+    for text in db.dostojewski.find():
         find_text_window(text['text'], text['id'], size)
 
 
@@ -300,7 +300,17 @@ def debug_pretty_print():
     print()
 
 
+def delete_previous_results():
+    deleted_results = 0
+    deleted_results += db.text_snippets.delete_many()
+    deleted_results += db.pattern.delete_many()
+    deleted_results += db.single_pattern.delete_many()
+    deleted_results += db.single_pattern_snippets.delete_many()
+    deleted_results += db.aggregation.delete_many()
+
+
 connecting_to_db()
+print("Deleted data in the database: " + str(delete_previous_results()))
 get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/test/")
 get_db_text(0)
 
