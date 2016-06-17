@@ -99,7 +99,7 @@ def search_for_pattern(onlyPOS):
 		result[index] = (title_list[index], pos, pattern_list[index])
 		
 	for row in result:	
-		print row	
+		print(row)
 
 #def write_results_into_csv(result):
 #	'''Writes the results in a csv file.'''

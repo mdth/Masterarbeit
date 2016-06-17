@@ -59,7 +59,7 @@ def add_articles(file_directory):
 
 
 connecting_to_db()
-add_articles("C:/Users/din_m/MA/test/")
+add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/test/")
 
 for a in db.fackel_corpus.find():
     print(a)

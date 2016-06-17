@@ -301,7 +301,7 @@ def debug_pretty_print():
 
 
 connecting_to_db()
-get_pattern_from_rdf('C:/Users/din_m/MA/vhs_qcalculus_mod.rdf')
+get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/test/")
 get_db_text(0)
 
 # debug print
