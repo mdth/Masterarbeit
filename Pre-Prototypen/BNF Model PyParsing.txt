@@ -1,0 +1,12 @@
+BNF Model for POS Tagging
+
+Noun ::= "NNPS|NNP|NNS|NN"
+Verb ::= "VDB|VBG|VBN|VBP|VBZ|VB"
+Article ::= "DT"
+And ::= "CC"
+Of ::= "IN" -> "of"
+Possesion ::= "POS"
+
+
+Genetiv ::= Noun+Possesion
+...

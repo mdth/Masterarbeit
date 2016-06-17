@@ -1,0 +1,12 @@
+fac a q:Vocabulary .
+
+fac:Country a q:BScale .
+
+fac:D a q:Object .
+fac:CH a q:Object .
+
+fac:CH q:hasPattern "Österreich" .
+fac:D q:hasPattern "Deutschland" .
+
+fac:Location a q:BSort .
+fac:Location q:hasAttribute fac:Country .

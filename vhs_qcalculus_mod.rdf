@@ -1,0 +1,34 @@
+VHS a q:Vocabulary .
+
+vhs:Country a q:BScale .
+vhs:Platform a q:BScale .
+vhs:Business a q:BScale .  
+vhs:Category a q:BScale .
+vhs:Version a q:BScale .
+vhs:Year a q:BScale .
+vhs:PriceCategory a q:BScale .
+
+vhs:USA a q:Object .
+vhs:D a q:Object .
+vhs:CH a q:Object .
+vhs:USA q:hasPattern "USA" .
+vhs:D q:hasPattern "D" .
+vhs:CH q:hasPattern "CH" .
+
+vhs:Unix a q:Object .
+vhs:Windows a q:Object .
+vhs:MacOS a q:Object .
+vhs:Unix q:hasPattern "Unix" .
+vhs:Windows q:hasPattern "Windows" .
+vhs:MacOS q:hasPattern ("OSX","MacOS") .
+vhs:Linux q:hasPattern "Linux" .
+
+vhs:Country q:hasObject (vhs:USA, vhs:D, vhs:CH) .
+vhs:Platform q:hasObject (vhs:Unix, vhs:Windows, vhs:MacOS) .
+
+
+vhs:Software a q:BSort .
+vhs:Areas a q:BSort .
+
+vhs:Software q:hasAttribute (vhs:Business, vhs:Category, vhs:Platform, vhs:Version) .
+vhs:Areas q:hasAttribute vhs:Country .
