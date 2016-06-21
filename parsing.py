@@ -51,11 +51,6 @@ def connecting_to_db():
     db = client.database
 
 
-def read_in_file(filename):
-    with open(filename, 'r') as file:
-        return file.read()
-
-
 def read_in_rdf_file(filename):
     """Returns read in rdf file(s)."""
     cleaned_rdf = []
@@ -78,7 +73,7 @@ def get_pattern_from_rdf(filename):
     for statements in data:
         parser_result = search.parseString(statements)
         subject, relation, object = parser_result
-        if relation == 'has pattern':
+        if relation == 'hasPattern':
             pattern_list.update({subject: object})
             # TODO debug line
             # print "%s %s %s" % (subject, has_pattern, object)
@@ -116,7 +111,7 @@ def search_pattern(pattern, text):
 
 
 def strip_token(pattern, token):
-    return token.strip(",'.!?") == pattern or token.strip(',".!?') == pattern
+    return token.strip(",'.!?;") == pattern or token.strip(',".!?;') == pattern
 
 
 def word_window(size, pattern, tokens):
@@ -212,16 +207,15 @@ def sentence_window(size, pattern, tokens):
     return textsnippets
 
 
-def find_text_window(text, text_id, size):
+def find_text_window(sentence, text, text_id, size):
     """Finds text windows with variable size."""
     split_text = text.split()
 
-    for ind, unicode in enumerate(split_text):
-        # TODO
-        split_text[ind] = unicode.encode('ascii')
-
     for pattern in db.single_pattern.find():
-        snippets = sentence_window(size, pattern['single_pattern'].encode('ascii'), split_text)
+        if sentence:
+            snippets = sentence_window(size, pattern['single_pattern'], split_text)
+        else:
+            snippets = word_window(size, pattern['single_pattern'], split_text)
         if len(snippets) > 0:
             single_pattern_id = pattern['pattern_id']
             push_snippets(snippets, single_pattern_id)
@@ -262,9 +256,9 @@ def push_pattern_snippets(current_pattern_id, current_snippet_id):
                                                    {"$set": {"snippet_id": old_snippets}})
 
 
-def get_db_text(size):
-    for text in db.dostojewski.find():
-        find_text_window(text['text'], text['id'], size)
+def get_db_text(sentence, size):
+    for text in db.dostojewski.find({"title": "Chapter 1"}):
+        find_text_window(sentence, text['text'], text['id'], size)
 
 
 def aggregation():
@@ -281,6 +275,9 @@ def aggregation():
 def debug_pretty_print():
     global db
 
+    print()
+    print("------------------- Number of chapters in the DB -------------------")
+    print(db.dostojewski.count())
     print()
     print("------------------- Pattern in the DB -------------------")
     for p in db.pattern.find({}, {"_id": 0}):
@@ -301,18 +298,17 @@ def debug_pretty_print():
 
 
 def delete_previous_results():
-    deleted_results = 0
-    deleted_results += db.text_snippets.delete_many()
-    deleted_results += db.pattern.delete_many()
-    deleted_results += db.single_pattern.delete_many()
-    deleted_results += db.single_pattern_snippets.delete_many()
-    deleted_results += db.aggregation.delete_many()
+    db.text_snippets.delete_many({})
+    db.pattern.delete_many({})
+    db.single_pattern.delete_many({})
+    db.single_pattern_snippets.delete_many({})
+    db.aggregation.delete_many({})
 
 
 connecting_to_db()
-print("Deleted data in the database: " + str(delete_previous_results()))
-get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/test/")
-get_db_text(0)
+#delete_previous_results()
+get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
+get_db_text(True, 0)  # Sentence mode
 
 # debug print
 debug_pretty_print()

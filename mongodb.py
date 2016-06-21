@@ -46,6 +46,10 @@ def add_articles(file_directory):
             id += 1
 
 
+def delete_previous_results():
+    db.dostojewski.delete_many({})
+
 connecting_to_db()
+delete_previous_results()
 add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
 print("Successfully added files into the database.")
