@@ -209,10 +209,10 @@ def sentence_window(size, pattern, tokens):
     from the initial sentence."""
     sent_size = size + 1
     split_pattern = pattern.split()
-    if len(split_pattern) == 1:
-        textsnippets = sentence_window_one_word_help(sent_size, pattern, tokens)
-    else:
+    if len(split_pattern) > 1:
         textsnippets = sentence_window_more_words_help(sent_size, split_pattern, tokens)
+    else:
+        textsnippets = sentence_window_one_word_help(sent_size, pattern, tokens)
     return textsnippets
 
 
@@ -222,13 +222,13 @@ def sentence_window_more_words_help(sent_size, split_pattern, tokens):
         p_index = 0
         end_index = ind
         while p_index < len(split_pattern):
-            if (end_index < len(tokens) - 1) and strip_token(split_pattern[p_index], tokens[end_index]):
+            if (end_index < len(tokens)) and strip_token(split_pattern[p_index], tokens[end_index]):
                 p_index += 1
                 end_index += 1
             else:
                 break
         if p_index == len(split_pattern):
-            textsnippets = get_textsnippets_sentence(sent_size, tokens, ind, end_index)
+            textsnippets = get_textsnippets_sentence(sent_size, tokens, ind, end_index - 1)
     return textsnippets
 
 
@@ -238,18 +238,17 @@ def get_textsnippets_sentence(sent_size, tokens, beg_index, end_index):
     r = 0
     size1 = 0
     size2 = 0
-    end_index -= 1
     while size1 < sent_size:
         if end_index + r > len(tokens) - 1:
             break
-        elif (size1 < sent_size) and find_right_sentence_boundary(tokens, end_index, r):
+        elif find_right_sentence_boundary(tokens, end_index, r):
             size1 += 1
         r += 1
     while size2 < sent_size:
-        if beg_index - 1 < 0:
+        if beg_index - l < 0:
             textsnippets.append(" ".join(tokens[beg_index - l - 1:end_index + r]))
             break
-        elif beg_index - 1 == 0:
+        elif beg_index - l == 0:
             textsnippets.append(" ".join(tokens[beg_index - l:end_index + r]))
             break
         elif find_left_sentence_boundary(tokens, beg_index, l):
@@ -264,25 +263,6 @@ def sentence_window_one_word_help(sent_size, pattern, tokens):
     textsnippets = []
     for ind, token in enumerate(tokens):
         if strip_token(pattern, token):
-            # l = 1
-            # r = 0
-            # size1 = 0
-            # size2 = 0
-            #
-            # while size1 < sent_size:
-            #     if (size1 < sent_size) and find_right_sentence_boundary(tokens, ind, r):
-            #         size1 += 1
-            #     r += 1
-            #
-            # while size2 < sent_size:
-            #     if ind - l == 0:
-            #         textsnippets.append(" ".join(tokens[ind - l:ind + r]))
-            #         size2 += 1
-            #     elif find_left_sentence_boundary(tokens, ind, l):
-            #         size2 += 1
-            #         if size2 == sent_size:
-            #             textsnippets.append(" ".join(tokens[ind - (l - 1):ind + r]))
-            #     l += 1
             textsnippets = get_textsnippets_sentence(sent_size, tokens, ind, ind)
     return textsnippets
 
@@ -386,13 +366,20 @@ def delete_previous_results():
     db.aggregation.delete_many({})
 
 print("Begin: " + str(time.time()))
-connecting_to_db()
-delete_previous_results()
+#connecting_to_db()
+#delete_previous_results()
 #get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
 #get_db_text(True, 0)  # Sentence mode
 
 # debug print
 #debug_pretty_print()
 #aggregation()
+
+print(sentence_window(0, "not it", "Mama no. This is not it. This it is.".split()))
+print(sentence_window(0, "not it", "This is not it. This it is.".split()))
+print(sentence_window(0, "not it", "This it is. This is not it.".split()))
+print(sentence_window(0, "it", "Mamama. This is not it. This it is.".split()))
+print(sentence_window(0, "it", "This is not it. This it is.".split()))
+print(sentence_window(0, "it", "This it is. This is not it.".split()))
+
 print("End: " + str(time.time()))
-print(sentence_window(0, "not it", "This it is. This is not it. This it is.".split()))
