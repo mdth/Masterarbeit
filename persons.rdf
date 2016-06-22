@@ -1,0 +1,36 @@
+lit a q:Vocabulary .
+
+lit:Male a q:BScale .
+lit:Female a q:BScale .
+lit:Age a q:BScale .
+
+lit:Myshkin q:hasPattern ("Lew Nikolajewitsch Myshkin", "Lew Nikolajewitsch", "Fürst", "Fürst Myshkin") .
+lit:Nastasja q:hasPattern ("Nastasja Filippowna Barashkowa", "Nastasja", "Nastasja Filippowna") .
+lit:Rogoshin q:hasPattern ("Parfjon Semyonowitsch Rogoshin", "Parfen", "Rogoshin", "Parfen Rogoshin") .
+lit:Jepantschin q:hasPattern ("General Jepantschin", "Jepantschin", "Iwan Fjodorowitsch") .
+lit:Alexandra q:hasPattern ("Alexandra", "Alexandra Iwanowna") .
+lit:Adelaida q:hasPattern ("Adelaida", "Adelaida Iwanowna") .
+lit:Aglaja q:hasPattern ("Aglaja", "Aglaja Jepantschina", "Aglaja Iwanowna") .
+lit:Jepantschina q:hasPattern ("Generalin Jepantschina", "Lisaweta Prokofjewna") .
+lit:Ganja q:hasPattern ("Ganja", "Gawrila Ardalionowitsch", "Gawrila Ardalionowitsch Iwolgin") .
+lit:Ippolit q:hasPattern ("Terentjew", "Herr Terentjew", "Ippolit Terentjew", "Ippolit") .
+lit:Tozkij q:hasPattern ("Afanassij Iwanowitsch", "Afanassij Iwanowitsch Tozkij", "Tozkij") .
+lit:Radomskij q:hasPattern ("Jewgenij Pawlowitsch Radomskij", "Radomskij", "Jewgenij Pawlowitsch") .
+lit:PrinceS q:hasPattern "Prinz S.". 
+lit:Lebedew q:hasPattern "Lebedew" .
+lit:Ptizyn q:hasPattern ("Iwan Petrowitsch Ptizyn", "Ptizyn", "Iwan Petrowitsch") .
+lit:Iwolgin q:hasPattern ("General Iwolgin", "Iwolgin", "Ardalion Alexandrowitsch Iwolgin", "Ardalion Alexandrowitsch", "Ardalion Iwolgin") .
+lit:Alexandrowna q:hasPattern ("Nina Alexandrowna Iwolgina", "Nina Alexandrowna") .
+lit:Warwara q:hasPattern ("Warwara Ardalionowna", "Warwara") .
+lit:Nikolai q:hasPattern "Nikolai Ardalionowitsch" .
+lit:Ferdyschtschenko q:hasPattern "Ferdyschtschenko" .
+lit:Burdowskij q:hasPattern ("Antip Burdowskij", "Burdowskij") .
+
+lit:Male q:hasObject (lit:Myshkin, lit:Rogoshin, lit:Jepantschin, lit:Ganja, lit:Ippolit, lit:Tozkij, lit:Radomskij, lit:PrinceS, lit:Lebedew, lit:Ptizyn, lit:Iwolgin, lit:Nikolai, lit:Ferdyschtschenko, lit:Burdowskij) .
+lit:Female q:hasObject (lit:Nastasja, lit:Alexandra, lit:Adelaida, lit:Aglaja, lit: Jepantschina, lit:Alexandrowna, lit:Warwara) .
+
+lit:MainCharacter a q:BSort .
+lit:SubCharacter a q:BSort .
+
+lit:MainCharacter q:hasAttribute (lit:Male, lit:Female) .
+lit:SubCharacter q:hasAttribute (lit:Male, lit:Female) .
