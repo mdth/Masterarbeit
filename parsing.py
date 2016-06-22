@@ -184,8 +184,9 @@ def find_right_sentence_boundary(tokens, ind, steps):
     if re.search(sentence_boundary, tokens[ind + steps]):
         found_boundary = True
     elif re.search(sentence_boundary_special, tokens[ind + steps]):
-        found_boundary = re.search(next_token, tokens[ind + steps + 1])
-
+        next_index = ind + steps + 1
+        if next_index <= (len(tokens) - 1):
+            found_boundary = re.search(next_token, tokens[ind + steps + 1])
     return found_boundary
 
 
@@ -198,7 +199,9 @@ def find_left_sentence_boundary(tokens, ind, steps):
     if re.search(sentence_boundary, tokens[ind - steps]):
         found_boundary = True
     elif re.search(sentence_boundary_special, tokens[ind - steps]):
-        found_boundary = re.search(next_token, tokens[ind - steps + 1])
+        next_index = ind - steps + 1
+        if next_index >= 0:
+            found_boundary = re.search(next_token, tokens[ind - steps + 1])
 
     return found_boundary
 
@@ -365,7 +368,7 @@ def delete_previous_results():
 
 print("Begin: " + str(time.time()))
 connecting_to_db()
-delete_previous_results()
+#delete_previous_results()
 get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
 get_db_text(True, 0)  # Sentence mode
 
