@@ -228,12 +228,11 @@ def sentence_window_more_words_help(sent_size, split_pattern, tokens):
             else:
                 break
         if p_index == len(split_pattern):
-            textsnippets = get_textsnippets_sentence(sent_size, tokens, ind, end_index - 1)
+            textsnippets.append(get_textsnippets_sentence(sent_size, tokens, ind, end_index - 1))
     return textsnippets
 
 
 def get_textsnippets_sentence(sent_size, tokens, beg_index, end_index):
-    textsnippets = []
     l = 1
     r = 0
     size1 = 0
@@ -246,24 +245,23 @@ def get_textsnippets_sentence(sent_size, tokens, beg_index, end_index):
         r += 1
     while size2 < sent_size:
         if beg_index - l < 0:
-            textsnippets.append(" ".join(tokens[beg_index - l - 1:end_index + r]))
+            return " ".join(tokens[beg_index - l - 1:end_index + r])
             break
         elif beg_index - l == 0:
-            textsnippets.append(" ".join(tokens[beg_index - l:end_index + r]))
+            return " ".join(tokens[beg_index - l:end_index + r])
             break
         elif find_left_sentence_boundary(tokens, beg_index, l):
             size2 += 1
         l += 1
     if size2 == sent_size:
-        textsnippets.append(" ".join(tokens[beg_index - l + 2:end_index + r]))
-    return textsnippets
+        return " ".join(tokens[beg_index - l + 2:end_index + r])
 
 
 def sentence_window_one_word_help(sent_size, pattern, tokens):
     textsnippets = []
     for ind, token in enumerate(tokens):
         if strip_token(pattern, token):
-            textsnippets = get_textsnippets_sentence(sent_size, tokens, ind, ind)
+            textsnippets.append(get_textsnippets_sentence(sent_size, tokens, ind, ind))
     return textsnippets
 
 
@@ -366,20 +364,13 @@ def delete_previous_results():
     db.aggregation.delete_many({})
 
 print("Begin: " + str(time.time()))
-#connecting_to_db()
-#delete_previous_results()
-#get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
-#get_db_text(True, 0)  # Sentence mode
+connecting_to_db()
+delete_previous_results()
+get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
+get_db_text(True, 0)  # Sentence mode
 
 # debug print
-#debug_pretty_print()
-#aggregation()
-
-print(sentence_window(0, "not it", "Mama no. This is not it. This it is.".split()))
-print(sentence_window(0, "not it", "This is not it. This it is.".split()))
-print(sentence_window(0, "not it", "This it is. This is not it.".split()))
-print(sentence_window(0, "it", "Mamama. This is not it. This it is.".split()))
-print(sentence_window(0, "it", "This is not it. This it is.".split()))
-print(sentence_window(0, "it", "This it is. This is not it.".split()))
+debug_pretty_print()
+aggregation()
 
 print("End: " + str(time.time()))
