@@ -208,32 +208,79 @@ def sentence_window(size, pattern, tokens):
     """Get a word window list with a specific number of sentences. size 0 will return the
     current sentence the pattern is found in. size n will return n sentences left and right
     from the initial sentence."""
-    textsnippets = []
     sent_size = size + 1
     split_pattern = pattern.split()
     if len(split_pattern) == 1:
-        for ind, token in enumerate(tokens):
-            if strip_token(pattern, token):
-                l = 1
-                r = 0
-                size1 = 0
-                size2 = 0
-
-                while size1 < sent_size:
-                    if (size1 < sent_size) and find_right_sentence_boundary(tokens, ind, r):
-                        size1 += 1
-                    r += 1
-
-                while size2 < sent_size:
-                    if ind - l == 0:
-                        textsnippets.append(" ".join(tokens[ind - l:ind + r]))
-                        size2 += 1
-                    elif (size2 < sent_size) and find_left_sentence_boundary(tokens, ind, l):
-                        textsnippets.append(" ".join(tokens[ind - (l - 1):ind + r]))
-                        size2 += 1
-                    l += 1
+        textsnippets = sentence_window_one_word_help(pattern, sent_size, tokens)
     else:
-        pass
+        textsnippets = sentence_window_more_words_help(sent_size, split_pattern, tokens)
+    return textsnippets
+
+
+def sentence_window_more_words_help(sent_size, split_pattern, tokens):
+    for ind, token in enumerate(tokens):
+        p_index = 0
+        end_index = ind
+        while p_index < len(split_pattern):
+            if strip_token(split_pattern[p_index], tokens[end_index]):
+                p_index += 1
+                end_index = end_index
+                end_index += 1
+            else:
+                break
+        if p_index == len(split_pattern):
+            textsnippets = get_textsnippets_sentence(sent_size, tokens, ind, end_index)
+    return textsnippets
+
+
+def get_textsnippets_sentence(sent_size, tokens, beg_index, end_index):
+    textsnippets = []
+    l = 1
+    r = 0
+    size1 = 0
+    size2 = 0
+    end_index -= 1
+    while size1 < sent_size:
+        if end_index + r > len(tokens) - 1:
+            break
+        elif (size1 < sent_size) and find_right_sentence_boundary(tokens, end_index, r):
+            size1 += 1
+        r += 1
+    while size2 < sent_size:
+        if beg_index - l <= 0:
+            textsnippets.append(" ".join(tokens[beg_index - l:end_index + r]))
+            break
+        elif find_left_sentence_boundary(tokens, beg_index, l):
+            size2 += 1
+        l += 1
+    if size2 == sent_size:
+        textsnippets.append(" ".join(tokens[beg_index - l + 2:end_index + r]))
+    return textsnippets
+
+
+def sentence_window_one_word_help(pattern, sent_size, tokens):
+    textsnippets = []
+    for ind, token in enumerate(tokens):
+        if strip_token(pattern, token):
+            l = 1
+            r = 0
+            size1 = 0
+            size2 = 0
+
+            while size1 < sent_size:
+                if (size1 < sent_size) and find_right_sentence_boundary(tokens, ind, r):
+                    size1 += 1
+                r += 1
+
+            while size2 < sent_size:
+                if ind - l == 0:
+                    textsnippets.append(" ".join(tokens[ind - l:ind + r]))
+                    size2 += 1
+                elif find_left_sentence_boundary(tokens, ind, l):
+                    size2 += 1
+                    if size2 == sent_size:
+                        textsnippets.append(" ".join(tokens[ind - (l - 1):ind + r]))
+                l += 1
     return textsnippets
 
 
@@ -345,5 +392,3 @@ delete_previous_results()
 #debug_pretty_print()
 #aggregation()
 print("End: " + str(time.time()))
-
-print(sentence_window(0, "is not", "Miep. This is not a good example.".split()))
