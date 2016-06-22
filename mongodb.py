@@ -23,7 +23,7 @@ def connecting_to_db():
     global db
     db = client.database
     db.dostojewski.create_index([('id', pymongo.ASCENDING)], unique=True)
-    db.text_snippets.create_index([('text_snippet_id', pymongo.ASCENDING)], unique=True)
+    db.snippets.create_index([('text_snippet_id', pymongo.ASCENDING)], unique=True)
     db.pattern.create_index([('pattern_id', pymongo.ASCENDING)], unique=True, sparse=True)
     db.single_pattern.create_index([('single_pattern_id', pymongo.ASCENDING)], unique=True, sparse=True)
 

@@ -9,6 +9,7 @@
 # 	4) Create statistics about found the grammar pattern in a seperate file.  
 # ##
 
+import time
 import re
 from pyparsing import alphas, dblQuotedString, Forward, Literal, Group, OneOrMore, Optional, removeQuotes, Suppress, \
     Word
@@ -77,13 +78,13 @@ def get_pattern_from_rdf(filename):
             pattern_list.update({subject: object})
             # TODO debug line
             # print "%s %s %s" % (subject, has_pattern, object)
+    global p_id, pattern_id, db
 
     push_pattern(pattern_list)
-    # return pattern_list
 
 
 def push_pattern(pattern_list):
-    global p_id, pattern_id, db
+    global p_id, pattern_id
     for key in pattern_list:
         pattern = pattern_list[key]
         f_pat = {"p_id": p_id, "pattern": key, "single_pattern": []}
@@ -94,7 +95,6 @@ def push_pattern(pattern_list):
             f_pattern = {"pattern_id": pattern_id, "single_pattern": item}
             pattern_ids.append(pattern_id)
             pattern_id += 1
-            print(f_pattern)
             db.single_pattern.insert_one(f_pattern)
             db.pattern.find_and_modify(query={"p_id": p_id - 1}, update={"$set": {"single_pattern": pattern_ids}})
 
@@ -104,14 +104,13 @@ def compile_pattern(string):
     return re.compile(string)
 
 
-def search_pattern(pattern, text):
-    """Searches for the pattern found in the rdf in some text. Returns the number of found instances in the text."""
-    s_pattern = compile_pattern('(\s)?' + pattern + '(\s|\.|,)')
-    return len(re.findall(s_pattern, text))
-
-
 def strip_token(pattern, token):
-    return token.strip(",'.!?;") == pattern or token.strip(',".!?;') == pattern
+    split_token = re.split('\W+', token, 1)
+    if split_token[0] == '':
+        split_token = split_token[1]
+    else:
+        split_token = split_token[0]
+    return split_token == pattern
 
 
 def word_window(size, pattern, tokens):
@@ -177,33 +176,64 @@ def get_textsnippets(indl, indr, size, textlength, tokens):
         return " ".join(tokens[indl - size:indr + (size + 1)])
 
 
+def find_right_sentence_boundary(tokens, ind, steps):
+    sentence_boundary = compile_pattern('(\w)*(\.|!|\?)+(?!.)')
+    sentence_boundary_special = compile_pattern('(\w)*(\.|!|\?)\S(?!,)')
+    next_token = compile_pattern('(\W)*(\w+)(,)*')
+    found_boundary = False
+
+    if re.search(sentence_boundary, tokens[ind + steps]):
+        found_boundary = True
+    elif re.search(sentence_boundary_special, tokens[ind + steps]):
+        found_boundary = re.search(next_token, tokens[ind + steps + 1])
+
+    return found_boundary
+
+
+def find_left_sentence_boundary(tokens, ind, steps):
+    sentence_boundary = compile_pattern('(\w)*(\.|!|\?)+(?!.)')
+    sentence_boundary_special = compile_pattern('(\w)*(\.|!|\?)\S')
+    next_token = compile_pattern('(\W(\w+)(,)*)')
+    found_boundary = False
+
+    if re.search(sentence_boundary, tokens[ind - steps]):
+        found_boundary = True
+    elif re.search(sentence_boundary_special, tokens[ind - steps]):
+        found_boundary = re.search(next_token, tokens[ind - steps + 1])
+
+    return found_boundary
+
+
 def sentence_window(size, pattern, tokens):
     """Get a word window list with a specific number of sentences. size 0 will return the
     current sentence the pattern is found in. size n will return n sentences left and right
     from the initial sentence."""
     textsnippets = []
-    sentence_boundary = compile_pattern('(\w)*(\.|!|\?)+')
     sent_size = size + 1
-    for ind, token in enumerate(tokens):
-        if strip_token(pattern, token):
-            l = 1
-            r = 0
-            size1 = 0
-            size2 = 0
+    split_pattern = pattern.split()
+    if len(split_pattern) == 1:
+        for ind, token in enumerate(tokens):
+            if strip_token(pattern, token):
+                l = 1
+                r = 0
+                size1 = 0
+                size2 = 0
 
-            while size1 < sent_size:
-                if (size1 < sent_size) and re.search(sentence_boundary, tokens[ind + r]):
-                    size1 += 1
-                r += 1
+                while size1 < sent_size:
+                    if (size1 < sent_size) and find_right_sentence_boundary(tokens, ind, r):
+                        size1 += 1
+                    r += 1
 
-            while size2 < sent_size:
-                if ind - l == 0:
-                    textsnippets.append(" ".join(tokens[ind - l:ind + r]))
-                    size2 += 1
-                elif (size2 < sent_size) and re.search(sentence_boundary, tokens[ind - l]):
-                    textsnippets.append(" ".join(tokens[ind - (l - 1):ind + r]))
-                    size2 += 1
-                l += 1
+                while size2 < sent_size:
+                    if ind - l == 0:
+                        textsnippets.append(" ".join(tokens[ind - l:ind + r]))
+                        size2 += 1
+                    elif (size2 < sent_size) and find_left_sentence_boundary(tokens, ind, l):
+                        textsnippets.append(" ".join(tokens[ind - (l - 1):ind + r]))
+                        size2 += 1
+                    l += 1
+    else:
+        pass
     return textsnippets
 
 
@@ -257,8 +287,9 @@ def push_pattern_snippets(current_pattern_id, current_snippet_id):
 
 
 def get_db_text(sentence, size):
-    for text in db.dostojewski.find({"title": "Chapter 1"}):
+    for ind, text in enumerate(db.dostojewski.find()):
         find_text_window(sentence, text['text'], text['id'], size)
+        print("Chapter " + str(ind + 1) + " done.")
 
 
 def aggregation():
@@ -298,18 +329,21 @@ def debug_pretty_print():
 
 
 def delete_previous_results():
-    db.text_snippets.delete_many({})
+    db.snippets.delete_many({})
     db.pattern.delete_many({})
     db.single_pattern.delete_many({})
     db.single_pattern_snippets.delete_many({})
     db.aggregation.delete_many({})
 
-
+print("Begin: " + str(time.time()))
 connecting_to_db()
-#delete_previous_results()
-get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
-get_db_text(True, 0)  # Sentence mode
+delete_previous_results()
+#get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
+#get_db_text(True, 0)  # Sentence mode
 
 # debug print
-debug_pretty_print()
-aggregation()
+#debug_pretty_print()
+#aggregation()
+print("End: " + str(time.time()))
+
+print(sentence_window(0, "is not", "Miep. This is not a good example.".split()))
