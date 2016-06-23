@@ -11,37 +11,10 @@
 
 import time
 import re
-from pyparsing import alphas, dblQuotedString, Forward, Literal, Group, OneOrMore, Optional, removeQuotes, Suppress, \
-    Word
 from pymongo import MongoClient
-
-# GRAMMAR DEFINITION
-
-word = prefix = suffix = Word(alphas)
-COLON = Literal(':')
-A = Literal('a')
-QUOTEDSTRING = dblQuotedString.setParseAction(removeQuotes)
-
-# suppressing following literals 
-LPAREN = Suppress('(')
-RPAREN = Suppress(')')
-DOT = Suppress('.')
-COMMA = Suppress(',')
-SEMICOLON = Suppress(';')
-
-GETSUFFIX = Suppress(prefix + COLON) + suffix
-GETOBJECT = Optional(LPAREN) + OneOrMore((GETSUFFIX | QUOTEDSTRING) + Optional(COMMA)) + Optional(RPAREN)
-
-isA = (GETSUFFIX('subject') | word) + A('relation') + GETSUFFIX('object') + DOT
-hasX = GETSUFFIX('subject') + GETSUFFIX('relation') + Group(GETOBJECT)('object') + DOT
-
-search = Forward()
-search << (isA | hasX)
+from RDFParser import RDFParser
 
 snippet_id = 0
-pattern_id = 0
-p_id = 0
-
 
 def connecting_to_db():
     """Connecting to localhost MongoDB and initializing needed data base and collections."""
@@ -50,53 +23,6 @@ def connecting_to_db():
     print("DB connection sucessfully built...")
     global db
     db = client.database
-
-
-def read_in_rdf_file(filename):
-    """Returns read in rdf file(s)."""
-    cleaned_rdf = []
-    with open(filename, 'r') as file:
-        data = file.read()
-        rdf_data = data.splitlines()
-        for data in rdf_data:
-            if data != '':
-                cleaned_rdf.append(data)
-        return cleaned_rdf
-
-
-def get_pattern_from_rdf(filename):
-    """Returns only pattern list from RDF data."""
-    # TODO debug print
-    # print "Found pattern in RDF."
-
-    data = read_in_rdf_file(filename)
-    pattern_list = dict()
-    for statements in data:
-        parser_result = search.parseString(statements)
-        subject, relation, object = parser_result
-        if relation == 'hasPattern':
-            pattern_list.update({subject: object})
-            # TODO debug line
-            # print "%s %s %s" % (subject, has_pattern, object)
-    global p_id, pattern_id, db
-
-    push_pattern(pattern_list)
-
-
-def push_pattern(pattern_list):
-    global p_id, pattern_id
-    for key in pattern_list:
-        pattern = pattern_list[key]
-        f_pat = {"p_id": p_id, "pattern": key, "single_pattern": []}
-        p_id += 1
-        pattern_ids = []
-        db.pattern.insert_one(f_pat)
-        for item in pattern:
-            f_pattern = {"pattern_id": pattern_id, "single_pattern": item}
-            pattern_ids.append(pattern_id)
-            pattern_id += 1
-            db.single_pattern.insert_one(f_pattern)
-            db.pattern.find_and_modify(query={"p_id": p_id - 1}, update={"$set": {"single_pattern": pattern_ids}})
 
 
 def compile_pattern(string):
@@ -249,10 +175,8 @@ def get_textsnippets_sentence(sent_size, tokens, beg_index, end_index):
     while size2 < sent_size:
         if beg_index - l < 0:
             return " ".join(tokens[beg_index - l - 1:end_index + r])
-            break
         elif beg_index - l == 0:
             return " ".join(tokens[beg_index - l:end_index + r])
-            break
         elif find_left_sentence_boundary(tokens, beg_index, l):
             size2 += 1
         l += 1
@@ -278,7 +202,7 @@ def find_text_window(sentence, text, text_id, size):
         else:
             snippets = word_window(size, pattern['single_pattern'], split_text)
         if len(snippets) > 0:
-            single_pattern_id = pattern['pattern_id']
+            single_pattern_id = pattern['single_pattern_id']
             push_snippets(snippets, single_pattern_id)
             push_aggregation(text_id, single_pattern_id)
 
@@ -294,31 +218,31 @@ def push_aggregation(text_id, single_pattern_id):
         db.aggregation.find_and_modify({"id": text_id}, {"$set": {"single_pattern_id": old_pattern}})
 
 
-def push_snippets(snippets, current_pattern_id):
+def push_snippets(snippets, current_single_pattern_id):
     global db, snippet_id
     if len(snippets) > 0:
         for snippet in snippets:
             if not db.snippets.find_one({"text_snippet": snippet}):
                 f_snippet = {"snippet_id": snippet_id, "text_snippet": snippet}
-                push_pattern_snippets(current_pattern_id, snippet_id)
+                push_pattern_snippets(current_single_pattern_id, snippet_id)
                 snippet_id += 1
                 db.snippets.insert_one(f_snippet)
 
 
-def push_pattern_snippets(current_pattern_id, current_snippet_id):
+def push_pattern_snippets(current_single_pattern_id, current_snippet_id):
     global db
-    if not db.single_pattern_snippets.find_one({"pattern_id": current_pattern_id}):
-        db.single_pattern_snippets.insert_one({"pattern_id": current_pattern_id, "snippet_id": [current_snippet_id]})
+    if not db.single_pattern_snippets.find_one({"single_pattern_id": current_single_pattern_id}):
+        db.single_pattern_snippets.insert_one({"single_pattern_id": current_single_pattern_id, "snippet_id": [current_snippet_id]})
     else:
-        saved_relation = db.single_pattern_snippets.find_one({"pattern_id": current_pattern_id})
+        saved_relation = db.single_pattern_snippets.find_one({"single_pattern_id": current_single_pattern_id})
         old_snippets = saved_relation["snippet_id"]
         old_snippets.append(snippet_id)
-        db.single_pattern_snippets.find_and_modify({"pattern_id": current_pattern_id},
+        db.single_pattern_snippets.find_and_modify({"single_pattern_id": current_single_pattern_id},
                                                    {"$set": {"snippet_id": old_snippets}})
 
 
 def get_db_text(sentence, size):
-    for ind, text in enumerate(db.dostojewski.find()):
+    for ind, text in enumerate(db.dostojewski.find({"title": "Chapter 1"})):
         find_text_window(sentence, text['text'], text['id'], size)
         print("Chapter " + str(ind + 1) + " done.")
 
@@ -328,8 +252,8 @@ def aggregation():
         num_of_snippets = 0
         single_pattern = pattern['single_pattern_id']
 
-        for sp_id in single_pattern:
-            for snippets in db.single_pattern_snippets.find({"pattern_id": sp_id}):
+        for spattern_id in single_pattern:
+            for snippets in db.single_pattern_snippets.find({"single_pattern_id": spattern_id}):
                 num_of_snippets += len(snippets['snippet_id'])
         print("Number of Snippets for text with id " + str(pattern['id']) + ": " + str(num_of_snippets))
 
@@ -368,8 +292,9 @@ def delete_previous_results():
 
 print("Begin: " + str(time.time()))
 connecting_to_db()
-#delete_previous_results()
-get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
+delete_previous_results()
+parser = RDFParser(db)
+parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
 get_db_text(True, 0)  # Sentence mode
 
 # debug print
