@@ -1,28 +1,28 @@
-# ##
-# File: parsing.py
-# Author: Mailan
-# Date: 06.06.16
-# Purpose: 
-# 	1) Read in rdf file.
-# 	2) Find pattern from rdf.  
-# 	3) Search pattern in some text with regex.
-# 	4) Create statistics about found the grammar pattern in a seperate file.  
-# ##
-
 import time
 import re
+import RDFParser
+import POSTagger
+from pg import DB
 from pymongo import MongoClient
-from RDFParser import RDFParser
 
 snippet_id = 0
 
+
 def connecting_to_db():
-    """Connecting to localhost MongoDB and initializing needed data base and collections."""
+    """Connecting to localhost MongoDB."""
     # default host and port (localhost, 27017)
     client = MongoClient()
-    print("DB connection sucessfully built...")
+    print("DBMongo connection sucessfully built...")
     global db
     db = client.database
+
+
+def connecting_postgre_db():
+    """Connecting to localhost PostGreDB."""
+    # default host and port (localhost)
+    global pdb
+    pdb = DB(dbname='testdb', user='postgre', passwd='superuser')
+    print("PostGre DB connection sucessfully built...")
 
 
 def compile_pattern(string):
@@ -242,7 +242,7 @@ def push_pattern_snippets(current_single_pattern_id, current_snippet_id):
 
 
 def get_db_text(sentence, size):
-    for ind, text in enumerate(db.dostojewski.find({"title": "Chapter 1"})):
+    for ind, text in enumerate(db.dostojewski.find({"title": "Chapter 7"})):
         find_text_window(sentence, text['text'], text['id'], size)
         print("Chapter " + str(ind + 1) + " done.")
 

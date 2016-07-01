@@ -2,7 +2,8 @@ lit a q:Vocabulary .
 
 lit:Male a q:BScale .
 lit:Female a q:BScale .
-lit:Age a q:BScale .
+lit:MainCharacter a q:BScale .
+lit:SubCharacter a q:BScale .
 
 lit:Myshkin q:hasPattern ("Lew Nikolajewitsch Myshkin", "Lew Nikolajewitsch", "Fürst", "Fürst Myshkin") .
 lit:Nastasja q:hasPattern ("Nastasja Filippowna Barashkowa", "Nastasja", "Nastasja Filippowna") .
@@ -16,7 +17,7 @@ lit:Ganja q:hasPattern ("Ganja", "Gawrila Ardalionowitsch", "Gawrila Ardalionowi
 lit:Ippolit q:hasPattern ("Terentjew", "Herr Terentjew", "Ippolit Terentjew", "Ippolit") .
 lit:Tozkij q:hasPattern ("Afanassij Iwanowitsch", "Afanassij Iwanowitsch Tozkij", "Tozkij") .
 lit:Radomskij q:hasPattern ("Jewgenij Pawlowitsch Radomskij", "Radomskij", "Jewgenij Pawlowitsch") .
-lit:PrinceS q:hasPattern "Prinz S.". 
+lit:PrinceS q:hasPattern "Fürst Schtsch.". 
 lit:Lebedew q:hasPattern "Lebedew" .
 lit:Ptizyn q:hasPattern ("Iwan Petrowitsch Ptizyn", "Ptizyn", "Iwan Petrowitsch") .
 lit:Iwolgin q:hasPattern ("General Iwolgin", "Iwolgin", "Ardalion Alexandrowitsch Iwolgin", "Ardalion Alexandrowitsch", "Ardalion Iwolgin") .
@@ -29,8 +30,12 @@ lit:Burdowskij q:hasPattern ("Antip Burdowskij", "Burdowskij") .
 lit:Male q:hasObject (lit:Myshkin, lit:Rogoshin, lit:Jepantschin, lit:Ganja, lit:Ippolit, lit:Tozkij, lit:Radomskij, lit:PrinceS, lit:Lebedew, lit:Ptizyn, lit:Iwolgin, lit:Nikolai, lit:Ferdyschtschenko, lit:Burdowskij) .
 lit:Female q:hasObject (lit:Nastasja, lit:Alexandra, lit:Adelaida, lit:Aglaja, lit: Jepantschina, lit:Alexandrowna, lit:Warwara) .
 
+lit:MainCharacter q:hasObject (lit:Myshkin, lit:Rogoshin, lit:Nastasja, lit:Aglaja) .
+
 lit:MainCharacter a q:BSort .
 lit:SubCharacter a q:BSort .
 
-lit:MainCharacter q:hasAttribute (lit:Male, lit:Female) .
-lit:SubCharacter q:hasAttribute (lit:Male, lit:Female) .
+lit:MainCharacter q:hasAttribute lit:MainCharacter .
+lit:SubCharacter q:hasAttribute lit:SubCharacter .
+
+lit:FemMainCharacter q:hasAttribute (lit:MainCharacter, lit:Female) .

@@ -1,6 +1,7 @@
 from pyparsing import alphas, dblQuotedString, Forward, Literal, Group, OneOrMore, Optional, removeQuotes, Suppress, \
     Word
 
+
 class RDFParser:
     """RDFParser is a parser to parse RDF files (aka ontologies) and pushing the found pattern onto the database."""
 
@@ -37,6 +38,9 @@ class RDFParser:
 
     def read_in_rdf_file(self, filename):
         """Read in a rdf_file with a specified file name."""
+        if not filename.endswith(".rdf"):
+            raise Exception("Invalid file format")
+
         cleaned_rdf = []
         with open(filename, 'r') as file:
             data = file.read()
@@ -50,15 +54,27 @@ class RDFParser:
         """Extract all needed pattern from a rdf file and then push them onto the database."""
         data = self.read_in_rdf_file(filename)
         pattern_list = dict()
-        for statements in data:
-            parser_result = self.__search.parseString(statements)
-            subject, relation, object = parser_result
+        attribute_list = dict()
+        object_list = dict()
 
-            # filter pattern
+        bscale_set = {}
+        bsort_set = {}
+        for statements in data:
+            subject, relation, object = self.__search.parseString(statements)
+
+            # filter relations
             if relation == 'hasPattern':
                 pattern_list.update({subject: object})
-                # TODO debug line
-                # print "%s %s %s" % (subject, has_pattern, object)
+            elif relation == 'hasAttribute':
+                attribute_list.update({subject: object})
+            elif relation == 'hasObject':
+                object_list.update({subject: object})
+            elif object == 'BScale':
+                bscale_set.add(subject)
+            elif object == 'BSort':
+                bsort_set.add(subject)
+            else:
+                pass
 
         self.__push_pattern(pattern_list)
 
