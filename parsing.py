@@ -2,8 +2,8 @@ import time
 import re
 import RDFParser
 import POSTagger
+from MongoDBConnector import MongoDBConnector
 from pg import DB
-from pymongo import MongoClient
 
 snippet_id = 0
 
@@ -11,10 +11,9 @@ snippet_id = 0
 def connecting_to_db():
     """Connecting to localhost MongoDB."""
     # default host and port (localhost, 27017)
-    client = MongoClient()
-    print("DBMongo connection sucessfully built...")
-    global db
-    db = client.database
+    global mongo_connector
+    mongo_connector = MongoDBConnector()
+    mongo_connector.delete_previous_results()
 
 
 def connecting_postgre_db():
@@ -283,22 +282,16 @@ def debug_pretty_print():
     print()
 
 
-def delete_previous_results():
-    db.snippets.delete_many({})
-    db.pattern.delete_many({})
-    db.single_pattern.delete_many({})
-    db.single_pattern_snippets.delete_many({})
-    db.aggregation.delete_many({})
-
 print("Begin: " + str(time.time()))
 connecting_to_db()
-delete_previous_results()
-parser = RDFParser(db)
-parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
-get_db_text(True, 0)  # Sentence mode
+mongo_connector.delete_previous_results()
+#mongo_connector.add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
+#parser = RDFParser(db)
+#parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
+#get_db_text(True, 0)  # Sentence mode
 
 # debug print
-debug_pretty_print()
-aggregation()
+#debug_pretty_print()
+#aggregation()
 
 print("End: " + str(time.time()))

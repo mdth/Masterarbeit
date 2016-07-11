@@ -33,7 +33,6 @@ class POSTagger:
         else:
             raise Exception("Wrong tagger parameter.")
 
-
     def tag(self, text):
         """POS tag tokenized text."""
         if self.tagger_name == (POSTagger.STAN or POSTagger.SFT):
