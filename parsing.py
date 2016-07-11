@@ -1,9 +1,9 @@
 import time
 import re
-import RDFParser
 import POSTagger
+from RDFParser import RDFParser
 from MongoDBConnector import MongoDBConnector
-from pg import DB
+from PostGreDBConnector import PostGreDBConnector
 
 snippet_id = 0
 
