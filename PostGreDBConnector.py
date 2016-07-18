@@ -11,25 +11,28 @@ class PostGreDBConnector():
         try:
             self.__db = DB(dbname='testdb', host='localhost', port=5432, user='postgres', passwd='superuser')
             print("PostGre DB connection successfully built...")
-            self.create_tables()
         except Exception:
             print("PostGre DB connection could not be built...")
 
+        self.delete_all_data()
+        #self.create_tables()
+
     def create_tables(self):
         """Create needed tables for RDF parsing."""
-        self.add_table("CREATE TABLE texts (id serial primary key, title text)")
-        self.add_table("CREATE TABLE bscale (id serial primary key, bscale text)")
-        self.add_table("CREATE TABLE bsort (id serial primary key, bsort text)")
-        self.add_table("CREATE TABLE pattern (id serial primary key, pattern text)")
-        self.add_table("CREATE TABLE single_pattern (id serial primary key, single_pattern text)")
-        self.add_table("CREATE TABLE snippets (id serial primary key, snippet text)")
+        self.add_table1("CREATE TABLE texts (id serial primary key, title text)")
+        self.add_table1("CREATE TABLE bscale (id serial primary key, bscale text)")
+        self.add_table1("CREATE TABLE bsort (id serial primary key, bsort text)")
+        self.add_table1("CREATE TABLE pattern (id serial primary key, pattern text)")
+        self.add_table1("CREATE TABLE single_pattern (id serial primary key, single_pattern text)")
+        self.add_table1("CREATE TABLE snippets (id serial primary key, snippet text)")
 
         # relations
-        self.add_table("CREATE TABLE has_attribute (bsort_id int, bscale_id int)")
-        self.add_table("CREATE TABLE single_pattern_snippet (single_pattern_id int, snippet_id int)")
-        self.add_table("CREATE TABLE has_object (bscale_id int, pattern_id int)")
+        self.add_table1("CREATE TABLE has_attribute (bsort_id int, bscale_id integer[])")
+        self.add_table1("CREATE TABLE has_object (bscale_id int, pattern_id integer[])")
+        self.add_table1("CREATE TABLE pattern_single_pattern (pattern_id int, single_pattern_id integer[])")
+        self.add_table1("CREATE TABLE single_pattern_snippet (single_pattern_id int, snippet_id integer[])")
 
-    def add_table(self, query):
+    def add_table1(self, query):
         """Create a new table with a query."""
         # TODO change query to name and rows
         self.__db.query(query)
@@ -63,9 +66,16 @@ class PostGreDBConnector():
         """Delete a row element form a specified table."""
         return self.__db.delete(table, row)
 
-    def delete_all_data(self, table):
+    def delete_data_in_table(self, table):
         """Delete all data in a specified table."""
-        self.__db.truncate(table, restart=True, cascade=True)
+        self.__db.truncate(table, restart=True, cascade=True, only=False)
+
+    def delete_all_data(self):
+        tables = self.get_tables()
+        for table in tables:
+            # TODO quote_string
+            table_name = str(table.split('.')[1])
+            self.delete_data_in_table(table_name)
 
     def get_tables(self):
         """Get all available tables in the database."""
@@ -75,14 +85,16 @@ class PostGreDBConnector():
         return self.__db.get_attnames(table)
 
     def drop_table(self, table):
-        query = "DROP "
+        query = "DROP TABLE "
         self.__db.query(query + table)
 
-    def drop_all_tables(self):
-        self.__db.query("DROP *")
 
-
-db = PostGreDBConnector()
-print(db.get('fruits', "name='apfel'"))
-print(db.get_attributes('fruits'))
-print(db.get_tables())
+#db = PostGreDBConnector()
+#str = "Rogoshin"
+#db.drop_table("test")
+#db.add_table1("CREATE TABLE integer (id serial primary key, title integer[])")
+#print(db.get('pattern', "pattern=" + "'" + str + "'"))
+#print(db.insert("pattern_single_pattern", {"pattern_id": 59, "single_pattern_id": [1,2,3]}))
+#print(db.insert('fruits', {"name": "kirsche"}))
+#print(db.get_attributes('fruits'))
+#print(db.get_tables())

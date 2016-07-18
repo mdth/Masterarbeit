@@ -11,17 +11,16 @@ snippet_id = 0
 def connecting_to_db():
     """Connecting to localhost MongoDB."""
     # default host and port (localhost, 27017)
-    global mongo_connector
-    mongo_connector = MongoDBConnector()
-    mongo_connector.delete_previous_results()
+    global mongo_db
+    mongo_db = MongoDBConnector()
+    mongo_db.delete_previous_results()
 
 
 def connecting_postgre_db():
     """Connecting to localhost PostGreDB."""
     # default host and port (localhost)
-    global pdb
-    pdb = DB(dbname='testdb', user='postgre', passwd='superuser')
-    print("PostGre DB connection sucessfully built...")
+    global postgre_db
+    postgre_db = PostGreDBConnector()
 
 
 def compile_pattern(string):
@@ -284,10 +283,11 @@ def debug_pretty_print():
 
 print("Begin: " + str(time.time()))
 connecting_to_db()
-mongo_connector.delete_previous_results()
-#mongo_connector.add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
-#parser = RDFParser(db)
-#parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
+connecting_postgre_db()
+mongo_db.delete_previous_results()
+#mongo_db.add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
+parser = RDFParser(postgre_db)
+parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
 #get_db_text(True, 0)  # Sentence mode
 
 # debug print

@@ -8,8 +8,6 @@ class RDFParser:
     def __init__(self, db):
         """Initialize a new RDF parser with pre-defined grammar. Takes database db as an argument."""
         self.__db = db
-        self.__pattern_id = 0
-        self.__single_pattern_id = 0
 
         # grammar definition
         # literals
@@ -57,8 +55,8 @@ class RDFParser:
         attribute_list = dict()
         object_list = dict()
 
-        bscale_set = {}
-        bsort_set = {}
+        bscale_set = set()
+        bsort_set = set()
         for statements in data:
             subject, relation, object = self.__search.parseString(statements)
 
@@ -67,8 +65,6 @@ class RDFParser:
                 pattern_list.update({subject: object})
             elif relation == 'hasAttribute':
                 attribute_list.update({subject: object})
-            elif relation == 'hasObject':
-                object_list.update({subject: object})
             elif object == 'BScale':
                 bscale_set.add(subject)
             elif object == 'BSort':
@@ -84,18 +80,35 @@ class RDFParser:
             pattern = pattern_list[key]
 
             # push pattern
-            f_pat = {"pattern_id": self.__pattern_id, "pattern": key, "single_pattern": []}
-            self.__pattern_id += 1
             new_s_pattern = []
-            self.__db.pattern.insert_one(f_pat)
+            self.__db.insert("pattern", {"pattern": key})
+
+            # push single pattern
             for single_pattern in pattern:
+                # TODO current assumption: there's only unique single pattern
+                self.__db.insert("single_pattern", {"single_pattern": single_pattern})
+                single_pattern_id = self.__db.get("single_pattern", "single_pattern=" + self.add_quotes(single_pattern))
+                new_s_pattern.append(single_pattern_id)
 
-                # push single pattern
-                f_pattern = {"single_pattern_id": self.__single_pattern_id, "single_pattern": single_pattern}
-                new_s_pattern.append(self.__single_pattern_id)
-                self.__single_pattern_id += 1
-                self.__db.single_pattern.insert_one(f_pattern)
+            pattern_id = self.__db.get("pattern", "pattern=" + self.add_quotes(key))
+            self.__db.insert("pattern_single_pattern", {"pattern_id": pattern_id, "single_pattern_id": new_s_pattern})
 
-                # modify already saved pattern with new list of single pattern, if necessary
-                self.__db.pattern.find_and_modify(query={"pattern_id": self.__pattern_id - 1},
-                                                  update={"$set": {"single_pattern": new_s_pattern}})
+    def __push_attribute(self, attribute_list):
+        """Push found rdf pattern onto the database."""
+        # TODO
+        for key in attribute_list:
+            attributes = attribute_list[key]
+
+            # push bsort
+            new_attributes = []
+            self.__db.insert("bsort", {"bsort": key})
+
+            # push bsort_has_attribute
+            for attribute in attributes:
+                new_attributes.append(attribute)
+
+            bsort_id = self.__db.get("bsort", "bsort=" + self.add_quotes(key))
+            self.__db.insert("has_attribute", {"bsort_id": bsort_id, "bscale_id": new_attributes})
+
+    def add_quotes(self, string):
+        return "'" + string + "'"
