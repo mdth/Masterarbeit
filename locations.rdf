@@ -1,0 +1,20 @@
+lit a q:Vocabulary .
+
+lit:Town a q:BScale .
+lit:Building a q:BScale .
+lit:Land a q:BScale .
+
+lit:Russland q:hasPattern "Rußland" .
+lit:Schweiz q:hasPattern "Schweiz" .
+lit:Frankreich q:hasPattern "Frankreich" .
+lit:Petersburg q:hasPattern "Petersburg" .
+lit:Pawlowsk q:hasPattern "Pawlowsk" .
+lit:Kolmino q:hasPattern "Kolmino" .
+lit:Paris q:hasPattern "Paris" .
+
+lit:Ort a q:BSort .
+
+lit:Stadt q:hasObject (lit:Petersburg, lit:Pawlowsk, lit:Kolmino, lit:Paris) .
+lit:Land q:hasObject (lit:Russland, lit:Schweiz, lit:Frankreich) .
+
+lit:Ort q:hasAttribute (lit:Building, lit:Land, lit:Town) .

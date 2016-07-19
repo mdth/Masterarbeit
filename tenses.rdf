@@ -1,0 +1,30 @@
+lit a q:Vocabulary .
+
+lit:Gegenwart a q:BSort .
+lit:Vergangenheit a q:BSort .
+lit:Zukunft a q:BSort .
+
+lit:Verb_Gegenwart q:hasPattern ("VVFIN", "VVIMP", "VVINF", "VVMINF", VVMFIN).
+lit:Verb_Vergangenheit q:hasPattern ("VVPP", "VAPP", "VMPP").
+lit:Verb_Zukunft q:hasPattern ("VAFIN+VVINF", "VVIZU").
+lit:Signalwort_Gegenwart q:hasPattern ("jetzt", "im Moment") .
+lit:Signalwort_Vergangenheit q:hasPattern ("gestern", "vorgestern", "letztes Jahr", "letzte Woche", "letzter Monat") .
+lit:Signalwort_Zukunft q:hasPattern ("bald", "demnächst", "in Zukunft") .
+
+lit:Verben_Gegenwart a q:BScale .
+lit:Verben_Vergangenheit a q:BScale .
+lit:Verben_Zukunft a q:BScale .
+lit:Signalwörter_Gegenwart a q:BScale .
+lit:Signalwörter_Vergangenheit a q:BScale .
+lit:Signalwörter_Zukunft a q:BScale .
+
+lit:Gegenwart q:hasAttribute (lit:Verb_Gegenwart, lit:Signalwörter_Gegenwart) .
+lit:Vergangenheit q:hasAttribute (lit:Verb_Vergangenheit, lit:Signalwörter_Vergangenheit) .
+lit:Zukunft q:hasAttribute (lit:Verb_Zukunft, lit:Signalwörter_Zukunft) .
+
+lit:Verben_Gegenwart q:hasObject lit:Verb_Gegenwart .
+lit:Verben_Vergangenheit  q:hasObject lit:Verb_Vergangenheit .
+lit:Verben_Zukunft  q:hasObject lit:Verb_Zukunft .
+lit:Signalwörter_Gegenwart  q:hasObject lit:Signalwort_Gegenwart .
+lit:Signalwörter_Vergangenheit  q:hasObject lit:Signalwort_Vergangenheit .
+lit:Signalwörter_Zukunft  q:hasObject lit:Signalwort_Zukunft .
