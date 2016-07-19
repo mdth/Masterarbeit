@@ -213,6 +213,17 @@ def push_aggregation(text_id, single_pattern_id):
         old_pattern.append(single_pattern_id)
         db.aggregation.find_and_modify({"id": text_id}, {"$set": {"single_pattern_id": old_pattern}})
 
+def pos_tagging():
+    snippets = postgre_db.get_all("snippets")
+    for snippet in snippets:
+        search_for_dialog(snippet)
+
+def search_for_dialog(snippet):
+    dialog_boundary_begin = re.compile("(\»|\›)")
+    dialog_boundary_end = re.compile("(\«|\‹)")
+    dialogs = sentence_window_one_word_help(0, dialog_boundary_begin)
+
+
 
 def push_snippets(snippets, current_single_pattern_id):
     if len(snippets) > 0:
@@ -288,7 +299,10 @@ connecting_postgre_db()
 #mongo_db.add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
 parser = RDFParser(postgre_db)
 parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
-
+parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/locations.rdf")
+global tagger
+tagger = POSTagger("tree-tagger")
+#pos_tagging()
 get_db_text(True, 0)  # Sentence mode
 
 # debug print

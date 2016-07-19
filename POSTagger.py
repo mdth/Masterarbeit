@@ -41,9 +41,14 @@ class POSTagger:
         elif self.tagger_name == POSTagger.TT:
             tags = self.__tagger.tag_text(text)
             tuple_list = []
-            tag_list = self.__tagger.make_tags(tags)
+            tag_list = treetaggerwrapper.make_tags(tags)
             for item in tag_list:
-                tuple_list.append(item[0], item[1])
+                tuple_list.append((item[0], item[1]))
             return tuple_list
         else:
             pass
+
+#tagger = POSTagger("tree-tagger")
+#print(tagger.tag("Bei mir zu Hause denken sie bestimmt, daß ich noch krank sei."))
+#print(tagger.tag("Ich werde morgen in die Schule gehen."))
+#print(tagger.tag("Hat Aglaja den Brief etwa der Alten gezeigt?«"))

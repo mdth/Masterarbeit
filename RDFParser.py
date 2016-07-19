@@ -53,6 +53,7 @@ class RDFParser:
         data = self.read_in_rdf_file(filename)
         pattern_list = dict()
         attribute_list = dict()
+        object_list = dict()
 
         for statements in data:
             subject, relation, object = self.__search.parseString(statements)
@@ -62,6 +63,8 @@ class RDFParser:
                 pattern_list.update({subject: object})
             elif relation == 'hasAttribute':
                 attribute_list.update({subject: object})
+            elif relation == "hasObject":
+                object_list.update({subject: object})
             else:
                 pass
 
