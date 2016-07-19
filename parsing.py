@@ -1,19 +1,16 @@
 import time
 import re
-import POSTagger
+from HelperMethods import add_quotes
+from POSTagger import POSTagger
 from RDFParser import RDFParser
 from MongoDBConnector import MongoDBConnector
 from PostGreDBConnector import PostGreDBConnector
-
-snippet_id = 0
-
 
 def connecting_to_db():
     """Connecting to localhost MongoDB."""
     # default host and port (localhost, 27017)
     global mongo_db
     mongo_db = MongoDBConnector()
-    mongo_db.delete_previous_results()
 
 
 def connecting_postgre_db():
@@ -194,15 +191,16 @@ def find_text_window(sentence, text, text_id, size):
     """Finds text windows with variable size."""
     split_text = text.split()
 
-    for pattern in db.single_pattern.find():
+    for pattern in postgre_db.get_all("single_pattern"):
         if sentence:
             snippets = sentence_window(size, pattern['single_pattern'], split_text)
         else:
             snippets = word_window(size, pattern['single_pattern'], split_text)
+
         if len(snippets) > 0:
-            single_pattern_id = pattern['single_pattern_id']
+            single_pattern_id = pattern['id']
             push_snippets(snippets, single_pattern_id)
-            push_aggregation(text_id, single_pattern_id)
+            #push_aggregation(text_id, single_pattern_id)
 
 
 def push_aggregation(text_id, single_pattern_id):
@@ -217,30 +215,33 @@ def push_aggregation(text_id, single_pattern_id):
 
 
 def push_snippets(snippets, current_single_pattern_id):
-    global db, snippet_id
     if len(snippets) > 0:
         for snippet in snippets:
-            if not db.snippets.find_one({"text_snippet": snippet}):
-                f_snippet = {"snippet_id": snippet_id, "text_snippet": snippet}
-                push_pattern_snippets(current_single_pattern_id, snippet_id)
-                snippet_id += 1
-                db.snippets.insert_one(f_snippet)
+            if not postgre_db.is_in_table("snippets", "snippet=" + add_quotes(snippet)):
+                postgre_db.insert("snippets", {"snippet": snippet})
+
+            snippet_id = postgre_db.get_id("snippets", "snippet=" + add_quotes(snippet))
+            push_pattern_snippets(current_single_pattern_id, snippet_id)
 
 
 def push_pattern_snippets(current_single_pattern_id, current_snippet_id):
-    global db
-    if not db.single_pattern_snippets.find_one({"single_pattern_id": current_single_pattern_id}):
-        db.single_pattern_snippets.insert_one({"single_pattern_id": current_single_pattern_id, "snippet_id": [current_snippet_id]})
+    """Push single_pattern & snippets relation onto PostGre DB."""
+    # case: no entry about single_pattern is in db
+    if not postgre_db.is_in_table("single_pattern_snippets", "single_pattern_id=" + str(current_single_pattern_id)):
+        postgre_db.insert("single_pattern_snippets", {"single_pattern_id": current_single_pattern_id, "snippet_id": [current_snippet_id]})
+
+    # case: entry about single_pattern is in db
     else:
-        saved_relation = db.single_pattern_snippets.find_one({"single_pattern_id": current_single_pattern_id})
-        old_snippets = saved_relation["snippet_id"]
-        old_snippets.append(snippet_id)
-        db.single_pattern_snippets.find_and_modify({"single_pattern_id": current_single_pattern_id},
-                                                   {"$set": {"snippet_id": old_snippets}})
+        old_snippets = postgre_db.get("single_pattern_snippets", "single_pattern_id=" + str(current_single_pattern_id), "snippet_id")
+        old_snippets.append(current_snippet_id)
+        postgre_db.delete_from_table("single_pattern_snippets", {"single_pattern_id": current_single_pattern_id})
+        postgre_db.insert("single_pattern_snippets", {"single_pattern_id": current_single_pattern_id, "snippet_id": old_snippets})
 
 
 def get_db_text(sentence, size):
-    for ind, text in enumerate(db.dostojewski.find({"title": "Chapter 7"})):
+    for ind, text in enumerate(mongo_db.get({"title": "Chapter 7"})):
+        #postgre_db.insert("texts", {"title": text})
+        postgre_db.insert("texts", {"title": "Chapter 7"})
         find_text_window(sentence, text['text'], text['id'], size)
         print("Chapter " + str(ind + 1) + " done.")
 
@@ -284,11 +285,11 @@ def debug_pretty_print():
 print("Begin: " + str(time.time()))
 connecting_to_db()
 connecting_postgre_db()
-mongo_db.delete_previous_results()
 #mongo_db.add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
 parser = RDFParser(postgre_db)
 parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
-#get_db_text(True, 0)  # Sentence mode
+
+get_db_text(True, 0)  # Sentence mode
 
 # debug print
 #debug_pretty_print()

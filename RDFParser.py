@@ -1,6 +1,6 @@
 from pyparsing import alphas, dblQuotedString, Forward, Literal, Group, OneOrMore, Optional, removeQuotes, Suppress, \
     Word
-
+from HelperMethods import add_quotes
 
 class RDFParser:
     """RDFParser is a parser to parse RDF files (aka ontologies) and pushing the found pattern onto the database."""
@@ -53,10 +53,7 @@ class RDFParser:
         data = self.read_in_rdf_file(filename)
         pattern_list = dict()
         attribute_list = dict()
-        object_list = dict()
 
-        bscale_set = set()
-        bsort_set = set()
         for statements in data:
             subject, relation, object = self.__search.parseString(statements)
 
@@ -65,14 +62,11 @@ class RDFParser:
                 pattern_list.update({subject: object})
             elif relation == 'hasAttribute':
                 attribute_list.update({subject: object})
-            elif object == 'BScale':
-                bscale_set.add(subject)
-            elif object == 'BSort':
-                bsort_set.add(subject)
             else:
                 pass
 
         self.__push_pattern(pattern_list)
+        self.__push_attribute(attribute_list)
 
     def __push_pattern(self, pattern_list):
         """Push found rdf pattern onto the database."""
@@ -87,15 +81,14 @@ class RDFParser:
             for single_pattern in pattern:
                 # TODO current assumption: there's only unique single pattern
                 self.__db.insert("single_pattern", {"single_pattern": single_pattern})
-                single_pattern_id = self.__db.get("single_pattern", "single_pattern=" + self.add_quotes(single_pattern))
+                single_pattern_id = self.__db.get_id("single_pattern", "single_pattern=" + add_quotes(single_pattern))
                 new_s_pattern.append(single_pattern_id)
 
-            pattern_id = self.__db.get("pattern", "pattern=" + self.add_quotes(key))
+            pattern_id = self.__db.get_id("pattern", "pattern=" + add_quotes(key))
             self.__db.insert("pattern_single_pattern", {"pattern_id": pattern_id, "single_pattern_id": new_s_pattern})
 
     def __push_attribute(self, attribute_list):
-        """Push found rdf pattern onto the database."""
-        # TODO
+        """Push found rdf attributes onto the database."""
         for key in attribute_list:
             attributes = attribute_list[key]
 
@@ -103,12 +96,13 @@ class RDFParser:
             new_attributes = []
             self.__db.insert("bsort", {"bsort": key})
 
-            # push bsort_has_attribute
+            # push bscale and has_attribute relation
             for attribute in attributes:
-                new_attributes.append(attribute)
+                # look out for duplicates
+                if not self.__db.is_in_table("bscale", "bscale=" + add_quotes(attribute)):
+                    self.__db.insert("bscale", {"bscale": attribute})
+                new_attributes.append(self.__db.get_id("bscale", "bscale=" + add_quotes(attribute)))
 
-            bsort_id = self.__db.get("bsort", "bsort=" + self.add_quotes(key))
+            bsort_id = self.__db.get_id("bsort", "bsort=" + add_quotes(key))
             self.__db.insert("has_attribute", {"bsort_id": bsort_id, "bscale_id": new_attributes})
 
-    def add_quotes(self, string):
-        return "'" + string + "'"
