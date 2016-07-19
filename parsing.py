@@ -250,11 +250,11 @@ def push_pattern_snippets(current_single_pattern_id, current_snippet_id):
 
 
 def get_db_text(sentence, size):
-    for ind, text in enumerate(mongo_db.get({"title": "Chapter 7"})):
+    for ind, text in enumerate(mongo_db.get({"title": "Chapter 5"})):
         #postgre_db.insert("texts", {"title": text})
-        postgre_db.insert("texts", {"title": "Chapter 7"})
+        postgre_db.insert("texts", {"title": "Chapter 5"})
         find_text_window(sentence, text['text'], text['id'], size)
-        print("Chapter " + str(ind + 1) + " done.")
+        print("Chapter " + str(5) + " done.")
 
 
 def aggregation():
@@ -268,31 +268,6 @@ def aggregation():
         print("Number of Snippets for text with id " + str(pattern['id']) + ": " + str(num_of_snippets))
 
 
-def debug_pretty_print():
-    global db
-
-    print()
-    print("------------------- Number of chapters in the DB -------------------")
-    print(db.dostojewski.count())
-    print()
-    print("------------------- Pattern in the DB -------------------")
-    for p in db.pattern.find({}, {"_id": 0}):
-        print(p)
-    print()
-    print("------------------- Snippets in the DB -------------------")
-    for p in db.snippets.find({}, {"_id": 0}):
-        print(p)
-    print()
-    print("------------------- Single pattern & Snippet relation in the DB -------------------")
-    for relation in db.single_pattern_snippets.find({}, {"_id": 0}):
-        print(relation)
-    print()
-    print("------------------- Aggregation of found pattern in the DB -------------------")
-    for relation in db.aggregation.find({}, {"_id": 0}):
-        print(relation)
-    print()
-
-
 print("Begin: " + str(time.time()))
 connecting_to_db()
 connecting_postgre_db()
@@ -300,8 +275,8 @@ connecting_postgre_db()
 parser = RDFParser(postgre_db)
 parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
 parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/locations.rdf")
-global tagger
-tagger = POSTagger("tree-tagger")
+#global tagger
+#tagger = POSTagger("tree-tagger")
 #pos_tagging()
 get_db_text(True, 0)  # Sentence mode
 

@@ -21,18 +21,13 @@ class MongoDBConnector:
         self.__db = self.__client.database
         self.__db.dostojewski.create_index([('id', pymongo.ASCENDING)], unique=True)
 
-    def read_in_file(self, filename):
-        """Read in file and return file content as string."""
-        with open(filename, 'r') as file:
-            return file.read()
-
     def add_articles(self, file_directory):
         """Add one article into database."""
         for file in os.listdir(file_directory):
             if file.endswith(".txt"):
                 article = {"id": self.__id,
                            "title": os.path.splitext(os.path.basename(file))[0],
-                           "text": self.read_in_file(file_directory + file)}
+                           "text": self.read_in_txt_file(file_directory + file)}
                 self.__db.dostojewski.insert_one(article)
                 self.__id += 1
 
@@ -42,3 +37,11 @@ class MongoDBConnector:
     def get(self, search_term):
         return self.__db.dostojewski.find(search_term)
 
+
+def read_in_txt_file(filename):
+    """Read in file and return file content as string."""
+    if not filename.endswith(".txt"):
+        raise Exception("Invalid file format.")
+
+    with open(filename, 'r') as file:
+        return file.read()

@@ -2,6 +2,7 @@ from pyparsing import alphas, dblQuotedString, Forward, Literal, Group, OneOrMor
     Word
 from HelperMethods import add_quotes
 
+
 class RDFParser:
     """RDFParser is a parser to parse RDF files (aka ontologies) and pushing the found pattern onto the database."""
 
@@ -34,23 +35,9 @@ class RDFParser:
         self.__search = Forward()
         self.__search << (self.__is_a | self.__has_x)
 
-    def read_in_rdf_file(self, filename):
-        """Read in a rdf_file with a specified file name."""
-        if not filename.endswith(".rdf"):
-            raise Exception("Invalid file format")
-
-        cleaned_rdf = []
-        with open(filename, 'r') as file:
-            data = file.read()
-            rdf_data = data.splitlines()
-            for data in rdf_data:
-                if data != '':
-                    cleaned_rdf.append(data)
-            return cleaned_rdf
-
     def get_pattern_from_rdf(self, filename):
         """Extract all needed pattern from a rdf file and then push them onto the database."""
-        data = self.read_in_rdf_file(filename)
+        data = read_in_rdf_file(filename)
         pattern_list = dict()
         attribute_list = dict()
         object_list = dict()
@@ -70,6 +57,7 @@ class RDFParser:
 
         self.__push_pattern(pattern_list)
         self.__push_attribute(attribute_list)
+        self.__push_objects(object_list)
 
     def __push_pattern(self, pattern_list):
         """Push found rdf pattern onto the database."""
@@ -109,3 +97,29 @@ class RDFParser:
             bsort_id = self.__db.get_id("bsort", "bsort=" + add_quotes(key))
             self.__db.insert("has_attribute", {"bsort_id": bsort_id, "bscale_id": new_attributes})
 
+    def __push_objects(self, object_list):
+        """Push found rdf attributes onto the database."""
+        for key in object_list:
+            objects = object_list[key]
+            new_attributes = []
+
+            # push bscale x pattern relation
+            for object in objects:
+                new_attributes.append(self.__db.get_id("pattern", "pattern=" + add_quotes(object)))
+            bscale_id = self.__db.get_id("bscale", "bscale=" + add_quotes(key))
+            self.__db.insert("has_object", {"bscale_id": bscale_id, "pattern_id": new_attributes})
+
+
+def read_in_rdf_file(filename):
+    """Read in a rdf_file with a specified file name."""
+    if not filename.endswith(".rdf"):
+        raise Exception("Invalid file format")
+
+    cleaned_rdf = []
+    with open(filename, 'r') as file:
+        data = file.read()
+        rdf_data = data.splitlines()
+        for data in rdf_data:
+            if data != '':
+                cleaned_rdf.append(data)
+        return cleaned_rdf
