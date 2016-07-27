@@ -1,16 +1,15 @@
 import treetaggerwrapper
+import spacy
 from nltk.tag.stanford import StanfordPOSTagger
 from nltk.tokenize import StanfordTokenizer
 
 
 class POSTagger:
     """POSTagger creates a POS tagger for german language. Different tagger are available to use."""
-    # parameter for Stanford HGC tagger
     STAN = "stanford-hgc-tagger"
-    # parameter for Stanford fast tagger
     SFT = "stanford-fast-tagger"
-    # parameter for Tree Tagger
     TT = "tree-tagger"
+    SPACY = "spacy-tagger"
 
     # paths to Stanford tagger modules
     __path_to_jar = "C:/Users/din_m/MA/Stanford Tagger/stanford-postagger.jar"
@@ -30,12 +29,17 @@ class POSTagger:
         elif tagger == POSTagger.TT:
             self.tagger_name = POSTagger.TT
             self.__tagger = treetaggerwrapper.TreeTagger(TAGLANG='de')
+
+        # SpaCy takes really long to build the model, even longer than the Stanford taggers
+        elif tagger == POSTagger.SPACY:
+            self.tagger_name = POSTagger.SPACY
+            self.__tagger = spacy.load('de')
         else:
             raise Exception("Wrong tagger parameter.")
 
     def tag(self, text):
         """POS tag tokenized text."""
-        if self.tagger_name == (POSTagger.STAN or POSTagger.SFT):
+        if self.tagger_name == POSTagger.SFT or self.tagger_name == POSTagger.STAN:
             tokens = self.__tokenizer.tokenize(text)
             return self.__tagger.tag(tokens)
         elif self.tagger_name == POSTagger.TT:
@@ -45,10 +49,16 @@ class POSTagger:
             for item in tag_list:
                 tuple_list.append((item[0], item[1]))
             return tuple_list
+        elif self.tagger_name == POSTagger.SPACY:
+            tags = self.__tagger(text)
+            tuple_list = []
+            for word in tags:
+                tuple_list.append((word.orth_, word.tag_))
+            return tuple_list
         else:
             pass
 
-#tagger = POSTagger("tree-tagger")
-#print(tagger.tag("Bei mir zu Hause denken sie bestimmt, daß ich noch krank sei."))
+#tagger = POSTagger("spacy-tagger")
+#doc = tagger.tag(u"Bei mir zu Hause denken sie bestimmt, daß ich noch krank sei.")
 #print(tagger.tag("Ich werde morgen in die Schule gehen."))
 #print(tagger.tag("Hat Aglaja den Brief etwa der Alten gezeigt?«"))
