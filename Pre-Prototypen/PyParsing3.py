@@ -1,7 +1,7 @@
 import pymongo
 import nltk
-import parsing
-from parsing import get_pattern_from_RDF
+import Prototype
+from Prototype import get_pattern_from_RDF
 
 def connecting_to_DB():
     #os.system("start /wait cmd /c {C:/MongoDB/bin mongod}")

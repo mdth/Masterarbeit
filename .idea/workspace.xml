@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8967fbb0-d593-4f05-9572-bb5e10e7e15f" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test.rdf" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Main.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/parsing.py" afterPath="$PROJECT_DIR$/Prototype.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HelperMethods.py" afterPath="$PROJECT_DIR$/HelperMethods.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MongoDBConnector.py" afterPath="$PROJECT_DIR$/MongoDBConnector.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PostGreDBConnector.py" afterPath="$PROJECT_DIR$/PostGreDBConnector.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/parsing.py" afterPath="$PROJECT_DIR$/parsing.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pre-Prototypen/PyParsing3.py" afterPath="$PROJECT_DIR$/Pre-Prototypen/PyParsing3.py" />
     </list>
     <ignored path="Masterarbeit.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,8 +43,8 @@
       <file leaf-file-name="RDFParser.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RDFParser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="115" column="46" selection-start-line="114" selection-start-column="4" selection-end-line="115" selection-end-column="46" />
+            <state relative-caret-position="476">
+              <caret line="112" column="31" selection-start-line="112" selection-start-column="31" selection-end-line="112" selection-end-column="31" />
               <folding>
                 <element signature="e#0#127#0" expanded="true" />
               </folding>
@@ -55,7 +55,7 @@
       <file leaf-file-name="POSTagger.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/POSTagger.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2">
+            <state relative-caret-position="17">
               <caret line="32" column="91" selection-start-line="32" selection-start-column="91" selection-end-line="32" selection-end-column="91" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
@@ -64,11 +64,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MongoDBConnector.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MongoDBConnector.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MongoDBConnector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="32" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
+            <state relative-caret-position="544">
+              <caret line="32" column="35" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -76,24 +76,36 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="persons.rdf" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/persons.rdf">
+      <file leaf-file-name="Prototype.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Prototype.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="23" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
-              <folding />
+            <state relative-caret-position="202">
+              <caret line="121" column="18" selection-start-line="121" selection-start-column="18" selection-end-line="121" selection-end-column="18" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="parsing.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/parsing.py">
+      <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-60">
-              <caret line="251" column="8" selection-start-line="251" selection-start-column="8" selection-end-line="251" selection-end-column="8" />
+            <state relative-caret-position="306">
+              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HelperMethods.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HelperMethods.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="23" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -103,8 +115,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="UML Class" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -131,10 +143,12 @@
         <option value="$PROJECT_DIR$/test.rdf" />
         <option value="$PROJECT_DIR$/persons.rdf" />
         <option value="$PROJECT_DIR$/POSTagger.py" />
-        <option value="$PROJECT_DIR$/MongoDBConnector.py" />
-        <option value="$PROJECT_DIR$/HelperMethods.py" />
         <option value="$PROJECT_DIR$/PostGreDBConnector.py" />
         <option value="$PROJECT_DIR$/parsing.py" />
+        <option value="$PROJECT_DIR$/HelperMethods.py" />
+        <option value="$PROJECT_DIR$/MongoDBConnector.py" />
+        <option value="$PROJECT_DIR$/Main.py" />
+        <option value="$PROJECT_DIR$/Prototype.py" />
       </list>
     </option>
   </component>
@@ -225,7 +239,7 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="full.screen.before.presentation.mode" value="false" />
   </component>
-  <component name="RunManager" selected="Python.parsing">
+  <component name="RunManager" selected="Python.Main">
     <configuration default="false" name="parsing" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -238,24 +252,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="Masterarbeit" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/parsing.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="C:/Python35/Lib/site-packages/nltk/tag" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Masterarbeit" />
-      <option name="SCRIPT_NAME" value="C:/Python35/Lib/site-packages/nltk/tag/test.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\din_m\PycharmProjects\Masterarbeit\Prototype.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -307,6 +304,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="Masterarbeit" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/POSTagger.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Main" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Masterarbeit" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -447,18 +461,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.parsing" />
-      <item index="1" class="java.lang.String" itemvalue="Python.test" />
-      <item index="2" class="java.lang.String" itemvalue="Python.MongoDBConnector" />
-      <item index="3" class="java.lang.String" itemvalue="Python.PostGreDBConnector" />
-      <item index="4" class="java.lang.String" itemvalue="Python.POSTagger" />
+      <item index="1" class="java.lang.String" itemvalue="Python.MongoDBConnector" />
+      <item index="2" class="java.lang.String" itemvalue="Python.PostGreDBConnector" />
+      <item index="3" class="java.lang.String" itemvalue="Python.POSTagger" />
+      <item index="4" class="java.lang.String" itemvalue="Python.Main" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.parsing" />
-        <item index="1" class="java.lang.String" itemvalue="Python.PostGreDBConnector" />
-        <item index="2" class="java.lang.String" itemvalue="Python.POSTagger" />
-        <item index="3" class="java.lang.String" itemvalue="Python.MongoDBConnector" />
-        <item index="4" class="java.lang.String" itemvalue="Python.test" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Main" />
+        <item index="1" class="java.lang.String" itemvalue="Python.parsing" />
+        <item index="2" class="java.lang.String" itemvalue="Python.PostGreDBConnector" />
+        <item index="3" class="java.lang.String" itemvalue="Python.POSTagger" />
+        <item index="4" class="java.lang.String" itemvalue="Python.MongoDBConnector" />
       </list>
     </recent_temporary>
   </component>
@@ -602,7 +616,14 @@
       <option name="project" value="LOCAL" />
       <updated>1469623181325</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Fixed PostGre Bug when adding snippets with special character &gt;'&lt;. Searching snippets and pushing all necessary objects, pattern, etc. is working.">
+      <created>1469626355621</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1469626355621</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -678,10 +699,18 @@
     <MESSAGE value="Stand: 19.07. - 15:26" />
     <MESSAGE value="Added hasObject relation. Made some func static, but keeping them in a module." />
     <MESSAGE value="Add SpaCy as a new POS tagger, SpaCy takes a lot of time space. It's really slow, Stanford is fast in comparison." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add SpaCy as a new POS tagger, SpaCy takes a lot of time space. It's really slow, Stanford is fast in comparison." />
+    <MESSAGE value="Fixed PostGre Bug when adding snippets with special character &gt;'&lt;. Searching snippets and pushing all necessary objects, pattern, etc. is working." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed PostGre Bug when adding snippets with special character &gt;'&lt;. Searching snippets and pushing all necessary objects, pattern, etc. is working." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/Prototype.py</url>
+          <line>81</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -689,21 +718,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="20" />
+      <option name="time" value="24" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/RDFParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#127#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MongoDBConnector.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -714,12 +733,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parsing.py">
+    <entry file="file://$PROJECT_DIR$/Prototype.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -744,12 +763,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parsing.py">
+    <entry file="file://$PROJECT_DIR$/Prototype.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -774,12 +793,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parsing.py">
+    <entry file="file://$PROJECT_DIR$/Prototype.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -804,12 +823,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parsing.py">
+    <entry file="file://$PROJECT_DIR$/Prototype.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -824,12 +843,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parsing.py">
+    <entry file="file://$PROJECT_DIR$/Prototype.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -851,12 +870,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parsing.py">
+    <entry file="file://$PROJECT_DIR$/Prototype.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -871,12 +890,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parsing.py">
+    <entry file="file://$PROJECT_DIR$/Prototype.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -891,12 +910,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parsing.py">
+    <entry file="file://$PROJECT_DIR$/Prototype.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -919,13 +938,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/file.txt" />
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Program Files/PostgreSQL/pgadmin3/start-pgadmin3.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -1043,16 +1055,8 @@
         <state relative-caret-position="204">
           <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
           <folding>
-            <element signature="e#0#82#0" expanded="true" />
+            <element signature="e#0#82#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HelperMethods.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1064,11 +1068,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Python35/Lib/re.py">
+    <entry file="file://$PROJECT_DIR$/persons.rdf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="202" column="0" selection-start-line="202" selection-start-column="0" selection-end-line="202" selection-end-column="0" />
+        <state relative-caret-position="51">
+          <caret line="3" column="23" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/POSTagger.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="32" column="91" selection-start-line="32" selection-start-column="91" selection-end-line="32" selection-end-column="91" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RDFParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="112" column="31" selection-start-line="112" selection-start-column="31" selection-end-line="112" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#127#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1082,37 +1106,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parsing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-60">
-          <caret line="251" column="8" selection-start-line="251" selection-start-column="8" selection-end-line="251" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/POSTagger.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2">
-          <caret line="32" column="91" selection-start-line="32" selection-start-column="91" selection-end-line="32" selection-end-column="91" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RDFParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="115" column="46" selection-start-line="114" selection-start-column="4" selection-end-line="115" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#127#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/persons.rdf">
+    <entry file="file://$PROJECT_DIR$/HelperMethods.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="23" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
@@ -1122,10 +1116,46 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/MongoDBConnector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="32" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
+        <state relative-caret-position="544">
+          <caret line="32" column="35" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python35/Lib/re.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="202" column="0" selection-start-line="202" selection-start-column="0" selection-end-line="202" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Prototype.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="121" column="18" selection-start-line="121" selection-start-column="18" selection-end-line="121" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>

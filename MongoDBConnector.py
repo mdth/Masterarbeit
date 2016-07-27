@@ -20,6 +20,8 @@ class MongoDBConnector:
             print("Mongo DB connection could not be built...")
 
         self.__db = self.__client.database
+        self.delete_all()
+        self.add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
         self.__db.dostojewski.create_index([('id', pymongo.ASCENDING)], unique=True)
 
     def add_articles(self, file_directory):
@@ -28,7 +30,7 @@ class MongoDBConnector:
             if file.endswith(".txt"):
                 article = {"id": self.__id,
                            "title": os.path.splitext(os.path.basename(file))[0],
-                           "text": self.read_in_txt_file(file_directory + file)}
+                           "text": read_in_txt_file(file_directory + file)}
                 self.__db.dostojewski.insert_one(article)
                 self.__id += 1
 
