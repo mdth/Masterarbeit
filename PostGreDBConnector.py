@@ -16,31 +16,35 @@ class PostGreDBConnector():
             print("PostGre DB connection could not be built...")
 
         self.delete_all_data()
-        #self.drop_all_tables()
-        #self.create_tables()
+        self.drop_all_tables()
+        self.create_tables()
 
     def create_tables(self):
         """Create needed tables for RDF parsing."""
-        self.add_table1("CREATE TABLE texts (id serial primary key, title text)")
-        self.add_table1("CREATE TABLE bscale (id serial primary key, bscale text)")
-        self.add_table1("CREATE TABLE bsort (id serial primary key, bsort text)")
-        self.add_table1("CREATE TABLE pattern (id serial primary key, pattern text)")
-        self.add_table1("CREATE TABLE single_pattern (id serial primary key, single_pattern text)")
-        self.add_table1("CREATE TABLE snippets (id serial primary key, snippet text)")
+        self._add_table("CREATE TABLE texts (id serial primary key, title text)")
+        self._add_table("CREATE TABLE bscale (id serial primary key, bscale text)")
+        self._add_table("CREATE TABLE bsort (id serial primary key, bsort text)")
+        self._add_table("CREATE TABLE pattern (id serial primary key, pattern text)")
+        self._add_table("CREATE TABLE single_pattern (id serial primary key, single_pattern text)")
+        self._add_table("CREATE TABLE snippets (id serial primary key, snippet text)")
 
         # relations
-        self.add_table1("CREATE TABLE has_attribute (bsort_id int, bscale_id integer[])")
-        self.add_table1("CREATE TABLE has_object (bscale_id int, pattern_id integer[])")
-        self.add_table1("CREATE TABLE pattern_single_pattern (pattern_id int, single_pattern_id integer[])")
-        self.add_table1("CREATE TABLE single_pattern_snippets (single_pattern_id int primary key, snippet_id integer[])")
+        self._add_table("CREATE TABLE has_attribute (bsort_id int, bscale_id integer[])")
+        self._add_table("CREATE TABLE has_object (bscale_id int, pattern_id integer[])")
+        self._add_table("CREATE TABLE pattern_single_pattern (pattern_id int, single_pattern_id integer[])")
+        # TODO add offset table
+        # self._add_table(
+        #    "CREATE TABLE single_pattern_snippets (single_pattern_id int primary key, snippet_id integer[])")
+        self._add_table(
+            "CREATE TABLE single_pattern_snippets (single_pattern_id int primary key, snippet_id integer[])")
+        self._add_table("CREATE TABLE texts_snippets (text_id int, snippet_id integer[])")
 
-    def add_table1(self, query):
+    def _add_table(self, query):
         """Create a new table with a query."""
-        # TODO change query to name and rows
         self.__db.query(query)
 
     def add_table(self, name, rows):
-        """Create a new table with a name and rows."""
+        """Create a new table with a name and rows given in query form."""
         create_table = "CREATE TABLE "
         query = create_table + name + rows
         self.__db.query(query)
@@ -48,6 +52,7 @@ class PostGreDBConnector():
     def insert(self, table, row):
         """Insert a new row element into a specified table."""
         return self.__db.insert(table, row)
+
     def is_in_table(self, table, where_clause):
         """Returns whether a row already exists in a table or not."""
         select = "SELECT * FROM "
@@ -62,16 +67,17 @@ class PostGreDBConnector():
     def get(self, table, where_clause, key):
         """Search for a chosen key of a specific item in a table."""
         select = "SELECT "
-        fro = " FROM "
+        _from = " FROM "
         where = " WHERE "
-        q = select + key + fro + table + where + where_clause
+        q = select + key + _from + table + where + where_clause
         result = self.__db.query(q).dictresult()
         if len(result) > 0:
             return result[0][key]
         else:
             return None
 
-    def get_all(self, table):
+    def get_data_from_table(self, table):
+        """Gets all data available in a specific table."""
         return self.__db.query("SELECT * FROM " + table).dictresult()
 
     def get_id(self, table, where_clause):
@@ -90,17 +96,17 @@ class PostGreDBConnector():
         return self.__db.update(table, row, **kw)
 
     def delete_from_table(self, table, row):
-        """Delete a row element form a specified table."""
+        """Delete a row element form a specific table."""
         return self.__db.delete(table, row)
 
     def delete_data_in_table(self, table):
-        """Delete all data in a specified table."""
+        """Delete all data in a specific table."""
         self.__db.truncate(table, restart=True, cascade=True, only=False)
 
     def delete_all_data(self):
+        """Deletes all data from all existing tables."""
         tables = self.get_tables()
         for table in tables:
-            # TODO quote_string
             table_name = str(table.split('.')[1])
             self.delete_data_in_table(table_name)
 
@@ -109,15 +115,24 @@ class PostGreDBConnector():
         return self.__db.get_tables()
 
     def get_attributes(self, table):
+        """Get all attributes of a specified table."""
         return self.__db.get_attnames(table)
 
     def drop_table(self, table):
+        """Drops a specified table."""
         query = "DROP TABLE "
         self.__db.query(query + table)
 
     def drop_all_tables(self):
-        self.__db.query("DROP TABLE texts, bscale, bsort, pattern, single_pattern, snippets,"
-                        " has_attribute, pattern_single_pattern, has_object, single_pattern_snippets")
+        """Drops all existing tables."""
+        tables = self.get_tables()
+        table_names = ""
+        for ind, table in enumerate(tables):
+            if ind == 0:
+                table_names = str(table.split('.')[1])
+            else:
+                table_names = table_names + ", " + str(table.split('.')[1])
+        self.__db.query("DROP TABLE " + table_names)
 
 
 #db = PostGreDBConnector()
@@ -141,3 +156,6 @@ class PostGreDBConnector():
 #print(db.get_tables())
 #print(db.insert("single_pattern_snippets", {"single_pattern_id": 1}))
 #print(db.is_in_table("single_pattern_snippets", "single_pattern_id=1"))
+#db.insert("texts", {"title": "Chapter 1"})
+#print(db.is_in_table("snippets", "snippet='»Nun, wenn''s so ist«, rief Rogoshin, »so bist du ja ein richtiger Gottesnarr, Fürst, und solche Menschen wie dich liebt Gott.«'"))
+#print(db.insert("snippets", {"snippet": "»Nun, wenn's so ist«, rief Rogoshin, »so bist du ja ein richtiger Gottesnarr, Fürst, und solche Menschen wie dich liebt Gott.«"}))

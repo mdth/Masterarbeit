@@ -1,6 +1,6 @@
 import time
 import re
-from HelperMethods import add_quotes
+from HelperMethods import add_quotes, add_dbl_quotes
 from POSTagger import POSTagger
 from RDFParser import RDFParser
 from MongoDBConnector import MongoDBConnector
@@ -191,12 +191,11 @@ def find_text_window(sentence, text, text_id, size):
     """Finds text windows with variable size."""
     split_text = text.split()
 
-    for pattern in postgre_db.get_all("single_pattern"):
+    for pattern in postgre_db.get_data_from_table("single_pattern"):
         if sentence:
             snippets = sentence_window(size, pattern['single_pattern'], split_text)
         else:
             snippets = word_window(size, pattern['single_pattern'], split_text)
-
         if len(snippets) > 0:
             single_pattern_id = pattern['id']
             push_snippets(snippets, single_pattern_id)
@@ -214,7 +213,7 @@ def push_aggregation(text_id, single_pattern_id):
         db.aggregation.find_and_modify({"id": text_id}, {"$set": {"single_pattern_id": old_pattern}})
 
 def pos_tagging():
-    snippets = postgre_db.get_all("snippets")
+    snippets = postgre_db.get_data_from_table("snippets")
     for snippet in snippets:
         search_for_dialog(snippet)
 
@@ -228,10 +227,9 @@ def search_for_dialog(snippet):
 def push_snippets(snippets, current_single_pattern_id):
     if len(snippets) > 0:
         for snippet in snippets:
-            if not postgre_db.is_in_table("snippets", "snippet=" + add_quotes(snippet)):
+            if not postgre_db.is_in_table("snippets", "snippet=" + add_quotes(replace_special_characters(snippet))):
                 postgre_db.insert("snippets", {"snippet": snippet})
-
-            snippet_id = postgre_db.get_id("snippets", "snippet=" + add_quotes(snippet))
+            snippet_id = postgre_db.get_id("snippets", "snippet=" + add_quotes(replace_special_characters(snippet)))
             push_pattern_snippets(current_single_pattern_id, snippet_id)
 
 
@@ -240,7 +238,6 @@ def push_pattern_snippets(current_single_pattern_id, current_snippet_id):
     # case: no entry about single_pattern is in db
     if not postgre_db.is_in_table("single_pattern_snippets", "single_pattern_id=" + str(current_single_pattern_id)):
         postgre_db.insert("single_pattern_snippets", {"single_pattern_id": current_single_pattern_id, "snippet_id": [current_snippet_id]})
-
     # case: entry about single_pattern is in db
     else:
         old_snippets = postgre_db.get("single_pattern_snippets", "single_pattern_id=" + str(current_single_pattern_id), "snippet_id")
@@ -250,22 +247,16 @@ def push_pattern_snippets(current_single_pattern_id, current_snippet_id):
 
 
 def get_db_text(sentence, size):
-    for ind, text in enumerate(mongo_db.get({"title": "Chapter 5"})):
-        #postgre_db.insert("texts", {"title": text})
-        postgre_db.insert("texts", {"title": "Chapter 5"})
+    for ind, text in enumerate(mongo_db.get({})):
+        #postgre_db.insert("texts", {"title": "Chapter 1"})
+        postgre_db.insert("texts", {"title": text['title']})
         find_text_window(sentence, text['text'], text['id'], size)
-        print("Chapter " + str(5) + " done.")
+        print("Chapter " + str(text['id']) + " done.")
 
 
-def aggregation():
-    for pattern in db.aggregation.find():
-        num_of_snippets = 0
-        single_pattern = pattern['single_pattern_id']
-
-        for spattern_id in single_pattern:
-            for snippets in db.single_pattern_snippets.find({"single_pattern_id": spattern_id}):
-                num_of_snippets += len(snippets['snippet_id'])
-        print("Number of Snippets for text with id " + str(pattern['id']) + ": " + str(num_of_snippets))
+def replace_special_characters(text):
+    """Replaces special characters that cannot be stored by PostGre DB otherwise."""
+    return text.replace("'", "''")
 
 
 print("Begin: " + str(time.time()))
