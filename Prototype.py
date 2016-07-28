@@ -1,5 +1,6 @@
 import re
 import HelperMethods
+from collections import namedtuple
 from POSTagger import POSTagger
 
 
@@ -32,7 +33,6 @@ class Prototype:
         split_pattern = pattern.split()
         if len(split_pattern) > 1:
             textsnippets = self.__get_word_window_more_words_help(split_pattern, tokens)
-
         else:
             textsnippets = self.__get_word_window_one_word_help(pattern, tokens)
 
@@ -92,12 +92,12 @@ class Prototype:
         from the initial sentence."""
         split_pattern = pattern.split()
         if len(split_pattern) > 1:
-            textsnippets = self.__get_sentence_window_more_words_help(split_pattern, tokens)
+            textsnippets = self.__get_sentence_window_more_words_help(pattern, split_pattern, tokens)
         else:
             textsnippets = self.__get_sentence_window_one_word_help(pattern, tokens)
         return textsnippets
 
-    def __get_sentence_window_more_words_help(self, split_pattern, tokens):
+    def __get_sentence_window_more_words_help(self, pattern, split_pattern, tokens):
         textsnippets = []
         for ind, token in enumerate(tokens):
             p_index = 0
@@ -109,11 +109,12 @@ class Prototype:
                 else:
                     break
             if p_index == len(split_pattern):
-                textsnippets.append(self.__get_textsnippets_sentence(tokens, ind, end_index - 1))
+                textsnippets.append(self.__get_textsnippets_sentence(pattern, tokens, ind, end_index - 1))
         return textsnippets
 
-    def __get_textsnippets_sentence(self, tokens, beg_index, end_index):
+    def __get_textsnippets_sentence(self, pattern, tokens, beg_index, end_index):
         sent_size = self.window_size + 1
+        sentence = ""
         l = 1
         r = 0
         size1 = 0
@@ -126,20 +127,27 @@ class Prototype:
             r += 1
         while size2 < sent_size:
             if beg_index - l < 0:
-                return " ".join(tokens[beg_index - l - 1:end_index + r])
+                sentence += " ".join(tokens[beg_index - l - 1:end_index + r])
+                break
             elif beg_index - l == 0:
-                return " ".join(tokens[beg_index - l:end_index + r])
+                sentence += " ".join(tokens[beg_index - l:end_index + r])
+                break
             elif find_left_sentence_boundary(tokens, beg_index, l):
                 size2 += 1
             l += 1
         if size2 == sent_size:
-            return " ".join(tokens[beg_index - l + 2:end_index + r])
+            sentence += " ".join(tokens[beg_index - l + 2:end_index + r])
+
+        offset_start = sentence.index(pattern)
+        offset_end = offset_start + len(pattern) - 1
+        SentObj = namedtuple('Sentence_Object', ['sentence', 'offset_start', 'offset_end'])
+        return SentObj(sentence=sentence, offset_start=offset_start, offset_end=offset_end)
 
     def __get_sentence_window_one_word_help(self, pattern, tokens):
         textsnippets = []
         for ind, token in enumerate(tokens):
             if check_pattern(pattern, token):
-                textsnippets.append(self.__get_textsnippets_sentence(tokens, ind, ind))
+                textsnippets.append(self.__get_textsnippets_sentence(pattern, tokens, ind, ind))
         return textsnippets
 
     def find_text_window(self, text, text_id):
@@ -148,26 +156,29 @@ class Prototype:
 
         for pattern in self.postgre_db.get_data_from_table("single_pattern"):
             if self.sentence_mode:
-                snippets = self.__get_sentence_window(pattern['single_pattern'], split_text)
+                sentence_objects = self.__get_sentence_window(pattern['single_pattern'], split_text)
             else:
-                snippets = self.__get_word_window(pattern['single_pattern'], split_text)
-
-            if len(snippets) > 0:
+                sentence_objects = self.__get_word_window(pattern['single_pattern'], split_text)
+            if len(sentence_objects) > 0:
                 single_pattern_id = pattern['id']
-                self.__push_snippets(snippets, single_pattern_id, text_id)
+                for sent_obj in sentence_objects:
+                    # push snippets
+                    self.__push_snippets(sent_obj.sentence)
+                    snippet_id = self.postgre_db.get_id("snippets", "snippet=" + HelperMethods.add_quotes(
+                        HelperMethods.replace_special_characters(sent_obj.sentence)))
 
-    def __push_snippets(self, snippets, current_single_pattern_id, text_id):
+                    # push relations
+                    self.__push_pattern_snippets(single_pattern_id, snippet_id)
+                    self.__push_texts_snippets(text_id, snippet_id)
+                    self.__push_snippet_offsets(
+                        single_pattern_id, snippet_id, sent_obj.offset_start, sent_obj.offset_end)
+
+    def __push_snippets(self, snippet):
         """Push found snippets onto the snippets table in PostGre DB, if not already in the table.
         Afterwards push the single_pattern and snippets relation."""
-        if len(snippets) > 0:
-            for snippet in snippets:
-                if not self.postgre_db.is_in_table("snippets", "snippet=" + HelperMethods.add_quotes(
-                        HelperMethods.replace_special_characters(snippet))):
-                    self.postgre_db.insert("snippets", {"snippet": snippet})
-                snippet_id = self.postgre_db.get_id("snippets", "snippet=" + HelperMethods.add_quotes(
-                    HelperMethods.replace_special_characters(snippet)))
-                self.__push_texts_snippets(text_id, snippet_id)
-                self.__push_pattern_snippets(current_single_pattern_id, snippet_id)
+        if not self.postgre_db.is_in_table("snippets", "snippet=" + HelperMethods.add_quotes(
+                HelperMethods.replace_special_characters(snippet))):
+            self.postgre_db.insert("snippets", {"snippet": snippet})
 
     def __push_pattern_snippets(self, current_single_pattern_id, current_snippet_id):
         """Push single_pattern & snippets relation onto PostGre DB."""
@@ -177,6 +188,26 @@ class Prototype:
     def __push_texts_snippets(self, text_id, snippet_id):
         """Get all saved snippets that occur in a text and push them onto PostGre DB."""
         self.__push_relation(text_id, snippet_id, "text_id", "snippet_id", "texts_snippets")
+
+    def __push_snippet_offsets(self, single_pattern_id, snippet_id, offset_start, offset_end):
+        """Push found single_pattern in snippets and their respective offset."""
+        if not self.postgre_db.is_in_table(
+                "snippet_offsets", "single_pattern_id=" + str(single_pattern_id) + " and snippet_id=" + str(
+                    snippet_id)):
+            self.postgre_db.insert("snippet_offsets", {
+                "single_pattern_id": single_pattern_id, "snippet_id": snippet_id, "offsets": [
+                    [offset_start, offset_end]]})
+        else:
+            old_list = self.postgre_db.get(
+                "snippet_offsets", "single_pattern_id=" + str(single_pattern_id) + " and snippet_id=" + str(
+                    snippet_id), "offsets")
+            old_list.append([offset_start, offset_end])
+            pid = self.postgre_db.get_id(
+                "snippet_offsets", "single_pattern_id=" + str(single_pattern_id) + " and snippet_id=" + str(
+                    snippet_id))
+            self.postgre_db.delete_from_table("snippet_offsets", {"id": pid})
+            self.postgre_db.insert("snippet_offsets", {
+                "single_pattern_id": single_pattern_id, "snippet_id": snippet_id, "offsets": old_list})
 
     def __push_relation(self, id1, id2, id1_name, id2_name, table):
         """Push a relation onto the PostGre DB. The relation has to have a primary key."""

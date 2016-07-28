@@ -35,6 +35,9 @@ class PostGreDBConnector():
         self._add_table(
             "CREATE TABLE single_pattern_snippets (single_pattern_id int primary key, snippet_id integer[])")
         self._add_table("CREATE TABLE texts_snippets (text_id int primary key, snippet_id integer[])")
+        # TODO record for offsets would be so much nicer, but how?
+        self._add_table("CREATE TABLE snippet_offsets ("
+                        "id serial primary key, single_pattern_id int, snippet_id int, offsets integer[][])")
 
     def _add_table(self, query):
         """Create a new table with a query."""
@@ -124,12 +127,15 @@ class PostGreDBConnector():
         """Drops all existing tables."""
         tables = self.get_tables()
         table_names = ""
-        for ind, table in enumerate(tables):
-            if ind == 0:
-                table_names = str(table.split('.')[1])
-            else:
-                table_names = table_names + ", " + str(table.split('.')[1])
-        self.__db.query("DROP TABLE " + table_names)
+        if len(tables) > 0 :
+            for ind, table in enumerate(tables):
+                if ind == 0:
+                    table_names = str(table.split('.')[1])
+                else:
+                    table_names = table_names + ", " + str(table.split('.')[1])
+            self.__db.query("DROP TABLE " + table_names)
+        else:
+            print("Nothing to delete.")
 
     def get_all(self, table, attribute):
         """Gets one or more attributes of all entries from a specified table."""
@@ -149,7 +155,8 @@ class PostGreDBConnector():
 #print(db.insert("bsort", {"bsort": "Maincharacter"}))
 #db.drop_table("test")
 #db.add_table1("CREATE TABLE integer (id serial primary key, title integer[])")
-#print(db.insert("single_pattern_snippets", {"single_pattern_id": 59, "snippet_id": [1,2,3]}))
+#print(db.is_in_table("snippet_offsets", "single_pattern_id=59 and snippet_id=1"))
+#print(db.insert("snippet_offsets", {"single_pattern_id": 59, "snippet_id": 1, "offsets": [[3, 8], [9, 14]]}))
 #print(db.insert("single_pattern_snippets", {"single_pattern_id": 57, "snippet_id": [3,4,5]}))
 #print(db.get_all("single_pattern_snippets", "snippet_id"))
 #print(db.get_id("bsort", "bsort='Maincharacter'"))

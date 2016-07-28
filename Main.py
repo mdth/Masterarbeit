@@ -5,8 +5,8 @@ from MongoDBConnector import MongoDBConnector
 from PostGreDBConnector import PostGreDBConnector
 
 
-POSTGRE_DB = PostGreDBConnector()
 MONGO_DB = MongoDBConnector()
+POSTGRE_DB = PostGreDBConnector()
 
 PROTOTYPE = Prototype(mongo_db=MONGO_DB, postgre_db=POSTGRE_DB)
 print("Begin: " + str(time.time()))
