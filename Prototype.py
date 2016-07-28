@@ -11,22 +11,34 @@ class Prototype:
         for sentence or word windows size"""
         self.mongo_db = mongo_db
         self.postgre_db = postgre_db
-        self.__postagger = postagger
-        self.sentence_modus = sentence_mode
+        self.postagger = postagger
+        self.sentence_mode = sentence_mode
         self.window_size = window_size
 
-    def get_word_window(self, pattern, tokens):
+    def change_postagger(self, name):
+        """Change the current POS tagger to a new one."""
+        self.postagger = POSTagger(name)
+
+    def change_window_size(self, size):
+        """Change the current window size to a new size."""
+        self.window_size = size
+
+    def toggle_sentence_mode(self):
+        """Change the current setting of the sentence mode."""
+        self.sentence_mode = not self.sentence_mode
+
+    def __get_word_window(self, pattern, tokens):
         """Get a word window list with a specific number of words."""
         split_pattern = pattern.split()
         if len(split_pattern) > 1:
-            textsnippets = self.get_word_window_more_words_help(split_pattern, tokens)
+            textsnippets = self.__get_word_window_more_words_help(split_pattern, tokens)
 
         else:
-            textsnippets = self.word_window_one_word_help(pattern, tokens)
+            textsnippets = self.__get_word_window_one_word_help(pattern, tokens)
 
         return textsnippets
 
-    def get_word_window_more_words_help(self, split_pattern, tokens):
+    def __get_word_window_more_words_help(self, split_pattern, tokens):
         """Find pattern with more than one word."""
         textsnippets = []
         for ind, token in enumerate(tokens):
@@ -39,18 +51,18 @@ class Prototype:
                 else:
                     break
             if p_index == len(split_pattern):
-                textsnippets.append(self.get_textsnippets(ind, end_index - 1, len(tokens), tokens))
+                textsnippets.append(self.__get_textsnippets(ind, end_index - 1, len(tokens), tokens))
         return textsnippets
 
-    def word_window_one_word_help(self, pattern, tokens):
+    def __get_word_window_one_word_help(self, pattern, tokens):
         textsnippets = []
         textlength = len(tokens)
         for ind, token in enumerate(tokens):
             if check_pattern(pattern, token):
-                textsnippets.append(self.get_textsnippets(ind, ind, textlength, tokens))
+                textsnippets.append(self.__get_textsnippets(ind, ind, textlength, tokens))
         return textsnippets
 
-    def get_textsnippets(self, indl, indr, textlength, tokens):
+    def __get_textsnippets(self, indl, indr, textlength, tokens):
         if (indl - self.window_size < 0) and (indr + self.window_size > textlength):
             left_index = self.window_size - 1
             while not (indl - left_index) == 0:
@@ -74,18 +86,18 @@ class Prototype:
         else:
             return " ".join(tokens[indl - self.window_size:indr + (self.window_size + 1)])
 
-    def get_sentence_window(self, pattern, tokens):
+    def __get_sentence_window(self, pattern, tokens):
         """Get a word window list with a specific number of sentences. size 0 will return the
         current sentence the pattern is found in. size n will return n sentences left and right
         from the initial sentence."""
         split_pattern = pattern.split()
         if len(split_pattern) > 1:
-            textsnippets = self.get_sentence_window_more_words_help(split_pattern, tokens)
+            textsnippets = self.__get_sentence_window_more_words_help(split_pattern, tokens)
         else:
-            textsnippets = self.get_sentence_window_one_word_help(pattern, tokens)
+            textsnippets = self.__get_sentence_window_one_word_help(pattern, tokens)
         return textsnippets
 
-    def get_sentence_window_more_words_help(self, split_pattern, tokens):
+    def __get_sentence_window_more_words_help(self, split_pattern, tokens):
         textsnippets = []
         for ind, token in enumerate(tokens):
             p_index = 0
@@ -97,10 +109,10 @@ class Prototype:
                 else:
                     break
             if p_index == len(split_pattern):
-                textsnippets.append(self.get_textsnippets_sentence(tokens, ind, end_index - 1))
+                textsnippets.append(self.__get_textsnippets_sentence(tokens, ind, end_index - 1))
         return textsnippets
 
-    def get_textsnippets_sentence(self, tokens, beg_index, end_index):
+    def __get_textsnippets_sentence(self, tokens, beg_index, end_index):
         sent_size = self.window_size + 1
         l = 1
         r = 0
@@ -123,11 +135,11 @@ class Prototype:
         if size2 == sent_size:
             return " ".join(tokens[beg_index - l + 2:end_index + r])
 
-    def get_sentence_window_one_word_help(self, pattern, tokens):
+    def __get_sentence_window_one_word_help(self, pattern, tokens):
         textsnippets = []
         for ind, token in enumerate(tokens):
             if check_pattern(pattern, token):
-                textsnippets.append(self.get_textsnippets_sentence(tokens, ind, ind))
+                textsnippets.append(self.__get_textsnippets_sentence(tokens, ind, ind))
         return textsnippets
 
     def find_text_window(self, text, text_id):
@@ -135,22 +147,22 @@ class Prototype:
         split_text = text.split()
 
         for pattern in self.postgre_db.get_data_from_table("single_pattern"):
-            if self.sentence_modus:
-                snippets = self.get_sentence_window(pattern['single_pattern'], split_text)
+            if self.sentence_mode:
+                snippets = self.__get_sentence_window(pattern['single_pattern'], split_text)
             else:
-                snippets = self.get_word_window(pattern['single_pattern'], split_text)
+                snippets = self.__get_word_window(pattern['single_pattern'], split_text)
 
             if len(snippets) > 0:
                 single_pattern_id = pattern['id']
                 # TODO push text_snippets
-                self.push_snippets(snippets, single_pattern_id, text_id)
+                self.__push_snippets(snippets, single_pattern_id, text_id)
 
     def pos_tagging(self):
         snippets = self.postgre_db.get_data_from_table("snippets")
         for snippet in snippets:
             HelperMethods.search_for_dialog(snippet)
 
-    def push_snippets(self, snippets, current_single_pattern_id, text_id):
+    def __push_snippets(self, snippets, current_single_pattern_id, text_id):
         if len(snippets) > 0:
             for snippet in snippets:
                 if not self.postgre_db.is_in_table("snippets", "snippet=" + HelperMethods.add_quotes(
@@ -158,9 +170,9 @@ class Prototype:
                     self.postgre_db.insert("snippets", {"snippet": snippet})
                 snippet_id = self.postgre_db.get_id("snippets", "snippet=" + HelperMethods.add_quotes(
                     HelperMethods.replace_special_characters(snippet)))
-                self.push_pattern_snippets(current_single_pattern_id, snippet_id)
+                self.__push_pattern_snippets(current_single_pattern_id, snippet_id)
 
-    def push_pattern_snippets(self, current_single_pattern_id, current_snippet_id):
+    def __push_pattern_snippets(self, current_single_pattern_id, current_snippet_id):
         """Push single_pattern & snippets relation onto PostGre DB."""
 
         # case: no entry about single_pattern is in db
@@ -179,15 +191,15 @@ class Prototype:
             self.postgre_db.insert("single_pattern_snippets", {
                 "single_pattern_id": current_single_pattern_id, "snippet_id": old_snippets})
 
-    def get_db_text(self):
+    def get_snippets(self):
         for ind, text in enumerate(self.mongo_db.get({})):
-            # TODO postgre_db.insert("texts", {"title": "Chapter 1"})
             self.postgre_db.insert("texts", {"title": text['title']})
             self.find_text_window(text['text'], text['id'])
             print("Chapter " + str(text['id']) + " done.")
 
 
 def find_right_sentence_boundary(tokens, ind, steps):
+    # TODO in höhere Ebene bringen -> boundaries austauschbar
     sentence_boundary = HelperMethods.compile_pattern('(\w)*(\.|!|\?)+(?!.)')
     sentence_boundary_special = HelperMethods.compile_pattern('(\w)*(\.|!|\?)\S(?!,)')
     next_token = HelperMethods.compile_pattern('(\W)*(\w+)(,)*')
@@ -203,6 +215,7 @@ def find_right_sentence_boundary(tokens, ind, steps):
 
 
 def find_left_sentence_boundary(tokens, ind, steps):
+    # TODO in höhere Ebene bringen -> boundaries austauschbar
     sentence_boundary = HelperMethods.compile_pattern('(\w)*(\.|!|\?)+(?!.)')
     sentence_boundary_special = HelperMethods.compile_pattern('(\w)*(\.|!|\?)\S')
     next_token = HelperMethods.compile_pattern('(\W(\w+)(,)*)')
@@ -214,7 +227,6 @@ def find_left_sentence_boundary(tokens, ind, steps):
         next_index = ind - steps + 1
         if next_index >= 0:
             found_boundary = re.search(next_token, tokens[ind - steps + 1])
-
     return found_boundary
 
 

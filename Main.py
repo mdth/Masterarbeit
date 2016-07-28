@@ -13,13 +13,8 @@ print("Begin: " + str(time.time()))
 parser = RDFParser(POSTGRE_DB)
 parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
 parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/locations.rdf")
-#global tagger
-#tagger = POSTagger("tree-tagger")
 #pos_tagging()
-PROTOTYPE.get_db_text()  # Sentence mode
+PROTOTYPE.get_snippets()  # Sentence mode
 
 
 print("End: " + str(time.time()))
-
-
-#print(PROTOTYPE.get_sentence_window("wie", "Hallo, wie geht es dir?"))
