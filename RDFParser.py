@@ -116,7 +116,7 @@ def read_in_rdf_file(filename):
         raise Exception("Invalid file format")
 
     cleaned_rdf = []
-    with open(filename, 'r') as file:
+    with open(filename, 'r', encoding="utf-8") as file:
         data = file.read()
         rdf_data = data.splitlines()
         for data in rdf_data:

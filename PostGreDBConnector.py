@@ -32,12 +32,9 @@ class PostGreDBConnector():
         self._add_table("CREATE TABLE has_attribute (bsort_id int, bscale_id integer[])")
         self._add_table("CREATE TABLE has_object (bscale_id int, pattern_id integer[])")
         self._add_table("CREATE TABLE pattern_single_pattern (pattern_id int, single_pattern_id integer[])")
-        # TODO add offset table
-        # self._add_table(
-        #    "CREATE TABLE single_pattern_snippets (single_pattern_id int primary key, snippet_id integer[])")
         self._add_table(
             "CREATE TABLE single_pattern_snippets (single_pattern_id int primary key, snippet_id integer[])")
-        self._add_table("CREATE TABLE texts_snippets (text_id int, snippet_id integer[])")
+        self._add_table("CREATE TABLE texts_snippets (text_id int primary key, snippet_id integer[])")
 
     def _add_table(self, query):
         """Create a new table with a query."""
@@ -134,6 +131,15 @@ class PostGreDBConnector():
                 table_names = table_names + ", " + str(table.split('.')[1])
         self.__db.query("DROP TABLE " + table_names)
 
+    def get_all(self, table, attribute):
+        """Gets one or more attributes of all entries from a specified table."""
+        select = "SELECT "
+        _from = " FROM "
+        query = select + attribute + _from + table
+        return self.__db.query(query).dictresult()
+
+    def query(self, query):
+        return self.__db.query(query).dictresult()
 
 #db = PostGreDBConnector()
 #parser = RDFParser(db)
@@ -143,7 +149,9 @@ class PostGreDBConnector():
 #print(db.insert("bsort", {"bsort": "Maincharacter"}))
 #db.drop_table("test")
 #db.add_table1("CREATE TABLE integer (id serial primary key, title integer[])")
-#print(db.insert("pattern_single_pattern", {"pattern_id": 59, "single_pattern_id": [1,2,3]}))
+#print(db.insert("single_pattern_snippets", {"single_pattern_id": 59, "snippet_id": [1,2,3]}))
+#print(db.insert("single_pattern_snippets", {"single_pattern_id": 57, "snippet_id": [3,4,5]}))
+#print(db.get_all("single_pattern_snippets", "snippet_id"))
 #print(db.get_id("bsort", "bsort='Maincharacter'"))
 #print(db.get("pattern_single_pattern", "pattern_id=3", "single_pattern_id"))
 #print(db.is_in_table("pattern_single_pattern", "pattern_id=" + str(3)))

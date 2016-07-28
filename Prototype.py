@@ -154,15 +154,11 @@ class Prototype:
 
             if len(snippets) > 0:
                 single_pattern_id = pattern['id']
-                # TODO push text_snippets
                 self.__push_snippets(snippets, single_pattern_id, text_id)
 
-    def pos_tagging(self):
-        snippets = self.postgre_db.get_data_from_table("snippets")
-        for snippet in snippets:
-            HelperMethods.search_for_dialog(snippet)
-
     def __push_snippets(self, snippets, current_single_pattern_id, text_id):
+        """Push found snippets onto the snippets table in PostGre DB, if not already in the table.
+        Afterwards push the single_pattern and snippets relation."""
         if len(snippets) > 0:
             for snippet in snippets:
                 if not self.postgre_db.is_in_table("snippets", "snippet=" + HelperMethods.add_quotes(
@@ -170,32 +166,47 @@ class Prototype:
                     self.postgre_db.insert("snippets", {"snippet": snippet})
                 snippet_id = self.postgre_db.get_id("snippets", "snippet=" + HelperMethods.add_quotes(
                     HelperMethods.replace_special_characters(snippet)))
+                self.__push_texts_snippets(text_id, snippet_id)
                 self.__push_pattern_snippets(current_single_pattern_id, snippet_id)
 
     def __push_pattern_snippets(self, current_single_pattern_id, current_snippet_id):
         """Push single_pattern & snippets relation onto PostGre DB."""
+        self.__push_relation(
+            current_single_pattern_id, current_snippet_id, "single_pattern_id", "snippet_id", "single_pattern_snippets")
 
-        # case: no entry about single_pattern is in db
-        if not self.postgre_db.is_in_table("single_pattern_snippets", "single_pattern_id=" + str(
-                current_single_pattern_id)):
-            self.postgre_db.insert("single_pattern_snippets", {
-                "single_pattern_id": current_single_pattern_id, "snippet_id": [current_snippet_id]})
+    def __push_texts_snippets(self, text_id, snippet_id):
+        """Get all saved snippets that occur in a text and push them onto PostGre DB."""
+        self.__push_relation(text_id, snippet_id, "text_id", "snippet_id", "texts_snippets")
 
-        # case: entry about single_pattern is in db
+    def __push_relation(self, id1, id2, id1_name, id2_name, table):
+        """Push a relation onto the PostGre DB. The relation has to have a primary key."""
+        # case: No entry about relation is in DB yet
+        if not self.postgre_db.is_in_table(table, id1_name + "=" + str(
+                id1)):
+            self.postgre_db.insert(table, {
+                id1_name: id1, id2_name: [id2]})
+
+        # case: Entry about single_pattern is in DB
         else:
-            old_snippets = self.postgre_db.get("single_pattern_snippets", "single_pattern_id=" + str(
-                current_single_pattern_id), "snippet_id")
-            old_snippets.append(current_snippet_id)
-            self.postgre_db.delete_from_table("single_pattern_snippets", {
-                "single_pattern_id": current_single_pattern_id})
-            self.postgre_db.insert("single_pattern_snippets", {
-                "single_pattern_id": current_single_pattern_id, "snippet_id": old_snippets})
+            old_list = self.postgre_db.get(table, id1_name + "=" + str(
+                id1), id2_name)
+            old_list.append(id2)
+            self.postgre_db.delete_from_table(table, {
+                id1_name: id1})
+            self.postgre_db.insert(table, {
+                id1_name: id1, id2_name: old_list})
 
     def get_snippets(self):
+        """Get snippets for the whole corpus."""
         for ind, text in enumerate(self.mongo_db.get({})):
             self.postgre_db.insert("texts", {"title": text['title']})
             self.find_text_window(text['text'], text['id'])
             print("Chapter " + str(text['id']) + " done.")
+
+    def pos_tagging(self):
+        snippets = self.postgre_db.get_data_from_table("snippets")
+        for snippet in snippets:
+            HelperMethods.search_for_dialog(snippet)
 
 
 def find_right_sentence_boundary(tokens, ind, steps):
