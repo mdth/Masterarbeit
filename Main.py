@@ -15,6 +15,7 @@ parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons
 parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/locations.rdf")
 #pos_tagging()
 PROTOTYPE.get_snippets()  # Sentence mode
+PROTOTYPE.aggregation()
 
 
 print("End: " + str(time.time()))

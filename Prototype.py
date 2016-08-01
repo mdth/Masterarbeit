@@ -227,12 +227,44 @@ class Prototype:
             self.postgre_db.insert(table, {
                 id1_name: id1, id2_name: old_list})
 
+    def __push_aggregation_lowest_layer(self, aggregation_object, aggregation_name, table, id_name):
+        """Push the aggregated snippet numbers onto corresponding the lower layer tables."""
+        id = 0
+        aggregation_value = 0
+        for aggregation in aggregation_object:
+            id = aggregation[aggregation_name][0]
+            aggregation_value = aggregation[aggregation_name][1]
+            self.postgre_db.update(table, "aggregation=" + str(aggregation_value), id_name + "=" + str(id))
+
+    def __push_aggregation(self, table, sub_table, table_id, sub_table_id):
+        """Calculate and push aggregation on the rest layer tables."""
+        table_entries = self.postgre_db.get_data_from_table(table)
+        print(table_entries)
+        for entry in table_entries:
+            sub_table_entries = []
+            entry[table_id]
+
     def get_snippets(self):
         """Get snippets for the whole corpus."""
-        for ind, text in enumerate(self.mongo_db.get({})):
+        for ind, text in enumerate(self.mongo_db.get({"title": "Chapter 2"})):
             self.postgre_db.insert("texts", {"title": text['title']})
             self.find_text_window(text['text'], text['id'])
             print("Chapter " + str(text['id']) + " done.")
+
+    def aggregation(self):
+        """Calculate aggregation bottom-up and store the interim data onto the database."""
+        aggregation_texts_snippets = self.postgre_db.query("SELECT aggregate_texts_snippets()")
+        aggregation_single_pattern_snippets = self.postgre_db.query("SELECT aggregate_single_pattern_snippets()")
+
+        self.__push_aggregation_lowest_layer(
+            aggregation_texts_snippets, str('aggregate_texts_snippets'), "texts_snippets", "text_id")
+        self.__push_aggregation_lowest_layer(
+            aggregation_single_pattern_snippets, str('aggregate_single_pattern_snippets'), "single_pattern_snippets",
+            "single_pattern_id")
+
+        # self.__push_aggregation("pattern_single_pattern", "single_pattern_snippets")
+
+
 
     def pos_tagging(self):
         snippets = self.postgre_db.get_data_from_table("snippets")

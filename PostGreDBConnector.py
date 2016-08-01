@@ -1,10 +1,11 @@
 from pg import DB
+from HelperMethods import add_quotes
 from RDFParser import RDFParser
 
 
-class PostGreDBConnector():
-    """PostGreDBConnector opens a PostGre DB connection. Different functions allow you to add, delete or update documents
-     in PostGre DB."""
+class PostGreDBConnector:
+    """PostGreDBConnector opens a PostGre DB connection. Different functions allow you to add, delete or update
+    documents in PostGre DB."""
 
     def __init__(self):
         """Connecting to localhost (default host and port [localhost, 4532]) PostGre DB and initializing needed data
@@ -15,11 +16,12 @@ class PostGreDBConnector():
         except Exception:
             print("PostGre DB connection could not be built...")
 
-        self.delete_all_data()
+        # self.delete_all_data()
         self.drop_all_tables()
-        self.create_tables()
+        self.__create_tables()
+        # self.__create_functions()
 
-    def create_tables(self):
+    def __create_tables(self):
         """Create needed tables for RDF parsing."""
         self._add_table("CREATE TABLE texts (id serial primary key, title text)")
         self._add_table("CREATE TABLE bscale (id serial primary key, bscale text)")
@@ -29,15 +31,36 @@ class PostGreDBConnector():
         self._add_table("CREATE TABLE snippets (id serial primary key, snippet text)")
 
         # relations
-        self._add_table("CREATE TABLE has_attribute (bsort_id int, bscale_id integer[])")
-        self._add_table("CREATE TABLE has_object (bscale_id int, pattern_id integer[])")
-        self._add_table("CREATE TABLE pattern_single_pattern (pattern_id int, single_pattern_id integer[])")
+        self._add_table("CREATE TABLE has_attribute (bsort_id int, bscale_id integer[], aggregation int)")
+        self._add_table("CREATE TABLE has_object (bscale_id int, pattern_id integer[], aggregation int)")
         self._add_table(
-            "CREATE TABLE single_pattern_snippets (single_pattern_id int primary key, snippet_id integer[])")
-        self._add_table("CREATE TABLE texts_snippets (text_id int primary key, snippet_id integer[])")
+            "CREATE TABLE pattern_single_pattern (pattern_id int, single_pattern_id integer[], aggregation int)")
+        self._add_table(
+            "CREATE TABLE single_pattern_snippets (single_pattern_id int primary key, snippet_id integer[], aggregation int)")
+        self._add_table("CREATE TABLE texts_snippets (text_id int primary key, snippet_id integer[], aggregation int)")
         # TODO record for offsets would be so much nicer, but how?
-        self._add_table("CREATE TABLE snippet_offsets ("
-                        "id serial primary key, single_pattern_id int, snippet_id int, offsets integer[][])")
+        self._add_table(
+            "CREATE TABLE snippet_offsets (id serial primary key,"
+            " single_pattern_id int, snippet_id int, offsets integer[][], aggregation int)")
+
+    def __create_functions(self):
+        """Create all necessary functions to aggregate the results saved in the database."""
+        self.add_function("aggregate_texts_snippets", "SELECT text_id, array_length(snippet_id, 1) FROM texts_snippets")
+        self.add_function("aggregate_single_pattern_snippets",
+                          "SELECT single_pattern_id, array_length(snippet_id, 1) FROM single_pattern_snippets")
+        self.add_function("aggregate_pattern_single_pattern",
+                          "SELECT pattern_id, array_length(single_pattern_id, 1) FROM pattern_single_pattern")
+        self.add_function("aggregate_has_object", "SELECT bscale_id, array_length(pattern_id, 1) FROM has_object")
+        self.add_function("aggregate_has_attribute", "SELECT bsort_id, array_length(bscale_id, 1) FROM has_attribute")
+        self.add_function("unnest_pattern_single_pattern", "SELECT pattern_id, unnest(single_pattern_id) FROM pattern_single_pattern")
+
+    def add_function(self, name, function):
+        """Create a new function in the db."""
+        create_function = "CREATE FUNCTION "
+        returns = "() RETURNS SETOF RECORD AS "
+        lang = " LANGUAGE SQL"
+        query = create_function + name + returns + add_quotes(function) + lang
+        self.__db.query(query)
 
     def _add_table(self, query):
         """Create a new table with a query."""
@@ -63,6 +86,14 @@ class PostGreDBConnector():
             return True
         else:
             return False
+
+    def update(self, table, values, where_clause):
+        UPDATE = "UPDATE "
+        SET = " SET "
+        WHERE = " WHERE "
+        query = UPDATE + table + SET + values + WHERE + where_clause
+        self.query(query)
+
 
     def get(self, table, where_clause, key):
         """Search for a chosen key of a specific item in a table."""
@@ -90,10 +121,6 @@ class PostGreDBConnector():
             return result[0]['id']
         else:
             return None
-
-    def update(self, table, row, **kw):
-        """Update a already existing row for a table."""
-        return self.__db.update(table, row, **kw)
 
     def delete_from_table(self, table, row):
         """Delete a row element form a specific table."""
@@ -145,9 +172,15 @@ class PostGreDBConnector():
         return self.__db.query(query).dictresult()
 
     def query(self, query):
-        return self.__db.query(query).dictresult()
+        result = self.__db.query(query)
+        if result is not None:
+            if not isinstance(result, str):
+                return result.dictresult()
+        else:
+            return result
 
 #db = PostGreDBConnector()
+
 #parser = RDFParser(db)
 #parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
 #str = "Rogoshin"
@@ -156,8 +189,13 @@ class PostGreDBConnector():
 #db.drop_table("test")
 #db.add_table1("CREATE TABLE integer (id serial primary key, title integer[])")
 #print(db.is_in_table("snippet_offsets", "single_pattern_id=59 and snippet_id=1"))
-#print(db.insert("snippet_offsets", {"single_pattern_id": 59, "snippet_id": 1, "offsets": [[3, 8], [9, 14]]}))
-#print(db.insert("single_pattern_snippets", {"single_pattern_id": 57, "snippet_id": [3,4,5]}))
+#print(db.insert("snippet_offsets", {"single_pattern_id": 59, "snippet_id": 1, "offsets": [[3, 8], [14,17]]}))
+#print(db.insert("snippet_offsets", {"single_pattern_id": 59, "snippet_id": 5, "offsets": [[9, 14]]}))
+#print(db.insert("snippet_offsets", {"single_pattern_id": 57, "snippet_id": 57, "offsets": [[3, 8], [9, 14], [67, 71]]}))
+#print(db.insert("single_pattern_snippets", {"single_pattern_id": 1, "snippet_id": [3,4,5]}))
+#print(db.insert("single_pattern_snippets", {"single_pattern_id": 2, "snippet_id": [6,8,9,10]}))
+#print(db.insert("pattern_single_pattern", {"pattern_id": 1, "single_pattern_id": [3,4,5]}))
+#print(db.insert("pattern_single_pattern", {"pattern_id": 2, "single_pattern_id": [6,8,9,10]}))
 #print(db.get_all("single_pattern_snippets", "snippet_id"))
 #print(db.get_id("bsort", "bsort='Maincharacter'"))
 #print(db.get("pattern_single_pattern", "pattern_id=3", "single_pattern_id"))
@@ -172,5 +210,21 @@ class PostGreDBConnector():
 #print(db.insert("single_pattern_snippets", {"single_pattern_id": 1}))
 #print(db.is_in_table("single_pattern_snippets", "single_pattern_id=1"))
 #db.insert("texts", {"title": "Chapter 1"})
-#print(db.is_in_table("snippets", "snippet='»Nun, wenn''s so ist«, rief Rogoshin, »so bist du ja ein richtiger Gottesnarr, Fürst, und solche Menschen wie dich liebt Gott.«'"))
 #print(db.insert("snippets", {"snippet": "»Nun, wenn's so ist«, rief Rogoshin, »so bist du ja ein richtiger Gottesnarr, Fürst, und solche Menschen wie dich liebt Gott.«"}))
+
+#print(db.query("""CREATE FUNCTION arraycount() RETURNS int AS 'SELECT table.snippet_id.COUNT FROM single_pattern_snippets table WHERE single_pattern_id = 57' LANGUAGE SQL"""))
+#print(db.query("SELECT arraycount() AS answer"))
+
+# TODO use with for loop if only snippet_offsets relation is used
+#print(db.create_function("counting", "'SELECT COUNT(single_pattern_id) FROM single_pattern_snippets WHERE single_pattern_id=57'"))
+
+#print(db.query("SELECT single_pattern_id, array_length(offsets, 1) FROM snippet_offsets"))
+#print(db.query("SELECT single_pattern_id, array_length(snippet_id, 1) FROM single_pattern_snippets"))
+#print(db.query("""CREATE FUNCTION OR REPLACE double_salary(single_pattern_snippets) RETURNS integer[] AS $$ SELECT $COUNT(snippet_id) AS newid $$ LANGUAGE SQL"""))
+#print(db.query("""SELECT double_salary(single_pattern_snippets) FROM single_pattern_snippets WHERE single_pattern_snippets.single_pattern_id = 57"""))
+#print(db.query("CREATE FUNCTION array_lengths() RETURNS SETOF RECORD AS 'SELECT single_pattern_id, array_length(snippet_id, 1) FROM single_pattern_snippets' LANGUAGE SQL"))
+#snippet_no = db.query("SELECT array_lengths()")
+#print(snippet_no[1]['array_lengths']) # can extract the tuple like this.
+#print(db.query("SELECT unnest_pattern_single_pattern()"))
+#print(db.update("single_pattern_snippets", "aggregation=3", "single_pattern_id=1"))
+#print(db.get_data_from_table("single_pattern_snippets"))
