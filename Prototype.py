@@ -215,7 +215,7 @@ class Prototype:
         if not self.postgre_db.is_in_table(table, id1_name + "=" + str(
                 id1)):
             self.postgre_db.insert(table, {
-                id1_name: id1, id2_name: [id2]})
+                id1_name: id1, id2_name: [id2], "aggregation": 0})
 
         # case: Entry about single_pattern is in DB
         else:
@@ -225,7 +225,7 @@ class Prototype:
             self.postgre_db.delete_from_table(table, {
                 id1_name: id1})
             self.postgre_db.insert(table, {
-                id1_name: id1, id2_name: old_list})
+                id1_name: id1, id2_name: old_list, "aggregation": 0})
 
     def __push_aggregation_lowest_layer(self, aggregation_object, aggregation_name, table, id_name):
         """Push the aggregated snippet numbers onto corresponding the lower layer tables."""
@@ -239,10 +239,16 @@ class Prototype:
     def __push_aggregation(self, table, sub_table, table_id, sub_table_id):
         """Calculate and push aggregation on the rest layer tables."""
         table_entries = self.postgre_db.get_data_from_table(table)
-        print(table_entries)
         for entry in table_entries:
-            sub_table_entries = []
-            entry[table_id]
+            aggregation = 0
+            entry_id = entry[table_id]
+            entries_to_look_up = entry[sub_table_id]
+            for look_up in entries_to_look_up:
+                stored_value = self.postgre_db.get(sub_table, sub_table_id + "=" + str(look_up), "aggregation")
+                if stored_value is None:
+                    stored_value = 0
+                aggregation += stored_value
+            self.postgre_db.update(table, "aggregation=" + str(aggregation), table_id + "=" + str(entry_id))
 
     def get_snippets(self):
         """Get snippets for the whole corpus."""
@@ -262,9 +268,10 @@ class Prototype:
             aggregation_single_pattern_snippets, str('aggregate_single_pattern_snippets'), "single_pattern_snippets",
             "single_pattern_id")
 
-        # self.__push_aggregation("pattern_single_pattern", "single_pattern_snippets")
-
-
+        self.__push_aggregation(
+            "pattern_single_pattern", "single_pattern_snippets", str('pattern_id'), str('single_pattern_id'))
+        self.__push_aggregation("has_object", "pattern_single_pattern", str('bscale_id'), str('pattern_id'))
+        self.__push_aggregation("has_attribute", "has_object", str('bsort_id'), str('bscale_id'))
 
     def pos_tagging(self):
         snippets = self.postgre_db.get_data_from_table("snippets")

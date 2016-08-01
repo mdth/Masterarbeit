@@ -33,8 +33,9 @@ lit:Female q:hasObject (lit:Nastasja, lit:Alexandra, lit:Adelaida, lit:Aglaja, l
 lit:MainCharacter q:hasObject (lit:Myshkin, lit:Rogoshin, lit:Nastasja, lit:Aglaja) .
 
 lit:FemMainCharacter a q:BSort .
+lit:MaleMainCharacter a q:BSort .
 
 lit:MainCharacter q:hasAttribute lit:MainCharacter .
-lit:SubCharacter q:hasAttribute lit:SubCharacter .
 
+lit:MaleMainCharacter q:hasAttribute (lit:MainCharacter, lit:Male) .
 lit:FemMainCharacter q:hasAttribute (lit:MainCharacter, lit:Female) .

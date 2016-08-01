@@ -1,6 +1,6 @@
 lit a q:Vocabulary .
 
-lit:Town a q:BScale .
+lit:Stadt a q:BScale .
 lit:Building a q:BScale .
 lit:Land a q:BScale .
 
@@ -17,4 +17,4 @@ lit:Ort a q:BSort .
 lit:Stadt q:hasObject (lit:Petersburg, lit:Pawlowsk, lit:Kolmino, lit:Paris) .
 lit:Land q:hasObject (lit:Russland, lit:Schweiz, lit:Frankreich) .
 
-lit:Ort q:hasAttribute (lit:Building, lit:Land, lit:Town) .
+lit:Ort q:hasAttribute (lit:Building, lit:Land, lit:Stadt) .

@@ -76,7 +76,8 @@ class RDFParser:
                 new_s_pattern.append(single_pattern_id)
 
             pattern_id = self.__db.get_id("pattern", "pattern=" + add_quotes(key))
-            self.__db.insert("pattern_single_pattern", {"pattern_id": pattern_id, "single_pattern_id": new_s_pattern})
+            self.__db.insert("pattern_single_pattern", {
+                "pattern_id": pattern_id, "single_pattern_id": new_s_pattern, "aggregation": 0})
 
     def __push_attribute(self, attribute_list):
         """Push found rdf attributes onto the database."""
@@ -95,7 +96,7 @@ class RDFParser:
                 new_attributes.append(self.__db.get_id("bscale", "bscale=" + add_quotes(attribute)))
 
             bsort_id = self.__db.get_id("bsort", "bsort=" + add_quotes(key))
-            self.__db.insert("has_attribute", {"bsort_id": bsort_id, "bscale_id": new_attributes})
+            self.__db.insert("has_attribute", {"bsort_id": bsort_id, "bscale_id": new_attributes, "aggregation": 0})
 
     def __push_objects(self, object_list):
         """Push found rdf attributes onto the database."""
@@ -107,7 +108,7 @@ class RDFParser:
             for object in objects:
                 new_attributes.append(self.__db.get_id("pattern", "pattern=" + add_quotes(object)))
             bscale_id = self.__db.get_id("bscale", "bscale=" + add_quotes(key))
-            self.__db.insert("has_object", {"bscale_id": bscale_id, "pattern_id": new_attributes})
+            self.__db.insert("has_object", {"bscale_id": bscale_id, "pattern_id": new_attributes, "aggregation": 0})
 
 
 def read_in_rdf_file(filename):

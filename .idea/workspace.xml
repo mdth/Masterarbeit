@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8967fbb0-d593-4f05-9572-bb5e10e7e15f" name="Default" comment="Adding single_pattern - snippets - offset relation. It's still buggy, need to rework the find function in get_sentence_textsnippets. The db table for the relationship is a workaround for now.">
+    <list default="true" id="8967fbb0-d593-4f05-9572-bb5e10e7e15f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Main.py" afterPath="$PROJECT_DIR$/Main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PostGreDBConnector.py" afterPath="$PROJECT_DIR$/PostGreDBConnector.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Prototype.py" afterPath="$PROJECT_DIR$/Prototype.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RDFParser.py" afterPath="$PROJECT_DIR$/RDFParser.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/locations.rdf" afterPath="$PROJECT_DIR$/locations.rdf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/persons.rdf" afterPath="$PROJECT_DIR$/persons.rdf" />
     </list>
     <ignored path="Masterarbeit.iws" />
@@ -30,8 +30,8 @@
       <file leaf-file-name="PostGreDBConnector.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PostGreDBConnector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="173" column="27" selection-start-line="173" selection-start-column="27" selection-end-line="173" selection-end-column="27" />
+            <state relative-caret-position="-266">
+              <caret line="102" column="63" selection-start-line="102" selection-start-column="63" selection-end-line="102" selection-end-column="63" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -42,8 +42,8 @@
       <file leaf-file-name="RDFParser.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RDFParser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="123" column="40" selection-start-line="123" selection-start-column="40" selection-end-line="123" selection-end-column="40" />
+            <state relative-caret-position="200">
+              <caret line="109" column="79" selection-start-line="109" selection-start-column="79" selection-end-line="109" selection-end-column="79" />
               <folding>
                 <element signature="e#0#127#0" expanded="true" />
               </folding>
@@ -66,7 +66,7 @@
       <file leaf-file-name="MongoDBConnector.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MongoDBConnector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
+            <state relative-caret-position="50">
               <caret line="32" column="35" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
@@ -78,8 +78,8 @@
       <file leaf-file-name="Prototype.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Prototype.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="244" column="27" selection-start-line="244" selection-start-column="27" selection-end-line="244" selection-end-column="27" />
+            <state relative-caret-position="244">
+              <caret line="254" column="78" selection-start-line="254" selection-start-column="78" selection-end-line="254" selection-end-column="78" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -136,17 +136,17 @@
         <option value="C:/Python35/Lib/site-packages/nltk/tag/StanfordPOSTagger.py" />
         <option value="C:/Python35/Lib/site-packages/nltk/tag/test.py" />
         <option value="$PROJECT_DIR$/MongoDBConnection.py" />
-        <option value="$PROJECT_DIR$/locations.rdf" />
         <option value="$PROJECT_DIR$/classes.puml" />
         <option value="$PROJECT_DIR$/test.rdf" />
         <option value="$PROJECT_DIR$/POSTagger.py" />
         <option value="$PROJECT_DIR$/parsing.py" />
         <option value="$PROJECT_DIR$/HelperMethods.py" />
         <option value="$PROJECT_DIR$/MongoDBConnector.py" />
-        <option value="$PROJECT_DIR$/RDFParser.py" />
-        <option value="$PROJECT_DIR$/persons.rdf" />
         <option value="$PROJECT_DIR$/Main.py" />
         <option value="$PROJECT_DIR$/PostGreDBConnector.py" />
+        <option value="$PROJECT_DIR$/locations.rdf" />
+        <option value="$PROJECT_DIR$/persons.rdf" />
+        <option value="$PROJECT_DIR$/RDFParser.py" />
         <option value="$PROJECT_DIR$/Prototype.py" />
       </list>
     </option>
@@ -650,7 +650,14 @@
       <option name="project" value="LOCAL" />
       <updated>1469725096063</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Adding aggregation bottom up. Covered for the lowest layer tables.">
+      <created>1470044239673</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1470044239673</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -664,7 +671,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32789317" sideWeight="0.4897511" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20029673" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3041543" sideWeight="0.4941435" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3041543" sideWeight="0.4941435" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -731,7 +738,8 @@
     <MESSAGE value="Unterteilung in private und public methods." />
     <MESSAGE value="Refactoring, adding push_texts_snippets." />
     <MESSAGE value="Adding single_pattern - snippets - offset relation. It's still buggy, need to rework the find function in get_sentence_textsnippets. The db table for the relationship is a workaround for now." />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding single_pattern - snippets - offset relation. It's still buggy, need to rework the find function in get_sentence_textsnippets. The db table for the relationship is a workaround for now." />
+    <MESSAGE value="Adding aggregation bottom up. Covered for the lowest layer tables." />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding aggregation bottom up. Covered for the lowest layer tables." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1003,13 +1011,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/locations.rdf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="59" selection-start-line="19" selection-start-column="59" selection-end-line="19" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python35/Lib/site-packages/nltk/tag/stanford.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="229">
@@ -1107,29 +1108,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/persons.rdf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="32" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MongoDBConnector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
+        <state relative-caret-position="50">
           <caret line="32" column="35" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RDFParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="123" column="40" selection-start-line="123" selection-start-column="40" selection-end-line="123" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#127#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1144,10 +1128,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/locations.rdf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="25" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persons.rdf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="39" column="68" selection-start-line="39" selection-start-column="68" selection-end-line="39" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RDFParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="109" column="79" selection-start-line="109" selection-start-column="79" selection-end-line="109" selection-end-column="79" />
+          <folding>
+            <element signature="e#0#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/PostGreDBConnector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="173" column="27" selection-start-line="173" selection-start-column="27" selection-end-line="173" selection-end-column="27" />
+        <state relative-caret-position="-266">
+          <caret line="102" column="63" selection-start-line="102" selection-start-column="63" selection-end-line="102" selection-end-column="63" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
           </folding>
@@ -1156,8 +1166,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Prototype.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="244" column="27" selection-start-line="244" selection-start-column="27" selection-end-line="244" selection-end-column="27" />
+        <state relative-caret-position="244">
+          <caret line="254" column="78" selection-start-line="254" selection-start-column="78" selection-end-line="254" selection-end-column="78" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
