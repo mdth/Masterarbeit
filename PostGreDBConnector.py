@@ -24,7 +24,9 @@ class PostGreDBConnector:
     def __create_tables(self):
         """Create needed tables for RDF parsing."""
         self._add_table("CREATE TABLE texts (id serial primary key, title text)")
-        self._add_table("CREATE TABLE bscale (id serial primary key, bscale text)")
+        # TODO test, since just added in
+        self._add_table(
+            "CREATE TABLE bscale (id serial primary key, bscale text, nominal bool, ordinal bool, interval bool)")
         self._add_table("CREATE TABLE bsort (id serial primary key, bsort text)")
         self._add_table("CREATE TABLE pattern (id serial primary key, pattern text)")
         self._add_table("CREATE TABLE single_pattern (id serial primary key, single_pattern text)")
@@ -35,8 +37,6 @@ class PostGreDBConnector:
         self._add_table("CREATE TABLE has_object (bscale_id int, pattern_id integer[], aggregation int)")
         self._add_table(
             "CREATE TABLE pattern_single_pattern (pattern_id int, single_pattern_id integer[], aggregation int)")
-        self._add_table(
-            "CREATE TABLE single_pattern_snippets (single_pattern_id int primary key, snippet_id integer[], aggregation int)")
         self._add_table("CREATE TABLE texts_snippets (text_id int primary key, snippet_id integer[], aggregation int)")
         # TODO record for offsets would be so much nicer, but how?
         self._add_table(
@@ -46,13 +46,7 @@ class PostGreDBConnector:
     def __create_functions(self):
         """Create all necessary functions to aggregate the results saved in the database."""
         self.add_function("aggregate_texts_snippets", "SELECT text_id, array_length(snippet_id, 1) FROM texts_snippets")
-        self.add_function("aggregate_single_pattern_snippets",
-                          "SELECT single_pattern_id, array_length(snippet_id, 1) FROM single_pattern_snippets")
-        self.add_function("aggregate_pattern_single_pattern",
-                          "SELECT pattern_id, array_length(single_pattern_id, 1) FROM pattern_single_pattern")
-        self.add_function("aggregate_has_object", "SELECT bscale_id, array_length(pattern_id, 1) FROM has_object")
-        self.add_function("aggregate_has_attribute", "SELECT bsort_id, array_length(bscale_id, 1) FROM has_attribute")
-        self.add_function("unnest_pattern_single_pattern", "SELECT pattern_id, unnest(single_pattern_id) FROM pattern_single_pattern")
+        self.add_function("aggregate_snippet_offsets", "SELECT id, array_length(offsets, 1) FROM snippet_offsets")
 
     def add_function(self, name, function):
         """Create a new function in the db."""
@@ -88,6 +82,7 @@ class PostGreDBConnector:
             return False
 
     def update(self, table, values, where_clause):
+        """Update an entry in a specified table."""
         UPDATE = "UPDATE "
         SET = " SET "
         WHERE = " WHERE "
@@ -172,6 +167,7 @@ class PostGreDBConnector:
         return self.__db.query(query).dictresult()
 
     def query(self, query):
+        """Sends a query to the database."""
         result = self.__db.query(query)
         if result is not None:
             if not isinstance(result, str):
@@ -182,7 +178,10 @@ class PostGreDBConnector:
 #db = PostGreDBConnector()
 
 #parser = RDFParser(db)
-#parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/persons.rdf")
+#parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/bscale_test.rdf")
+#db.insert("bscale", {"bscale": "test", "nominal": True})
+#print(db.get("bscale", "id=1", "id"))
+#db.update("bscale", "interval='False'","id=1")
 #str = "Rogoshin"
 #key = "MainCharacter"
 #print(db.insert("bsort", {"bsort": "Maincharacter"}))

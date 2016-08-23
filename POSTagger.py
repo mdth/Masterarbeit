@@ -30,7 +30,7 @@ class POSTagger:
             self.tagger_name = POSTagger.TT
             self.__tagger = treetaggerwrapper.TreeTagger(TAGLANG='de')
 
-        # SpaCy takes really long to build the model, even longer than the Stanford taggers
+        # SpaCy takes really long to initialize (about 5-7 minutes), but performs well and fast afterwards
         elif tagger == POSTagger.SPACY:
             self.tagger_name = POSTagger.SPACY
             self.__tagger = spacy.load('de')

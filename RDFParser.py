@@ -41,6 +41,7 @@ class RDFParser:
         pattern_list = dict()
         attribute_list = dict()
         object_list = dict()
+        scale_list = dict()
 
         for statements in data:
             subject, relation, object = self.__search.parseString(statements)
@@ -52,12 +53,19 @@ class RDFParser:
                 attribute_list.update({subject: object})
             elif relation == "hasObject":
                 object_list.update({subject: object})
+            elif relation == "hasScale":
+                scale_list.update({subject: object})
             else:
                 pass
 
+        self.push_data(pattern_list, attribute_list, object_list, scale_list)
+
+    def push_data(self, pattern_list, attribute_list, object_list, scale_list):
+        """Pushes found data onto the database."""
         self.__push_pattern(pattern_list)
         self.__push_attribute(attribute_list)
         self.__push_objects(object_list)
+        self.__push_scales(scale_list)
 
     def __push_pattern(self, pattern_list):
         """Push found rdf pattern onto the database."""
@@ -92,14 +100,15 @@ class RDFParser:
             for attribute in attributes:
                 # look out for duplicates
                 if not self.__db.is_in_table("bscale", "bscale=" + add_quotes(attribute)):
-                    self.__db.insert("bscale", {"bscale": attribute})
+                    self.__db.insert(
+                        "bscale", {"bscale": attribute, "nominal": False, "ordinal": False, "interval": False})
                 new_attributes.append(self.__db.get_id("bscale", "bscale=" + add_quotes(attribute)))
 
             bsort_id = self.__db.get_id("bsort", "bsort=" + add_quotes(key))
             self.__db.insert("has_attribute", {"bsort_id": bsort_id, "bscale_id": new_attributes, "aggregation": 0})
 
     def __push_objects(self, object_list):
-        """Push found rdf attributes onto the database."""
+        """Push found rdf objects onto the database."""
         for key in object_list:
             objects = object_list[key]
             new_attributes = []
@@ -109,6 +118,24 @@ class RDFParser:
                 new_attributes.append(self.__db.get_id("pattern", "pattern=" + add_quotes(object)))
             bscale_id = self.__db.get_id("bscale", "bscale=" + add_quotes(key))
             self.__db.insert("has_object", {"bscale_id": bscale_id, "pattern_id": new_attributes, "aggregation": 0})
+
+    def __push_scales(self, scale_list):
+        """Push found rdf bscale attributes onto the database."""
+        for key in scale_list:
+            #
+            scale = scale_list[key][0]
+            if scale == 'nominal':
+                row = "nominal"
+            elif scale == 'ordinal':
+                row = "ordinal"
+            elif scale == 'interval':
+                row = "interval"
+            else:
+                raise Exception("Invalid scale attribute.")
+
+            if self.__db.is_in_table("bscale", "bscale=" + add_quotes(key)):
+                bscale_id = self.__db.get_id("bscale", "bscale=" + add_quotes(key))
+                self.__db.update("bscale", row + "=" + add_quotes('True'), "id=" + str(bscale_id))
 
 
 def read_in_rdf_file(filename):

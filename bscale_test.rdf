@@ -1,0 +1,19 @@
+lit a q:Vocabulary .
+
+lit:Kinder a q:BSort .
+
+lit:Julius q:hasPattern ("Julius", "Julius Caesar").
+lit:Marie q:hasPattern "Marie".
+lit:Jugendlicher q:hasPattern "12-18" .
+lit:Kind q:hasPattern "6-11" .
+
+lit:Alter a q:BScale .
+lit:Name a q:BScale .
+
+lit:Name q:hasScale "nominal" .
+lit:Alter q:hasScale "interval" .
+
+lit:Alter q:hasObject (lit:Jugendlicher, lit:Kind) .
+lit:Name  q:hasObject (lit:Julius, lit:Marie) .
+
+lit:Kinder q:hasAttribute (lit:Name, lit:Alter) .

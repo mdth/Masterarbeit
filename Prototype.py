@@ -168,7 +168,6 @@ class Prototype:
                         HelperMethods.replace_special_characters(sent_obj.sentence)))
 
                     # push relations
-                    self.__push_pattern_snippets(single_pattern_id, snippet_id)
                     self.__push_texts_snippets(text_id, snippet_id)
                     self.__push_snippet_offsets(
                         single_pattern_id, snippet_id, sent_obj.offset_start, sent_obj.offset_end)
@@ -179,11 +178,6 @@ class Prototype:
         if not self.postgre_db.is_in_table("snippets", "snippet=" + HelperMethods.add_quotes(
                 HelperMethods.replace_special_characters(snippet))):
             self.postgre_db.insert("snippets", {"snippet": snippet})
-
-    def __push_pattern_snippets(self, current_single_pattern_id, current_snippet_id):
-        """Push single_pattern & snippets relation onto PostGre DB."""
-        self.__push_relation(
-            current_single_pattern_id, current_snippet_id, "single_pattern_id", "snippet_id", "single_pattern_snippets")
 
     def __push_texts_snippets(self, text_id, snippet_id):
         """Get all saved snippets that occur in a text and push them onto PostGre DB."""
@@ -221,11 +215,11 @@ class Prototype:
         else:
             old_list = self.postgre_db.get(table, id1_name + "=" + str(
                 id1), id2_name)
-            old_list.append(id2)
+            new_list = list(set(old_list + [id2]))
             self.postgre_db.delete_from_table(table, {
                 id1_name: id1})
             self.postgre_db.insert(table, {
-                id1_name: id1, id2_name: old_list, "aggregation": 0})
+                id1_name: id1, id2_name: new_list, "aggregation": 0})
 
     def __push_aggregation_lowest_layer(self, aggregation_object, aggregation_name, table, id_name):
         """Push the aggregated snippet numbers onto corresponding the lower layer tables."""
@@ -243,16 +237,26 @@ class Prototype:
             aggregation = 0
             entry_id = entry[table_id]
             entries_to_look_up = entry[sub_table_id]
+
             for look_up in entries_to_look_up:
-                stored_value = self.postgre_db.get(sub_table, sub_table_id + "=" + str(look_up), "aggregation")
-                if stored_value is None:
-                    stored_value = 0
-                aggregation += stored_value
+                # calcutate aggregations differently depending on how the table structure is
+                if len(entries_to_look_up) > 1:
+                        stored_value = self.postgre_db.get(sub_table, sub_table_id + "=" + str(look_up), "aggregation")
+                        if stored_value is None:
+                            stored_value = 0
+                        aggregation += stored_value
+
+                else:
+                    query = "SELECT SUM(aggregation) FROM " + sub_table + " WHERE " + sub_table_id + "=" + str(look_up)
+                    aggregation = self.postgre_db.query(query)[0]['sum']
+                    if aggregation is None:
+                        aggregation = 0
+
             self.postgre_db.update(table, "aggregation=" + str(aggregation), table_id + "=" + str(entry_id))
 
     def get_snippets(self):
         """Get snippets for the whole corpus."""
-        for ind, text in enumerate(self.mongo_db.get({"title": "Chapter 2"})):
+        for ind, text in enumerate(self.mongo_db.get({"title": "Chapter 1"})):
             self.postgre_db.insert("texts", {"title": text['title']})
             self.find_text_window(text['text'], text['id'])
             print("Chapter " + str(text['id']) + " done.")
@@ -260,20 +264,20 @@ class Prototype:
     def aggregation(self):
         """Calculate aggregation bottom-up and store the interim data onto the database."""
         aggregation_texts_snippets = self.postgre_db.query("SELECT aggregate_texts_snippets()")
-        aggregation_single_pattern_snippets = self.postgre_db.query("SELECT aggregate_single_pattern_snippets()")
-
+        aggregation_snippet_offsets = self.postgre_db.query("SELECT aggregate_snippet_offsets()")
         self.__push_aggregation_lowest_layer(
             aggregation_texts_snippets, str('aggregate_texts_snippets'), "texts_snippets", "text_id")
         self.__push_aggregation_lowest_layer(
-            aggregation_single_pattern_snippets, str('aggregate_single_pattern_snippets'), "single_pattern_snippets",
-            "single_pattern_id")
+            aggregation_snippet_offsets, str('aggregate_snippet_offsets'), "snippet_offsets", "id")
+        # TODO current change
 
         self.__push_aggregation(
-            "pattern_single_pattern", "single_pattern_snippets", str('pattern_id'), str('single_pattern_id'))
+            "pattern_single_pattern", "snippet_offsets", str('pattern_id'), str('single_pattern_id'))
         self.__push_aggregation("has_object", "pattern_single_pattern", str('bscale_id'), str('pattern_id'))
         self.__push_aggregation("has_attribute", "has_object", str('bsort_id'), str('bscale_id'))
 
     def pos_tagging(self):
+        """POS tag all dialogues and monologues."""
         snippets = self.postgre_db.get_data_from_table("snippets")
         for snippet in snippets:
             HelperMethods.search_for_dialog(snippet)

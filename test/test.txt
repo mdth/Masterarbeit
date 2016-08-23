@@ -1,6 +1,0 @@
-Unix is a family of multitasking, multiuser computer operating systems that derive from the original AT&T Unix, developed in the 1970s.
-Many clones of Unix have arisen over the years, of which Linux is the most popular, having displaced SUS-certified Unix on many server platforms.
-The pre-history of Unix dates back to the mid-1960s.
-Microsoft Windows (or simply Windows) is a metafamily of graphical operating systems developed, marketed, and sold by Microsoft.
-The history of Windows dates back to September 1981.
-D is an acronym for Germany. Dark clouds. OSX blablabla.
