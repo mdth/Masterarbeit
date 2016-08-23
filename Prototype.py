@@ -2,6 +2,9 @@ import re
 import HelperMethods
 from collections import namedtuple
 from POSTagger import POSTagger
+from nltk.tokenize import sent_tokenize
+from nltk.tokenize import string_span_tokenize
+from nltk.tokenize import WhitespaceTokenizer
 
 
 class Prototype:
@@ -86,18 +89,82 @@ class Prototype:
         else:
             return " ".join(tokens[indl - self.window_size:indr + (self.window_size + 1)])
 
-    def __get_sentence_window(self, pattern, tokens):
+    def __get_sentence_window(self, pattern, sentences):
         """Get a word window list with a specific number of sentences. size 0 will return the
         current sentence the pattern is found in. size n will return n sentences left and right
         from the initial sentence."""
         split_pattern = pattern.split()
+        # TODO delete
+        textsnippets = []
         if len(split_pattern) > 1:
-            textsnippets = self.__get_sentence_window_more_words_help(pattern, split_pattern, tokens)
+            textsnippets = self.__get_sentence_window_more_words(pattern, split_pattern)
         else:
-            textsnippets = self.__get_sentence_window_one_word_help(pattern, tokens)
+            # TODO
+            textsnippets = self.__get_sentence_window_one_word(pattern, sentences)
+
+
+        # OLD IMPLEMENTATION
+        #if len(split_pattern) > 1:
+        #    textsnippets = self.__get_sentence_window_more_words_help(pattern, split_pattern, tokens)
+        #else:
+        #    textsnippets = self.__get_sentence_window_one_word_help(pattern, tokens)
+        return textsnippets
+
+    def __get_sentence_window_one_word(self, pattern, sentences):
+        """Get sentence snippets with pattern containing of only one words according to window size."""
+        textsnippets = []
+        tokenizer = WhitespaceTokenizer()
+
+        for ind, sent in enumerate(sentences):
+            tokens = tokenizer.tokenize(sent)
+            for i, token in enumerate(tokens):
+                if check_pattern(pattern, token):
+                    if self.window_size > 0:
+                        sentence = sentences[ind - self.window_size:ind + self.window_size]
+                    else:
+                        sentence = sentences[ind]
+
+                    # get offsets
+                    offsets = list(tokenizer.span_tokenize(sent))
+                    offset_start = offsets[i][0]
+                    offset_end = offsets[i][1]
+                    SentObj = namedtuple('Sentence_Object', ['sentence', 'offset_start', 'offset_end'])
+                    textsnippets.append(SentObj(sentence=sentence, offset_start=offset_start, offset_end=offset_end))
+        return textsnippets
+
+    def __get_sentence_window_more_words(self, split_pattern, sentences):
+        """Get sentence snippets with pattern containing of more than 2 words according to window size."""
+        textsnippets = []
+        tokenizer = WhitespaceTokenizer()
+        for ind, sent in enumerate(sentences):
+            tokens = tokenizer.tokenize(sent)
+            p_index = 0
+            end_index = ind
+            while p_index < len(split_pattern):
+                if (end_index < len(tokens)) and check_pattern(split_pattern[p_index], tokens[end_index]):
+                    p_index += 1
+                    end_index += 1
+                else:
+                    break
+            if p_index == len(split_pattern):
+                # TODO more details
+                if (ind - self.window_size) < 0:
+                    sentence = sentences[0:ind+self.window_size]
+                elif ind + self.window_size >= len(tokens):
+                    sentence = sentences[ind-self.window_size:len(sentences)-1]
+                else:
+                    sentence = sentences[ind-self.window_size:ind+self.window_size]
+
+                # get offsets
+                offsets = list(tokenizer.span_tokenize(sent))
+                offset_start = offsets[p_index][0]
+                offset_end = offsets[end_index][1]
+                SentObj = namedtuple('Sentence_Object', ['sentence', 'offset_start', 'offset_end'])
+                textsnippets.append(SentObj(sentence=sentence, offset_start=offset_start, offset_end=offset_end))
         return textsnippets
 
     def __get_sentence_window_more_words_help(self, pattern, split_pattern, tokens):
+        """Deprecated."""
         textsnippets = []
         for ind, token in enumerate(tokens):
             p_index = 0
@@ -152,13 +219,13 @@ class Prototype:
 
     def find_text_window(self, text, text_id):
         """Finds text windows with variable size."""
-        split_text = text.split()
 
         for pattern in self.postgre_db.get_data_from_table("single_pattern"):
             if self.sentence_mode:
-                sentence_objects = self.__get_sentence_window(pattern['single_pattern'], split_text)
+                sentence_objects = self.__get_sentence_window(
+                    pattern['single_pattern'], sent_tokenize(text, language="german"))
             else:
-                sentence_objects = self.__get_word_window(pattern['single_pattern'], split_text)
+                sentence_objects = self.__get_word_window(pattern['single_pattern'], text.split())
             if len(sentence_objects) > 0:
                 single_pattern_id = pattern['id']
                 for sent_obj in sentence_objects:
@@ -265,12 +332,14 @@ class Prototype:
         """Calculate aggregation bottom-up and store the interim data onto the database."""
         aggregation_texts_snippets = self.postgre_db.query("SELECT aggregate_texts_snippets()")
         aggregation_snippet_offsets = self.postgre_db.query("SELECT aggregate_snippet_offsets()")
+
+        # push 2 lowest levels of the hierarchy
         self.__push_aggregation_lowest_layer(
             aggregation_texts_snippets, str('aggregate_texts_snippets'), "texts_snippets", "text_id")
         self.__push_aggregation_lowest_layer(
             aggregation_snippet_offsets, str('aggregate_snippet_offsets'), "snippet_offsets", "id")
-        # TODO current change
 
+        # push rest of the hierarchy
         self.__push_aggregation(
             "pattern_single_pattern", "snippet_offsets", str('pattern_id'), str('single_pattern_id'))
         self.__push_aggregation("has_object", "pattern_single_pattern", str('bscale_id'), str('pattern_id'))
