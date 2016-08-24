@@ -1,10 +1,9 @@
 import re
-import HelperMethods
+from HelperMethods import add_quotes, compile_pattern, replace_brackets, replace_special_characters
 from collections import namedtuple
 from POSTagger import POSTagger
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import WhitespaceTokenizer
-from nltk.tokenize import BlanklineTokenizer
 
 
 class Prototype:
@@ -258,8 +257,8 @@ class Prototype:
                 for sent_obj in sentence_objects:
                     # push snippets
                     self.__push_snippets(sent_obj.sentence)
-                    snippet_id = self.postgre_db.get_id("snippets", "snippet=" + HelperMethods.add_quotes(
-                        HelperMethods.replace_special_characters(sent_obj.sentence)))
+                    snippet_id = self.postgre_db.get_id("snippets", "snippet=" + add_quotes(
+                        replace_special_characters(sent_obj.sentence)))
                     # push relations
                     self.__push_texts_snippets(text_id, snippet_id)
                     self.__push_snippet_offsets(
@@ -268,8 +267,8 @@ class Prototype:
     def __push_snippets(self, snippet):
         """Push found snippets onto the snippets table in PostGre DB, if not already in the table.
         Afterwards push the single_pattern and snippets relation."""
-        if not self.postgre_db.is_in_table("snippets", "snippet=" + HelperMethods.add_quotes(
-                HelperMethods.replace_special_characters(snippet))):
+        if not self.postgre_db.is_in_table("snippets", "snippet=" + add_quotes(
+                replace_special_characters(snippet))):
             self.postgre_db.insert("snippets", {"snippet": snippet})
 
     def __push_texts_snippets(self, text_id, snippet_id):
@@ -292,9 +291,8 @@ class Prototype:
             pid = self.postgre_db.get_id(
                 "snippet_offsets", "single_pattern_id=" + str(single_pattern_id) + " and snippet_id=" + str(
                     snippet_id))
-            self.postgre_db.delete_from_table("snippet_offsets", {"id": pid})
-            self.postgre_db.insert("snippet_offsets", {
-                "single_pattern_id": single_pattern_id, "snippet_id": snippet_id, "offsets": old_list})
+            self.postgre_db.update(
+                "snippet_offsets", "offsets=" + add_quotes(replace_brackets(str(old_list))), "id=" + str(pid))
 
     def __push_relation(self, id1, id2, id1_name, id2_name, table):
         """Push a relation onto the PostGre DB. The relation has to have a primary key."""
@@ -309,10 +307,8 @@ class Prototype:
             old_list = self.postgre_db.get(table, id1_name + "=" + str(
                 id1), id2_name)
             new_list = list(set(old_list + [id2]))
-            self.postgre_db.delete_from_table(table, {
-                id1_name: id1})
-            self.postgre_db.insert(table, {
-                id1_name: id1, id2_name: new_list, "aggregation": 0})
+            self.postgre_db.update(
+                table, id2_name + "=" + add_quotes(replace_brackets(str(new_list))), id1_name + "=" + str(id1))
 
     def __push_aggregation_lowest_layer(self, aggregation_object, aggregation_name, table, id_name):
         """Push the aggregated snippet numbers onto corresponding the lower layer tables."""
@@ -374,15 +370,13 @@ class Prototype:
     def pos_tagging(self):
         """POS tag all dialogues and monologues."""
         snippets = self.postgre_db.get_data_from_table("snippets")
-        for snippet in snippets:
-            HelperMethods.search_for_dialog(snippet)
 
 
 def find_right_sentence_boundary(tokens, ind, steps):
     # TODO in höhere Ebene bringen -> boundaries austauschbar
-    sentence_boundary = HelperMethods.compile_pattern('(\w)*(\.|!|\?)+(?!.)')
-    sentence_boundary_special = HelperMethods.compile_pattern('(\w)*(\.|!|\?)\S(?!,)')
-    next_token = HelperMethods.compile_pattern('(\W)*(\w+)(,)*')
+    sentence_boundary = compile_pattern('(\w)*(\.|!|\?)+(?!.)')
+    sentence_boundary_special = compile_pattern('(\w)*(\.|!|\?)\S(?!,)')
+    next_token = compile_pattern('(\W)*(\w+)(,)*')
     found_boundary = False
 
     if re.search(sentence_boundary, tokens[ind + steps]):
@@ -396,9 +390,9 @@ def find_right_sentence_boundary(tokens, ind, steps):
 
 def find_left_sentence_boundary(tokens, ind, steps):
     # TODO in höhere Ebene bringen -> boundaries austauschbar
-    sentence_boundary = HelperMethods.compile_pattern('(\w)*(\.|!|\?)+(?!.)')
-    sentence_boundary_special = HelperMethods.compile_pattern('(\w)*(\.|!|\?)\S')
-    next_token = HelperMethods.compile_pattern('(\W(\w+)(,)*)')
+    sentence_boundary = compile_pattern('(\w)*(\.|!|\?)+(?!.)')
+    sentence_boundary_special = compile_pattern('(\w)*(\.|!|\?)\S')
+    next_token = compile_pattern('(\W(\w+)(,)*)')
     found_boundary = False
 
     if re.search(sentence_boundary, tokens[ind - steps]):

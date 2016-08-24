@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8967fbb0-d593-4f05-9572-bb5e10e7e15f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HelperMethods.py" afterPath="$PROJECT_DIR$/HelperMethods.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Main.py" afterPath="$PROJECT_DIR$/Main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Prototype.py" afterPath="$PROJECT_DIR$/Prototype.py" />
     </list>
@@ -27,8 +28,8 @@
       <file leaf-file-name="PostGreDBConnector.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PostGreDBConnector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1530">
-              <caret line="92" column="8" selection-start-line="92" selection-start-column="8" selection-end-line="92" selection-end-column="8" />
+            <state relative-caret-position="223">
+              <caret line="88" column="68" selection-start-line="88" selection-start-column="68" selection-end-line="88" selection-end-column="68" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -51,8 +52,8 @@
       <file leaf-file-name="Prototype.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Prototype.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="304" column="66" selection-start-line="304" selection-start-column="66" selection-end-line="304" selection-end-column="66" />
+            <state relative-caret-position="131">
+              <caret line="292" column="32" selection-start-line="292" selection-start-column="32" selection-end-line="292" selection-end-column="32" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -63,7 +64,7 @@
       <file leaf-file-name="germanParser.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PMI/germanParser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2482">
+            <state relative-caret-position="206">
               <caret line="151" column="66" selection-start-line="151" selection-start-column="66" selection-end-line="151" selection-end-column="66" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
@@ -75,8 +76,8 @@
       <file leaf-file-name="HelperMethods.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HelperMethods.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+            <state relative-caret-position="340">
+              <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -109,8 +110,8 @@
       <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="74" selection-start-line="17" selection-start-column="74" selection-end-line="17" selection-end-column="74" />
+            <state relative-caret-position="306">
+              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -153,13 +154,13 @@
         <option value="$PROJECT_DIR$/persons.rdf" />
         <option value="$PROJECT_DIR$/TestRDFParser.py" />
         <option value="$PROJECT_DIR$/POSTagger.py" />
-        <option value="$PROJECT_DIR$/PostGreDBConnector.py" />
         <option value="$PROJECT_DIR$/RDFParser.py" />
         <option value="$PROJECT_DIR$/PMI/projectionprinciple.py" />
         <option value="$PROJECT_DIR$/PMI/databaase.py" />
         <option value="$PROJECT_DIR$/PMI/germanParser.py" />
-        <option value="$PROJECT_DIR$/HelperMethods.py" />
+        <option value="$PROJECT_DIR$/PostGreDBConnector.py" />
         <option value="$PROJECT_DIR$/Main.py" />
+        <option value="$PROJECT_DIR$/HelperMethods.py" />
         <option value="$PROJECT_DIR$/Prototype.py" />
       </list>
     </option>
@@ -717,7 +718,14 @@
       <option name="project" value="LOCAL" />
       <updated>1472026778432</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="-Extra functions to window search. Only sentence window so far tested">
+      <created>1472036484849</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1472036484849</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -785,7 +793,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="changed code, so I don't have to delete the whole database by hand anymore. :)" />
     <MESSAGE value="Change code, so it works for Der Idiot. Stil need to get some new sentence boundaries etc." />
     <MESSAGE value="Change in sentence boundary search. Implementing more word feature for sentence_window and add index boundaries" />
     <MESSAGE value="sentence_window for more words works, but not the one word anymore. lol" />
@@ -810,17 +817,11 @@
     <MESSAGE value="-Changing snippet aggregation. &#10;-Adding Bscale attributes. &#10;-Adding Sahar's code for adjective and verb extraction and PMI. Adjective extraction is working for simple and longer sentences. Short sentences with only ADJ + NOUN + CONJ + ADJ + NOUN don't seem to work for now." />
     <MESSAGE value="-Enhancing sentence window by using NLTK and bug-fixing offset problem as well as sentence border problems." />
     <MESSAGE value="-Finalizing sentence mode" />
-    <option name="LAST_COMMIT_MESSAGE" value="-Finalizing sentence mode" />
+    <MESSAGE value="-Extra functions to window search. Only sentence window so far tested" />
+    <option name="LAST_COMMIT_MESSAGE" value="-Extra functions to window search. Only sentence window so far tested" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/Prototype.py</url>
-          <line>114</line>
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -1113,26 +1114,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PostGreDBConnector.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1530">
-          <caret line="92" column="8" selection-start-line="92" selection-start-column="8" selection-end-line="92" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#17#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PMI/germanParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2482">
-          <caret line="151" column="66" selection-start-line="151" selection-start-column="66" selection-end-line="151" selection-end-column="66" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python35/Lib/site-packages/nltk/tokenize/util.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="148">
@@ -1168,14 +1149,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HelperMethods.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/POSTagger.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="410">
@@ -1196,20 +1169,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PostGreDBConnector.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="88" column="68" selection-start-line="88" selection-start-column="68" selection-end-line="88" selection-end-column="68" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="74" selection-start-line="17" selection-start-column="74" selection-end-line="17" selection-end-column="74" />
+        <state relative-caret-position="306">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PMI/germanParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="151" column="66" selection-start-line="151" selection-start-column="66" selection-end-line="151" selection-end-column="66" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HelperMethods.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Prototype.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="304" column="66" selection-start-line="304" selection-start-column="66" selection-end-line="304" selection-end-column="66" />
+        <state relative-caret-position="131">
+          <caret line="292" column="32" selection-start-line="292" selection-start-column="32" selection-end-line="292" selection-end-column="32" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
