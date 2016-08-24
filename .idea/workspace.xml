@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8967fbb0-d593-4f05-9572-bb5e10e7e15f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HelperMethods.py" afterPath="$PROJECT_DIR$/HelperMethods.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Prototype.py" afterPath="$PROJECT_DIR$/Prototype.py" />
     </list>
     <ignored path="Masterarbeit.iws" />
@@ -26,7 +27,7 @@
       <file leaf-file-name="PostGreDBConnector.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PostGreDBConnector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="148">
+            <state relative-caret-position="1530">
               <caret line="92" column="8" selection-start-line="92" selection-start-column="8" selection-end-line="92" selection-end-column="8" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
@@ -38,7 +39,7 @@
       <file leaf-file-name="RDFParser.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RDFParser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
+            <state relative-caret-position="240">
               <caret line="147" column="22" selection-start-line="147" selection-start-column="22" selection-end-line="147" selection-end-column="22" />
               <folding>
                 <element signature="e#0#127#0" expanded="true" />
@@ -50,8 +51,8 @@
       <file leaf-file-name="Prototype.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Prototype.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
+            <state relative-caret-position="308">
+              <caret line="242" column="0" selection-start-line="242" selection-start-column="0" selection-end-line="242" selection-end-column="0" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -59,33 +60,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="util.py" pinned="false" current-in-tab="false">
-        <entry file="file://C:/Python35/Lib/site-packages/nltk/tokenize/util.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="148">
-              <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="germanParser.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PMI/germanParser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1073">
+            <state relative-caret-position="2482">
               <caret line="151" column="66" selection-start-line="151" selection-start-column="66" selection-end-line="151" selection-end-column="66" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="projectionprinciple.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PMI/projectionprinciple.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1580">
-              <caret line="262" column="16" selection-start-line="262" selection-start-column="16" selection-end-line="262" selection-end-column="16" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -96,8 +75,8 @@
       <file leaf-file-name="HelperMethods.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HelperMethods.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="206">
-              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+            <state relative-caret-position="255">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -106,7 +85,7 @@
       <file leaf-file-name="databaase.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PMI/databaase.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2499">
+            <state relative-caret-position="2431">
               <caret line="147" column="0" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
@@ -118,7 +97,7 @@
       <file leaf-file-name="POSTagger.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/POSTagger.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="629">
+            <state relative-caret-position="578">
               <caret line="37" column="12" selection-start-line="37" selection-start-column="12" selection-end-line="37" selection-end-column="54" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
@@ -130,7 +109,7 @@
       <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
+            <state relative-caret-position="187">
               <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
@@ -169,7 +148,6 @@
         <option value="$PROJECT_DIR$/classes.puml" />
         <option value="$PROJECT_DIR$/test.rdf" />
         <option value="$PROJECT_DIR$/parsing.py" />
-        <option value="$PROJECT_DIR$/HelperMethods.py" />
         <option value="$PROJECT_DIR$/MongoDBConnector.py" />
         <option value="$PROJECT_DIR$/locations.rdf" />
         <option value="$PROJECT_DIR$/persons.rdf" />
@@ -181,6 +159,7 @@
         <option value="$PROJECT_DIR$/PMI/databaase.py" />
         <option value="$PROJECT_DIR$/PMI/germanParser.py" />
         <option value="$PROJECT_DIR$/Main.py" />
+        <option value="$PROJECT_DIR$/HelperMethods.py" />
         <option value="$PROJECT_DIR$/Prototype.py" />
       </list>
     </option>
@@ -227,6 +206,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -261,7 +241,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -724,7 +703,14 @@
       <option name="project" value="LOCAL" />
       <updated>1471948994295</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="-Enhancing sentence window by using NLTK and bug-fixing offset problem as well as sentence border problems.">
+      <created>1471979990094</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1471979990094</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -744,7 +730,6 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12225476" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32937685" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3249258" sideWeight="0.5058565" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32789317" sideWeight="0.4897511" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20029673" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29970327" sideWeight="0.4941435" order="2" side_tool="false" content_ui="tabs" />
@@ -757,6 +742,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32789317" sideWeight="0.4897511" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -792,7 +778,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Make files compatible with Python 3. Also read in Der Idiot from Web. Encoding is to do." />
     <MESSAGE value="Web Scratcher done" />
     <MESSAGE value="changed code, so I don't have to delete the whole database by hand anymore. :)" />
     <MESSAGE value="Change code, so it works for Der Idiot. Stil need to get some new sentence boundaries etc." />
@@ -817,10 +802,23 @@
     <MESSAGE value="Adding aggregation bottom up. Covered for the lowest layer tables." />
     <MESSAGE value="Adding aggregation bottom up. Covered the whole structure. Snippets are counted multiple times if occuring twice or more times." />
     <MESSAGE value="-Changing snippet aggregation. &#10;-Adding Bscale attributes. &#10;-Adding Sahar's code for adjective and verb extraction and PMI. Adjective extraction is working for simple and longer sentences. Short sentences with only ADJ + NOUN + CONJ + ADJ + NOUN don't seem to work for now." />
-    <option name="LAST_COMMIT_MESSAGE" value="-Changing snippet aggregation. &#10;-Adding Bscale attributes. &#10;-Adding Sahar's code for adjective and verb extraction and PMI. Adjective extraction is working for simple and longer sentences. Short sentences with only ADJ + NOUN + CONJ + ADJ + NOUN don't seem to work for now." />
+    <MESSAGE value="-Enhancing sentence window by using NLTK and bug-fixing offset problem as well as sentence border problems." />
+    <option name="LAST_COMMIT_MESSAGE" value="-Enhancing sentence window by using NLTK and bug-fixing offset problem as well as sentence border problems." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/Prototype.py</url>
+          <line>117</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/Prototype.py</url>
+          <line>141</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -828,38 +826,15 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="27" />
+      <option name="time" value="33" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Prototype.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RDFParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#127#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MongoDBConnector.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="25" column="7" selection-start-line="25" selection-start-column="7" selection-end-line="25" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -877,9 +852,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="25" column="7" selection-start-line="25" selection-start-column="7" selection-end-line="25" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -904,9 +876,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="25" column="7" selection-start-line="25" selection-start-column="7" selection-end-line="25" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -924,9 +893,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="782">
           <caret line="48" column="23" selection-start-line="48" selection-start-column="23" selection-end-line="48" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -944,9 +910,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="24" column="18" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -964,9 +927,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="24" column="18" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1138,15 +1098,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
           <caret line="32" column="35" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PMI/projectionprinciple.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1580">
+        <state relative-caret-position="4437">
           <caret line="262" column="16" selection-start-line="262" selection-start-column="16" selection-end-line="262" selection-end-column="16" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
@@ -1156,7 +1113,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/POSTagger.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
+        <state relative-caret-position="578">
           <caret line="37" column="12" selection-start-line="37" selection-start-column="12" selection-end-line="37" selection-end-column="54" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
@@ -1166,7 +1123,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/PostGreDBConnector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
+        <state relative-caret-position="1530">
           <caret line="92" column="8" selection-start-line="92" selection-start-column="8" selection-end-line="92" selection-end-column="8" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
@@ -1174,19 +1131,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RDFParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="147" column="22" selection-start-line="147" selection-start-column="22" selection-end-line="147" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#127#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PMI/germanParser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1073">
+        <state relative-caret-position="2482">
           <caret line="151" column="66" selection-start-line="151" selection-start-column="66" selection-end-line="151" selection-end-column="66" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
@@ -1196,7 +1143,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
+        <state relative-caret-position="187">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
@@ -1208,21 +1155,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="148">
           <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HelperMethods.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PMI/databaase.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2499">
+        <state relative-caret-position="2431">
           <caret line="147" column="0" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
@@ -1230,10 +1168,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://C:/Python35/Lib/site-packages/nltk/data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2147">
+          <caret line="718" column="4" selection-start-line="718" selection-start-column="4" selection-end-line="718" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python35/Lib/site-packages/nltk/tokenize/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="89" column="18" selection-start-line="89" selection-start-column="18" selection-end-line="89" selection-end-column="18" />
+          <folding>
+            <element signature="e#2526#2565#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HelperMethods.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RDFParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="147" column="22" selection-start-line="147" selection-start-column="22" selection-end-line="147" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Prototype.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
+        <state relative-caret-position="308">
+          <caret line="242" column="0" selection-start-line="242" selection-start-column="0" selection-end-line="242" selection-end-column="0" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>

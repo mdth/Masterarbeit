@@ -3,8 +3,8 @@ import HelperMethods
 from collections import namedtuple
 from POSTagger import POSTagger
 from nltk.tokenize import sent_tokenize
-from nltk.tokenize import string_span_tokenize
 from nltk.tokenize import WhitespaceTokenizer
+from nltk.tokenize import BlanklineTokenizer
 
 
 class Prototype:
@@ -94,14 +94,11 @@ class Prototype:
         current sentence the pattern is found in. size n will return n sentences left and right
         from the initial sentence."""
         split_pattern = pattern.split()
-        # TODO delete
-        textsnippets = []
         if len(split_pattern) > 1:
             textsnippets = self.__get_sentence_window_more_words(pattern, split_pattern)
         else:
-            # TODO
+            # TODO bug fixing
             textsnippets = self.__get_sentence_window_one_word(pattern, sentences)
-
 
         # OLD IMPLEMENTATION
         #if len(split_pattern) > 1:
@@ -114,16 +111,11 @@ class Prototype:
         """Get sentence snippets with pattern containing of only one words according to window size."""
         textsnippets = []
         tokenizer = WhitespaceTokenizer()
-
         for ind, sent in enumerate(sentences):
             tokens = tokenizer.tokenize(sent)
             for i, token in enumerate(tokens):
                 if check_pattern(pattern, token):
-                    if self.window_size > 0:
-                        sentence = sentences[ind - self.window_size:ind + self.window_size]
-                    else:
-                        sentence = sentences[ind]
-
+                    sentence = self.__get_sentences(ind, sentences)
                     # get offsets
                     offsets = list(tokenizer.span_tokenize(sent))
                     offset_start = offsets[i][0]
@@ -147,13 +139,13 @@ class Prototype:
                 else:
                     break
             if p_index == len(split_pattern):
-                # TODO more details
                 if (ind - self.window_size) < 0:
                     sentence = sentences[0:ind+self.window_size]
-                elif ind + self.window_size >= len(tokens):
+                elif (ind + self.window_size) >= len(tokens):
+                    # TODO Randfall -> decreasing window_size by one if it's bigger
                     sentence = sentences[ind-self.window_size:len(sentences)-1]
                 else:
-                    sentence = sentences[ind-self.window_size:ind+self.window_size]
+                    sentence = self.__get_sentences(ind, sentences)
 
                 # get offsets
                 offsets = list(tokenizer.span_tokenize(sent))
@@ -162,6 +154,13 @@ class Prototype:
                 SentObj = namedtuple('Sentence_Object', ['sentence', 'offset_start', 'offset_end'])
                 textsnippets.append(SentObj(sentence=sentence, offset_start=offset_start, offset_end=offset_end))
         return textsnippets
+
+    def __get_sentences(self, ind, sentences):
+        if self.window_size > 0:
+            sentence = sentences[ind - self.window_size:ind + self.window_size]
+        else:
+            sentence = sentences[ind]
+        return sentence
 
     def __get_sentence_window_more_words_help(self, pattern, split_pattern, tokens):
         """Deprecated."""
@@ -221,9 +220,13 @@ class Prototype:
         """Finds text windows with variable size."""
 
         for pattern in self.postgre_db.get_data_from_table("single_pattern"):
+            # TODO billig fix
             if self.sentence_mode:
+                for ch in ['›', '‹', '»', '«']:
+                    if ch in text:
+                        text = text.replace(ch, '"')
                 sentence_objects = self.__get_sentence_window(
-                    pattern['single_pattern'], sent_tokenize(text, language="german"))
+                    pattern['single_pattern'], sent_tokenize(text, language='german'))
             else:
                 sentence_objects = self.__get_word_window(pattern['single_pattern'], text.split())
             if len(sentence_objects) > 0:
@@ -233,7 +236,6 @@ class Prototype:
                     self.__push_snippets(sent_obj.sentence)
                     snippet_id = self.postgre_db.get_id("snippets", "snippet=" + HelperMethods.add_quotes(
                         HelperMethods.replace_special_characters(sent_obj.sentence)))
-
                     # push relations
                     self.__push_texts_snippets(text_id, snippet_id)
                     self.__push_snippet_offsets(
