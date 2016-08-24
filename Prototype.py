@@ -89,16 +89,17 @@ class Prototype:
         else:
             return " ".join(tokens[indl - self.window_size:indr + (self.window_size + 1)])
 
-    def __get_sentence_window(self, pattern, sentences):
+    def __get_sentence_window(self, pattern, sentences, **kwargs):
         """Get a word window list with a specific number of sentences. size 0 will return the
         current sentence the pattern is found in. size n will return n sentences left and right
         from the initial sentence."""
         split_pattern = pattern.split()
+
         if len(split_pattern) > 1:
-            textsnippets = self.__get_sentence_window_more_words(pattern, split_pattern)
+            textsnippets = self.__get_sentence_window_more_words(pattern, split_pattern, **kwargs)
         else:
             # TODO bug fixing
-            textsnippets = self.__get_sentence_window_one_word(pattern, sentences)
+            textsnippets = self.__get_sentence_window_one_word(pattern, sentences, **kwargs)
 
         # OLD IMPLEMENTATION
         #if len(split_pattern) > 1:
@@ -107,24 +108,48 @@ class Prototype:
         #    textsnippets = self.__get_sentence_window_one_word_help(pattern, tokens)
         return textsnippets
 
-    def __get_sentence_window_one_word(self, pattern, sentences):
+    def process_kwargs(self, **kwargs):
+        to_pattern = ""
+        word = ""
+        position = 0
+        if len(kwargs) != 0:
+            for key in kwargs:
+                if key == "keyword":
+                    to_pattern = kwargs[key]
+                if key == "constraint":
+                    word = kwargs[key]
+                if key == "position":
+                    position = kwargs[key]
+            return to_pattern, word, position
+        else:
+            return None
+
+    def __get_sentence_window_one_word(self, pattern, sentences, **kwargs):
         """Get sentence snippets with pattern containing of only one words according to window size."""
         textsnippets = []
+        add_info = self.process_kwargs(**kwargs)
         tokenizer = WhitespaceTokenizer()
         for ind, sent in enumerate(sentences):
             tokens = tokenizer.tokenize(sent)
             for i, token in enumerate(tokens):
                 if check_pattern(pattern, token):
-                    sentence = self.__get_sentences(ind, sentences)
-                    # get offsets
-                    offsets = list(tokenizer.span_tokenize(sent))
-                    offset_start = offsets[i][0]
-                    offset_end = offsets[i][1]
-                    SentObj = namedtuple('Sentence_Object', ['sentence', 'offset_start', 'offset_end'])
-                    textsnippets.append(SentObj(sentence=sentence, offset_start=offset_start, offset_end=offset_end))
+                    if add_info is not None and check_pattern(pattern, add_info[0]):
+                        if check_pattern(add_info[1], tokens[i + add_info[2]]):
+                            self.__get_sentence_window_one_word_help1(i, ind, sent, sentences, textsnippets, tokenizer)
+                    else:
+                        self.__get_sentence_window_one_word_help1(i, ind, sent, sentences, textsnippets, tokenizer)
         return textsnippets
 
-    def __get_sentence_window_more_words(self, split_pattern, sentences):
+    def __get_sentence_window_one_word_help1(self, i, ind, sent, sentences, textsnippets, tokenizer):
+        sentence = self.__get_sentences(ind, sentences)
+        # get offsets
+        offsets = list(tokenizer.span_tokenize(sent))
+        offset_start = offsets[i][0]
+        offset_end = offsets[i][1]
+        SentObj = namedtuple('Sentence_Object', ['sentence', 'offset_start', 'offset_end'])
+        textsnippets.append(SentObj(sentence=sentence, offset_start=offset_start, offset_end=offset_end))
+
+    def __get_sentence_window_more_words(self, split_pattern, sentences, **kwargs):
         """Get sentence snippets with pattern containing of more than 2 words according to window size."""
         textsnippets = []
         tokenizer = WhitespaceTokenizer()
@@ -162,7 +187,7 @@ class Prototype:
             sentence = sentences[ind]
         return sentence
 
-    def __get_sentence_window_more_words_help(self, pattern, split_pattern, tokens):
+    def __get_sentence_window_more_words_help(self, pattern, split_pattern, tokens, **kwargs):
         """Deprecated."""
         textsnippets = []
         for ind, token in enumerate(tokens):
@@ -216,9 +241,8 @@ class Prototype:
                 textsnippets.append(self.__get_textsnippets_sentence(pattern, tokens, ind, ind))
         return textsnippets
 
-    def find_text_window(self, text, text_id):
+    def find_text_window(self, text, text_id, **kwargs):
         """Finds text windows with variable size."""
-
         for pattern in self.postgre_db.get_data_from_table("single_pattern"):
             # TODO billig fix
             if self.sentence_mode:
@@ -226,7 +250,7 @@ class Prototype:
                     if ch in text:
                         text = text.replace(ch, '"')
                 sentence_objects = self.__get_sentence_window(
-                    pattern['single_pattern'], sent_tokenize(text, language='german'))
+                    pattern['single_pattern'], sent_tokenize(text, language='german'), **kwargs)
             else:
                 sentence_objects = self.__get_word_window(pattern['single_pattern'], text.split())
             if len(sentence_objects) > 0:
@@ -323,11 +347,11 @@ class Prototype:
 
             self.postgre_db.update(table, "aggregation=" + str(aggregation), table_id + "=" + str(entry_id))
 
-    def get_snippets(self):
+    def get_snippets(self, **kwargs):
         """Get snippets for the whole corpus."""
         for ind, text in enumerate(self.mongo_db.get({"title": "Chapter 1"})):
             self.postgre_db.insert("texts", {"title": text['title']})
-            self.find_text_window(text['text'], text['id'])
+            self.find_text_window(text['text'], text['id'], **kwargs)
             print("Chapter " + str(text['id']) + " done.")
 
     def aggregation(self):
