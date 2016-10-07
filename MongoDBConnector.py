@@ -15,8 +15,7 @@ class MongoDBConnector:
             self.__client = MongoClient()
             # TODO only throws exception if system can't access database...
             print("Mongo DB connection successfully built...")
-        except Exception:
-            # TODO own exception
+        except ConnectionError:
             print("Mongo DB connection could not be built...")
 
         self.__db = self.__client.database

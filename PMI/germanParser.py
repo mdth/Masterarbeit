@@ -12,14 +12,21 @@ NP: {<CD>?((<JJ.*><CC>|<,>))*(<JJ.*>|<N.*>)+}
 """
 # use this regular expression for the chunking to get the different related ADJs with NLTK!!
 Np_GRAMMAR_SIMPLE_UNIVERSAL = """
-NP : {((<ADJ.*><CONJ>|<,>))*(<ADJ.*>|<NOUN|PROPN>)+}
+NP : {((<ADJ>(<PUNCT>)*(<CONJ>)*)*(<ADJ>(<NOUN>|<PROPN>))+|(<NOUN><AUX><ADJ>((<PUNCT>)*(<CONJ>)*<ADJ>))+)}
 """
+
+# old grammar
+#Np_GRAMMAR_SIMPLE_UNIVERSAL = """
+#NP : {((<ADJ.*><CONJ>|<,>))*(<ADJ.*>|<NOUN|PROPN>)+}
+#"""
+
+
 parser_smp = RegexpParser(Np_GRAMMAR_SIMPLE_UNIVERSAL)
 
 NP_Noun_Simple = """NP: {(<NOUN|PROPN>)+}
 """
-parser_NP  = RegexpParser(NP_Noun_Simple)
-NAMED_ENTITIES_TAGS = ["GPE","PERSON","ORGANIZATION","LOCATION","DATE","TIME","MONEY","PERCENT","FACILITY"]
+parser_NP = RegexpParser(NP_Noun_Simple)
+NAMED_ENTITIES_TAGS = ["GPE", "PERSON", "ORGANIZATION", "LOCATION", "DATE", "TIME", "MONEY", "PERCENT", "FACILITY"]
 lem = WordNetLemmatizer()
 
 # need to change the named entity chunker to germna one !!!
@@ -71,13 +78,13 @@ def get_related_noun(chunk):
     :param chunk:
     :return:
     """
-    ent=[]
+    ent = []
     for i in chunk:
         if i.pos_ in ["NOUN","PROPN"]:
-         if i.ent_type:
-          ent.append(i.string)
-         else:
-            yield i.string
+            if i.ent_type:
+                ent.append(i.string)
+            else:
+                yield i.string
     if ent:
         yield functools.reduce(lambda x, y: x + ' ' + y,ent).strip()
 
@@ -89,15 +96,14 @@ def nouns_adj_spacy(doc):
     :return:
     """
     for chunk in doc.noun_chunks:
-        print(chunk)
         adjs = []
         for i in chunk:
             if i.pos_ == 'ADJ':
-                adjs.append(lem.lemmatize(i.string,'a'))
+                adjs.append(lem.lemmatize(i.string, 'a'))
         if adjs:
             for i in get_related_noun(chunk):
                 for j in adjs:
-                 yield {"noun": i,"adj": j}
+                    yield {"noun": i, "adj": j}
 
 # with NLTK
 def nouns_list(sent):
@@ -137,7 +143,7 @@ def get_noun_noun(doc):
     nouns =[]
     for chunk in doc.noun_chunk:
         nouns.append(related_noun(chunk))
-    for  i in range(len(nouns)-1):
+    for i in range(len(nouns)-1):
         yield {"noun":nouns[i],"rnoun": nouns[i+1]}
 
 
@@ -148,12 +154,47 @@ def get_noun_noun(doc):
 # getting the format of NLTK pos tags !
 #tags =[(t.orth_,t.pos_) for t in doc]
 
+
 nlp = spacy.load('de')
-doc = nlp("Schöne Mädchen und hübsche Jungen sitzen auf der gelben Bank.")
-tags =[(t.orth_,t.pos_) for t in doc]
-print(tags)
-gen = nouns_adj_spacy(doc)
-for i in gen:
+doc1 = nlp("Schöne Mädchen und hübsche Jungen sitzen auf der gelben Bank.")
+doc2 = nlp("Der kleine Hase heißt Max.")
+doc3 = nlp("Mein kleiner Hase.")
+doc4 = nlp("Der kleine, süße Hase war auf dem Weg nach Hause.")
+doc5 = nlp("Der kleine und süße Hase war Marias Haustier.")
+doc6 = nlp("Der kleine, aber freche Hase wusste wie er sich zu wehren hatte.")
+doc7 = nlp("Der Hase ist klein, aber kein Kuscheltier.")
+doc8 = nlp("Eine bahnbrechende physikalische Entdeckung wurde letztes Jahr auf der Messe X vorgestellt.")
+
+print(list(doc2.noun_chunks))
+print(list(doc3.noun_chunks))
+print(list(doc4.noun_chunks))
+print(list(doc5.noun_chunks))
+print(list(doc6.noun_chunks))
+print(list(doc7.noun_chunks))
+print(list(doc8.noun_chunks))
+print("-------------")
+
+for i in nouns_adj_spacy(doc1):
     print(i)
-    #{'noun': 'Mädchen ', 'adj': 'schöne '}
-    #{'noun': 'Junge ', 'adj': 'saubere '}
+for i in nouns_adj_spacy(doc2):
+    print(i)
+for i in nouns_adj_spacy(doc3):
+    print(i)
+for i in nouns_adj_spacy(doc4):
+    print(i)
+for i in nouns_adj_spacy(doc5):
+    print(i)
+for i in nouns_adj_spacy(doc6):
+    print(i)
+for i in nouns_adj_spacy(doc7):
+    print(i)
+for i in nouns_adj_spacy(doc8):
+    print(i)
+
+
+print("-------------------------------")
+
+
+#gen2 = get_adjs(nlp(doc))
+#for i in gen2:
+#    print(i)

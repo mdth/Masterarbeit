@@ -13,7 +13,7 @@ class PostGreDBConnector:
         try:
             self.__db = DB(dbname='testdb', host='localhost', port=5432, user='postgres', passwd='superuser')
             print("PostGre DB connection successfully built...")
-        except Exception:
+        except ConnectionError:
             print("PostGre DB connection could not be built...")
 
         # self.delete_all_data()
@@ -88,7 +88,6 @@ class PostGreDBConnector:
         WHERE = " WHERE "
         query = UPDATE + table + SET + values + WHERE + where_clause
         self.query(query)
-
 
     def get(self, table, where_clause, key):
         """Search for a chosen key of a specific item in a table."""

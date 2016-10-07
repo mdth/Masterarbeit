@@ -254,7 +254,7 @@ for i in gen:
 #The girls stared at their father('girls ', 'father', 'stared ')"""
 
 nlp = spacy.load('de')
-doc = nlp("Der Junge isst eine Banane.")
+doc = nlp("Der Junge isst eine Banane. Heute war ich in Venedig. Lisa mag Bart sehr gerne. Der Hase sprintet schnell, aber die Schildkröte trödelt ungemein.")
 for i in doc:
     print(i.string, i.dep_, i.head)
 gen = getsvo(doc)
