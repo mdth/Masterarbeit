@@ -17,6 +17,7 @@ class Prototype:
         self.postagger = postagger
         self.sentence_mode = sentence_mode
         self.window_size = window_size
+        self.tokenizer = WhitespaceTokenizer()
 
     def change_postagger(self, name):
         """Change the current POS tagger to a new one."""
@@ -37,7 +38,6 @@ class Prototype:
             textsnippets = self.__get_word_window_more_words_help(split_pattern, tokens)
         else:
             textsnippets = self.__get_word_window_one_word_help(pattern, tokens)
-
         return textsnippets
 
     def __get_word_window_more_words_help(self, split_pattern, tokens):
@@ -61,7 +61,12 @@ class Prototype:
         textlength = len(tokens)
         for ind, token in enumerate(tokens):
             if check_pattern(pattern, token):
-                textsnippets.append(self.__get_textsnippets(ind, ind, textlength, tokens))
+                snippet = self.__get_textsnippets(ind, ind, textlength, tokens)
+                offsets = list(self.tokenizer.span_tokenize(snippet))
+                offset_start = offsets[self.window_size][0]
+                offset_end = offsets[self.window_size][1]
+                SentObj = namedtuple('Sentence_Object', ['snippet', 'offset_start', 'offset_end'])
+                textsnippets.append(SentObj(snippet=snippet, offset_start=offset_start, offset_end=offset_end))
         return textsnippets
 
     def __get_textsnippets(self, indl, indr, textlength, tokens):
@@ -97,32 +102,24 @@ class Prototype:
         if len(split_pattern) > 1:
             textsnippets = self.__get_sentence_window_more_words(pattern, split_pattern, constraints)
         else:
-            # TODO bug fixing
             textsnippets = self.__get_sentence_window_one_word(pattern, sentences, constraints)
-
-        # OLD IMPLEMENTATION
-        #if len(split_pattern) > 1:
-        #    textsnippets = self.__get_sentence_window_more_words_help(pattern, split_pattern, tokens)
-        #else:
-        #    textsnippets = self.__get_sentence_window_one_word_help(pattern, tokens)
         return textsnippets
 
     def __get_sentence_window_one_word(self, pattern, sentences, constraints):
         """Get sentence snippets with pattern containing of only one words according to window size."""
         textsnippets = []
-        tokenizer = WhitespaceTokenizer()
         for ind, sent in enumerate(sentences):
-            tokens = tokenizer.tokenize(sent)
+            tokens = self.tokenizer.tokenize(sent)
             for i, token in enumerate(tokens):
                 if check_pattern(pattern, token):
                     if constraints is not None:
-                        self.__check_constraints(constraints, i, ind, pattern, sent, sentences, textsnippets, tokenizer,
+                        self.__check_constraints(constraints, i, ind, pattern, sent, sentences, textsnippets,
                                                  tokens)
                     else:
-                        self.__get_sentence_window_one_word_help1(i, ind, sent, sentences, textsnippets, tokenizer)
+                        self.__get_sentence_window_one_word_help1(i, ind, sent, sentences, textsnippets)
         return textsnippets
 
-    def __check_constraints(self, constraints, i, ind, pattern, sent, sentences, textsnippets, tokenizer, tokens):
+    def __check_constraints(self, constraints, i, ind, pattern, sent, sentences, textsnippets, tokens):
         """Traverse the given list of constraints and find target words near the keyword. The number of word distance
         is given in the constraint list.
         add_info[0] is the keyword aka pattern.
@@ -135,7 +132,7 @@ class Prototype:
                 index = add_info[2]
                 if (0 < i + index < len(tokens)) and check_pattern(add_info[1], tokens[i + index]):
                     self.__get_sentence_window_one_word_help1(
-                        i, ind, sent, sentences, textsnippets, tokenizer)
+                        i, ind, sent, sentences, textsnippets)
                 else:
                     while index != 0:
                         if index > 0:
@@ -146,24 +143,23 @@ class Prototype:
                         if (0 < i + index < len(tokens)) and check_pattern(
                                 add_info[1], tokens[i + index]):
                             self.__get_sentence_window_one_word_help1(
-                                i, ind, sent, sentences, textsnippets, tokenizer)
+                                i, ind, sent, sentences, textsnippets)
                             break
 
-    def __get_sentence_window_one_word_help1(self, i, ind, sent, sentences, textsnippets, tokenizer):
+    def __get_sentence_window_one_word_help1(self, i, ind, sent, sentences, textsnippets):
         sentence = self.__get_sentences(ind, sentences)
         # get offsets
-        offsets = list(tokenizer.span_tokenize(sent))
+        offsets = list(self.tokenizer.span_tokenize(sent))
         offset_start = offsets[i][0]
         offset_end = offsets[i][1]
-        SentObj = namedtuple('Sentence_Object', ['sentence', 'offset_start', 'offset_end'])
-        textsnippets.append(SentObj(sentence=sentence, offset_start=offset_start, offset_end=offset_end))
+        SentObj = namedtuple('Sentence_Object', ['snippet', 'offset_start', 'offset_end'])
+        textsnippets.append(SentObj(snippet=sentence, offset_start=offset_start, offset_end=offset_end))
 
     def __get_sentence_window_more_words(self, split_pattern, sentences, constraints):
         """Get sentence snippets with pattern containing of more than 2 words according to window size."""
         textsnippets = []
-        tokenizer = WhitespaceTokenizer()
         for ind, sent in enumerate(sentences):
-            tokens = tokenizer.tokenize(sent)
+            tokens = self.tokenizer.tokenize(sent)
             p_index = 0
             end_index = ind
             while p_index < len(split_pattern):
@@ -182,10 +178,10 @@ class Prototype:
                     sentence = self.__get_sentences(ind, sentences)
 
                 # get offsets
-                offsets = list(tokenizer.span_tokenize(sent))
+                offsets = list(self.tokenizer.span_tokenize(sent))
                 offset_start = offsets[p_index][0]
                 offset_end = offsets[end_index][1]
-                SentObj = namedtuple('Sentence_Object', ['sentence', 'offset_start', 'offset_end'])
+                SentObj = namedtuple('Sentence_Object', ['snippet', 'offset_start', 'offset_end'])
                 textsnippets.append(SentObj(sentence=sentence, offset_start=offset_start, offset_end=offset_end))
         return textsnippets
 
@@ -196,79 +192,28 @@ class Prototype:
             sentence = sentences[ind]
         return sentence
 
-    def __get_sentence_window_more_words_help(self, pattern, split_pattern, tokens, constraints):
-        """Deprecated."""
-        textsnippets = []
-        for ind, token in enumerate(tokens):
-            p_index = 0
-            end_index = ind
-            while p_index < len(split_pattern):
-                if (end_index < len(tokens)) and check_pattern(split_pattern[p_index], tokens[end_index]):
-                    p_index += 1
-                    end_index += 1
-                else:
-                    break
-            if p_index == len(split_pattern):
-                textsnippets.append(self.__get_textsnippets_sentence(pattern, tokens, ind, end_index - 1))
-        return textsnippets
-
-    def __get_textsnippets_sentence(self, pattern, tokens, beg_index, end_index):
-        sent_size = self.window_size + 1
-        sentence = ""
-        l = 1
-        r = 0
-        size1 = 0
-        size2 = 0
-        while size1 < sent_size:
-            if end_index + r > len(tokens) - 1:
-                break
-            elif find_right_sentence_boundary(tokens, end_index, r):
-                size1 += 1
-            r += 1
-        while size2 < sent_size:
-            if beg_index - l < 0:
-                sentence += " ".join(tokens[beg_index - l - 1:end_index + r])
-                break
-            elif beg_index - l == 0:
-                sentence += " ".join(tokens[beg_index - l:end_index + r])
-                break
-            elif find_left_sentence_boundary(tokens, beg_index, l):
-                size2 += 1
-            l += 1
-        if size2 == sent_size:
-            sentence += " ".join(tokens[beg_index - l + 2:end_index + r])
-
-        offset_start = sentence.index(pattern)
-        offset_end = offset_start + len(pattern) - 1
-        SentObj = namedtuple('Sentence_Object', ['sentence', 'offset_start', 'offset_end'])
-        return SentObj(sentence=sentence, offset_start=offset_start, offset_end=offset_end)
-
-    def __get_sentence_window_one_word_help(self, pattern, tokens):
-        textsnippets = []
-        for ind, token in enumerate(tokens):
-            if check_pattern(pattern, token):
-                textsnippets.append(self.__get_textsnippets_sentence(pattern, tokens, ind, ind))
-        return textsnippets
-
     def find_text_window(self, text, text_id, constraints):
         """Finds text windows with variable size."""
+        tokenized_text = self.tokenizer.tokenize(text)
         for pattern in self.postgre_db.get_data_from_table("single_pattern"):
-            # TODO billig fix
             if self.sentence_mode:
+                # this is only a quick and dirty fix: replace weird quotes to basic ones
                 for ch in ['›', '‹', '»', '«']:
                     if ch in text:
                         text = text.replace(ch, '"')
-                sentence_objects = self.__get_sentence_window(
+                windows_objects = self.__get_sentence_window(
                     pattern['single_pattern'], sent_tokenize(text, language='german'), constraints)
             else:
-                sentence_objects = self.__get_word_window(pattern['single_pattern'], text.split())
-            if len(sentence_objects) > 0:
+                windows_objects = self.__get_word_window(pattern['single_pattern'], tokenized_text)
+
+            # push found snippets onto database
+            if len(windows_objects) > 0:
                 single_pattern_id = pattern['id']
-                for sent_obj in sentence_objects:
+                for sent_obj in windows_objects:
                     # push snippets
-                    self.__push_snippets(sent_obj.sentence)
+                    self.__push_snippets(sent_obj.snippet)
                     snippet_id = self.postgre_db.get_id("snippets", "snippet=" + add_quotes(
-                        replace_special_characters(sent_obj.sentence)))
+                        replace_special_characters(sent_obj.snippet)))
                     # push relations
                     self.__push_texts_snippets(text_id, snippet_id)
                     self.__push_snippet_offsets(
@@ -380,38 +325,6 @@ class Prototype:
     def pos_tagging(self):
         """POS tag all dialogues and monologues."""
         snippets = self.postgre_db.get_data_from_table("snippets")
-
-
-def find_right_sentence_boundary(tokens, ind, steps):
-    # TODO in höhere Ebene bringen -> boundaries austauschbar
-    sentence_boundary = compile_pattern('(\w)*(\.|!|\?)+(?!.)')
-    sentence_boundary_special = compile_pattern('(\w)*(\.|!|\?)\S(?!,)')
-    next_token = compile_pattern('(\W)*(\w+)(,)*')
-    found_boundary = False
-
-    if re.search(sentence_boundary, tokens[ind + steps]):
-        found_boundary = True
-    elif re.search(sentence_boundary_special, tokens[ind + steps]):
-        next_index = ind + steps + 1
-        if next_index <= (len(tokens) - 1):
-            found_boundary = re.search(next_token, tokens[ind + steps + 1])
-    return found_boundary
-
-
-def find_left_sentence_boundary(tokens, ind, steps):
-    # TODO in höhere Ebene bringen -> boundaries austauschbar
-    sentence_boundary = compile_pattern('(\w)*(\.|!|\?)+(?!.)')
-    sentence_boundary_special = compile_pattern('(\w)*(\.|!|\?)\S')
-    next_token = compile_pattern('(\W(\w+)(,)*)')
-    found_boundary = False
-
-    if re.search(sentence_boundary, tokens[ind - steps]):
-        found_boundary = True
-    elif re.search(sentence_boundary_special, tokens[ind - steps]):
-        next_index = ind - steps + 1
-        if next_index >= 0:
-            found_boundary = re.search(next_token, tokens[ind - steps + 1])
-    return found_boundary
 
 
 def check_pattern(pattern, token):
