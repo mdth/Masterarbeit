@@ -4,20 +4,23 @@ from collections import namedtuple
 from POSTagger import POSTagger
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import WhitespaceTokenizer
+from PMI.Parser import Parser
 
 
 class Prototype:
     """Prototype system that searches for RDF pattern (aka Q-Calculus pattern) to find textsnippets."""
 
-    def __init__(self, mongo_db, postgre_db, postagger="tree-tagger", sentence_mode=True, window_size=0):
+    def __init__(self, mongo_db, postgre_db, postagger="spacy-tagger", sentence_mode=True, window_size=0):
         """Initialize a prototype system with a specified POS tagger, sentence or word mode and decide on the size
         for sentence or word windows size"""
         self.__mongo_db = mongo_db
         self.__postgre_db = postgre_db
         self.__postagger = postagger
+        #self.__postagger = POSTagger(postagger)
         self.__sentence_mode = sentence_mode
         self.__window_size = window_size
         self.tokenizer = WhitespaceTokenizer()
+        #self.parser = Parser()
 
     def exit(self):
         self.__mongo_db.close_connection()
