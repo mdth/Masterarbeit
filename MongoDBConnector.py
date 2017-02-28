@@ -20,7 +20,7 @@ class MongoDBConnector:
 
         self.__db = self.__client.database
         self.delete_all()
-        self.add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
+        #self.add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
         self.__db.dostojewski.create_index([('id', pymongo.ASCENDING)], unique=True)
 
     def add_articles(self, file_directory):
@@ -38,6 +38,9 @@ class MongoDBConnector:
 
     def get(self, search_term):
         return self.__db.dostojewski.find(search_term)
+
+    def close_connection(self):
+        self.__client.close()
 
 
 def read_in_txt_file(filename):

@@ -2,8 +2,8 @@ import spacy
 import itertools
 
 
-SUBJECTS = ["nsubj", "nsubjpass", "csubj", "csubjpass", "agent", "expl"]
-OBJECTS = ["dobj", "dative", "attr", "oprd","pobj"]
+SUBJECTS = ["sb", "oa"]
+OBJECTS = ["oa", "nk", "pd", "sb"]
 #@ TODO find a function to detect a question...
 #@ TODO test this module on german text
 # a parser that eliminates all modifiers and complement or relative
@@ -16,12 +16,12 @@ def get_SVO(tokens):
     #@TODO examin the case where there is a conjuction CC related to verbs !!! (two main clauses in one sentence)
     subject = ''
     object = ''
+    predicate = ''
     verb = next(item for item in tokens if item.dep_ == "ROOT")
-    if verb.pos_ != "VERB":
-        print("dependecy error")
+    if (verb.pos_ == "VERB") or (verb.pos_ == "AUX"):
+        predicate = verb.lemma_
     else:
-        # lemmatize the verb
-        predicate = verb.string
+        print("dependecy error")
 
     subs = [item for item in verb.lefts if item.dep_ in SUBJECTS]
     objs = [item for item in verb.rights if item.dep_ in OBJECTS]
@@ -35,7 +35,7 @@ def get_SVO(tokens):
             object = obj.string
             break
 
-    return (subject,object,verb.string)
+    return (subject, object, predicate)
 
 #testset :
 #"the boy eats banana" ->('boy ', 'banana', 'eats ')
@@ -154,6 +154,7 @@ def extractcompso(tokens, so):
 # do the same to the object compound !!
 
 def extractsvo(tokens,verb):
+    print(verb)
     subj = get_subject(verb)
     if subj:
         subs = extractcompso(tokens, subj)
@@ -185,9 +186,9 @@ def svo(tokens):
 
 def getsvo(tokens):
     root = next(item for item in tokens if item.dep_ == "ROOT")
-
+    print(root.string, root.pos_)
     if root.pos_ != "VERB":
-        print("dependency error")
+        print("dependency error getsvo")
     else:
         subverbs = main_clause_split(tokens)
         subverbs.append(root)
@@ -209,9 +210,12 @@ def main_clause_split(tokens):
     #returns just the subverbs not the root !!
     #coordination conjuction with verb as head
     cc = [item.head for item in tokens if item.dep_ == "cc" and item.head.pos_ == "VERB"]
+    print(cc)
     # head is the verb coordinated with !!
     subcc = [item for item in tokens if item.dep_== "conj" and item.head in cc]
+    print(subcc)
     marks = [item for item in tokens if item.dep_ == "mark"]
+    print(marks)
     subverbs = [item.head for item in marks]
     return subverbs + subcc
 
@@ -254,13 +258,48 @@ for i in gen:
 #The girls stared at their father('girls ', 'father', 'stared ')"""
 
 nlp = spacy.load('de')
-doc = nlp("Der Junge isst eine Banane. Heute war ich in Venedig. Lisa mag Bart sehr gerne. Der Hase sprintet schnell, aber die Schildkröte trödelt ungemein.")
-for i in doc:
-    print(i.string, i.dep_, i.head)
-gen = getsvo(doc)
-for i in gen:
+doc1 = nlp("Ich fahre mein Auto.")
+doc2 = nlp("Ich wünsche mir einen Tannenbaum.")
+doc3 = nlp("Den Mann biss der Hund.") #passive
+doc4 = nlp("Ich bin Berliner.")
+doc5 = nlp("Ich hasse dich!")
+doc6 = nlp("Ich bin alt geworden.") #adj als objekt
+doc7 = nlp("Ich bin Deutscher und Vietnamese.")
+doc8 = nlp("Rosen sind rot und Veilchen sind blau.")
+doc9 = nlp("Dieser Hund gehört mir und er heißt Lola.") #passive + conjunction
+doc10 = nlp("Das Haus ist grün.")
+doc11 = nlp("Das Haus ist grün und die Dachziegel sind rot.")
+
+#for i in doc:
+    #print("DOC: " + i.string, i.dep_, i.head)
+
+print(get_SVO(doc1))
+print(get_SVO(doc2))
+print(get_SVO(doc3))
+print(get_SVO(doc4))
+print(get_SVO(doc5))
+print(get_SVO(doc6))
+print(get_SVO(doc7))
+print(get_SVO(doc8))
+print(get_SVO(doc9))
+print(get_SVO(doc10))
+print(get_SVO(doc11))
+
+for i in doc6:
+    print("DOC: " + i.string, i.dep_, i.head)
+for i in doc7:
+    print("DOC: " + i.string, i.dep_, i.head)
+for i in doc8:
+    print("DOC: " + i.string, i.dep_, i.head)
+for i in doc9:
+    print("DOC: " + i.string, i.dep_, i.head)
+for i in doc11:
+    print("DOC: " + i.string, i.dep_, i.head)
+
+"""for i in gen:
     for j in i:
-        print(j)
+        print("GEN: " + j)
+"""
 #testset :
 #"the boy eats banana" ->('boy ', 'banana', 'eats ')
 # "the father opens the door to his sister "('father ', 'door ', 'opens ')

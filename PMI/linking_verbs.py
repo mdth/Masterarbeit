@@ -10,11 +10,15 @@ def find_pairs(tokens):
 
     adjectives = [item for item in tokens if item.dep_ == "acomp" and item.pos_ == "ADJ"]
     verbs = [item.head for item in adjectives]
+    print(verbs)
+    print(adjectives)
     for verb, adj in zip(verbs,adjectives):
+        print(verb)
         subject = next(item for item in verb.lefts if item.dep_ == "nsubj" and item.head == verb)
         subs = itertools.chain([subject], findconjso(subject))
         adjs = itertools.chain([adj], findconjadj(adj))
         for i, j in itertools.product(subs, adjs):
+            print(i.string, j.string)
             yield (i.string, j.string)
 
 
@@ -51,7 +55,8 @@ def findconjadj(adj):
 
 
 ######################UnitTest##########################################################################################
-doc = nlp("the girl and the boy seem worried and anxious")
+doc = nlp("The girl and the boy seem worried and anxious. I need a cup of coffee and there is hot coffee on the table.")
+find_pairs(doc)
 
 
 

@@ -21,10 +21,12 @@ class PostGreDBConnector:
         self.__create_tables()
         # self.__create_functions()
 
+    def close_connection(self):
+        self.__db.close()
+
     def __create_tables(self):
         """Create needed tables for RDF parsing."""
         self._add_table("CREATE TABLE texts (id serial primary key, title text)")
-        # TODO test, since just added in
         self._add_table(
             "CREATE TABLE bscale (id serial primary key, bscale text, nominal bool, ordinal bool, interval bool)")
         self._add_table("CREATE TABLE bsort (id serial primary key, bsort text)")
@@ -38,10 +40,16 @@ class PostGreDBConnector:
         self._add_table(
             "CREATE TABLE pattern_single_pattern (pattern_id int, single_pattern_id integer[], aggregation int)")
         self._add_table("CREATE TABLE texts_snippets (text_id int primary key, snippet_id integer[], aggregation int)")
-        # TODO record for offsets would be so much nicer, but how?
         self._add_table(
             "CREATE TABLE snippet_offsets (id serial primary key,"
             " single_pattern_id int, snippet_id int, offsets integer[][], aggregation int)")
+
+        # adjective and verb extractions
+        self._add_table("CREATE TABLE subject_occ (id serial primary key, subject text)")
+        self._add_table("CREATE TABLE adjective_occ (id serial primary key, adjective text)")
+        self._add_table("CREATE TABLE verb_occ (id serial primary key, verb text)")
+        self._add_table("CREATE TABLE subject_adjective (id serial primary key, subject int, adjective int)")
+        self._add_table("CREATE TABLE subject_verb (id serial primary key, subject int, verb int)")
 
     def __create_functions(self):
         """Create all necessary functions to aggregate the results saved in the database."""

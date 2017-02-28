@@ -12,24 +12,48 @@ class Prototype:
     def __init__(self, mongo_db, postgre_db, postagger="tree-tagger", sentence_mode=True, window_size=0):
         """Initialize a prototype system with a specified POS tagger, sentence or word mode and decide on the size
         for sentence or word windows size"""
-        self.mongo_db = mongo_db
-        self.postgre_db = postgre_db
-        self.postagger = postagger
-        self.sentence_mode = sentence_mode
-        self.window_size = window_size
+        self.__mongo_db = mongo_db
+        self.__postgre_db = postgre_db
+        self.__postagger = postagger
+        self.__sentence_mode = sentence_mode
+        self.__window_size = window_size
         self.tokenizer = WhitespaceTokenizer()
+
+    def exit(self):
+        self.__mongo_db.close_connection()
+        self.__postgre_db.close_connection()
+
+    def get_postagger(self):
+        return self.__postagger
+
+    def get_window_size(self):
+        return self.__window_size
+
+    def get_sentence_mode(self):
+        return self.__sentence_mode
 
     def change_postagger(self, name):
         """Change the current POS tagger to a new one."""
-        self.postagger = POSTagger(name)
+        self.__postagger = POSTagger(name)
 
     def change_window_size(self, size):
         """Change the current window size to a new size."""
-        self.window_size = size
+        value = 0
+        try:
+            value = int(size)
+        except ValueError:
+            raise ValueError("Please type in a valid number.")
 
-    def toggle_sentence_mode(self):
-        """Change the current setting of the sentence mode."""
-        self.sentence_mode = not self.sentence_mode
+        if value >= 0:
+            self.__window_size = value
+        else:
+            raise ValueError("Please type in a valid positive number.")
+
+    def toggle_sentence_window_mode(self):
+        self.__sentence_mode = True
+
+    def toggle_word_window_mode(self):
+        self.__sentence_mode = False
 
     def get_word_window(self, pattern, tokens, constraints):
         """Get a word window list with a specific number of words."""
@@ -75,34 +99,39 @@ class Prototype:
     def __get_word_window_help(self, token_pos, textsnippets, textlength, tokens):
         snippet = self.__get_textsnippets(token_pos[0], token_pos[1], textlength, tokens)
         offsets = list(self.tokenizer.span_tokenize(snippet))
-        offset_start = offsets[self.window_size][0]
-        offset_end = offsets[self.window_size][1]
+        offset_start = offsets[self.__window_size][0]
+        offset_end = offsets[self.__window_size][1]
         SentObj = namedtuple('Sentence_Object', ['snippet', 'offset_start', 'offset_end'])
         textsnippets.append(SentObj(snippet=snippet, offset_start=offset_start, offset_end=offset_end))
 
+    def dummy(self, string):
+        offsets = self.tokenizer.span_tokenize(string)
+        for offset in offsets:
+            print(offset[0], offset[1])
+
     def __get_textsnippets(self, indl, indr, textlength, tokens):
-        if (indl - self.window_size < 0) and (indr + self.window_size > textlength):
-            left_index = self.window_size - 1
+        if (indl - self.__window_size < 0) and (indr + self.__window_size > textlength):
+            left_index = self.__window_size - 1
             while not (indl - left_index) == 0:
                 left_index -= 1
-            right_index = self.window_size - 1
+            right_index = self.__window_size - 1
             while not (indr + right_index) == textlength:
                 right_index -= 1
             return " ".join(tokens[indl - left_index:indr + right_index])
 
-        elif indr + self.window_size > textlength:
-            right_index = self.window_size - 1
+        elif indr + self.__window_size > textlength:
+            right_index = self.__window_size - 1
             while not (indr + right_index) == textlength:
                 right_index -= 1
-            return " ".join(tokens[indl - self.window_size:indr + right_index])
+            return " ".join(tokens[indl - self.__window_size:indr + right_index])
 
-        elif indl - self.window_size < 0:
-            left_index = self.window_size - 1
+        elif indl - self.__window_size < 0:
+            left_index = self.__window_size - 1
             while not (indl - left_index) == 0:
                 left_index -= 1
-            return " ".join(tokens[indl - left_index:indr + self.window_size + 1])
+            return " ".join(tokens[indl - left_index:indr + self.__window_size + 1])
         else:
-            return " ".join(tokens[indl - self.window_size:indr + (self.window_size + 1)])
+            return " ".join(tokens[indl - self.__window_size:indr + (self.__window_size + 1)])
 
     def get_sentence_window(self, pattern, sentences, constraints):
         """Get a word window list with a specific number of sentences. size 0 will return the
@@ -127,7 +156,7 @@ class Prototype:
                     if constraints is not None:
                         self.__check_constraints(constraints, (i, i), ind, pattern, sent, sentences, textsnippets, tokens)
                     else:
-                        self.__get_sentence_window_help(i, ind, sent, sentences, textsnippets)
+                        self.__get_sentence_window_help(i, ind, sentences, textsnippets)
         return textsnippets
 
     def __check_constraints(self, constraints, token_pos, sent_num, pattern, sent, sentences, textsnippets, tokens):
@@ -165,9 +194,9 @@ class Prototype:
                 elif more_words_flag and index < 0:
                     pos = token_pos[0]
 
-                if self.sentence_mode:
+                if self.__sentence_mode:
                     if (0 <= pos + index < len(tokens)) and check_pattern(add_info[1], tokens[pos + index]):
-                        self.__get_sentence_window_help(pos, sent_num, sent, sentences, textsnippets)
+                        self.__get_sentence_window_help(pos, sent_num, sentences, textsnippets)
                     else:
                         while index != 0:
                             if index > 0:
@@ -175,7 +204,7 @@ class Prototype:
                             else:
                                 index += 1
                             if (0 < pos + index < len(tokens)) and check_pattern(add_info[1], tokens[pos + index]):
-                                self.__get_sentence_window_help(pos, sent_num, sent, sentences, textsnippets)
+                                self.__get_sentence_window_help(pos, sent_num, sentences, textsnippets)
                                 break
                 else:
                     if (0 <= pos + index < len(tokens)) and check_pattern(add_info[1], tokens[pos + index]):
@@ -190,14 +219,19 @@ class Prototype:
                                 self.__get_word_window_help(token_pos, textsnippets, sent, tokens)
                                 break
 
-    def __get_sentence_window_help(self, pos_token, ind, sent, sentences, textsnippets):
+    def __get_sentence_window_help(self, pos_token, ind, sentences, textsnippets):
+        #TODO pos_token isn't right here at all
         sentence = self.__get_sentences(ind, sentences)
         # get offsets
-        offsets = list(self.tokenizer.span_tokenize(sent))
+        offsets = list(self.tokenizer.span_tokenize(sentence))
         offset_start = offsets[pos_token][0]
         offset_end = offsets[pos_token][1]
         SentObj = namedtuple('Sentence_Object', ['snippet', 'offset_start', 'offset_end'])
         textsnippets.append(SentObj(snippet=sentence, offset_start=offset_start, offset_end=offset_end))
+
+    def __adjust_offset(self, offset):
+        new_offset = offset - 1
+        return new_offset
 
     def __get_sentence_window_more_words(self, split_pattern, sentences, constraints):
         """Get sentence snippets with pattern containing of more than 2 words according to window size."""
@@ -220,25 +254,28 @@ class Prototype:
                                              textsnippets, tokens)
                 else:
                     # TODO end_index nicht genau genug für word_window
-                    self.__get_sentence_window_help(end_index, ind, sent, sentences, textsnippets)
+                    self.__get_sentence_window_help(end_index, ind, sentences, textsnippets)
         return textsnippets
 
     def __get_sentences(self, ind, sentences):
-        left_window_border = ind - self.window_size
-        right_window_border = ind + self.window_size + 1
+        if self.__window_size == 0:
+            return sentences[ind]
 
-        if self.window_size > 0:
+        elif self.__window_size > 0:
+            left_window_border = ind - self.__window_size
+            right_window_border = ind + self.__window_size + 1
             if left_window_border < 0:
                 left_window_border = 0
             if right_window_border >= len(sentences):
+                # TODO nicht ganz sauber
                 right_window_border = len(sentences)
-        return " ".join(sentences[left_window_border:right_window_border])
+            return " ".join(sentences[left_window_border:right_window_border])
 
     def find_text_window(self, text, text_id, constraints):
         """Finds text windows with variable size."""
         tokenized_text = self.tokenizer.tokenize(text)
-        for pattern in self.postgre_db.get_data_from_table("single_pattern"):
-            if self.sentence_mode:
+        for pattern in self.__postgre_db.get_data_from_table("single_pattern"):
+            if self.__sentence_mode:
                 # this is only a quick and dirty fix: replace weird quotes to basic ones
                 for ch in ['›', '‹', '»', '«']:
                     if ch in text:
@@ -254,7 +291,7 @@ class Prototype:
                 for sent_obj in windows_objects:
                     # push snippets
                     self.__push_snippets(sent_obj.snippet)
-                    snippet_id = self.postgre_db.get_id("snippets", "snippet=" + add_quotes(
+                    snippet_id = self.__postgre_db.get_id("snippets", "snippet=" + add_quotes(
                         replace_special_characters(sent_obj.snippet)))
                     # push relations
                     self.__push_texts_snippets(text_id, snippet_id)
@@ -264,9 +301,9 @@ class Prototype:
     def __push_snippets(self, snippet):
         """Push found snippets onto the snippets table in PostGre DB, if not already in the table.
         Afterwards push the single_pattern and snippets relation."""
-        if not self.postgre_db.is_in_table("snippets", "snippet=" + add_quotes(
+        if not self.__postgre_db.is_in_table("snippets", "snippet=" + add_quotes(
                 replace_special_characters(snippet))):
-            self.postgre_db.insert("snippets", {"snippet": snippet})
+            self.__postgre_db.insert("snippets", {"snippet": snippet})
 
     def __push_texts_snippets(self, text_id, snippet_id):
         """Get all saved snippets that occur in a text and push them onto PostGre DB."""
@@ -274,37 +311,37 @@ class Prototype:
 
     def __push_snippet_offsets(self, single_pattern_id, snippet_id, offset_start, offset_end):
         """Push found single_pattern in snippets and their respective offset."""
-        if not self.postgre_db.is_in_table(
+        if not self.__postgre_db.is_in_table(
                 "snippet_offsets", "single_pattern_id=" + str(single_pattern_id) + " and snippet_id=" + str(
                     snippet_id)):
-            self.postgre_db.insert("snippet_offsets", {
+            self.__postgre_db.insert("snippet_offsets", {
                 "single_pattern_id": single_pattern_id, "snippet_id": snippet_id, "offsets": [
                     [offset_start, offset_end]]})
         else:
-            old_list = self.postgre_db.get(
+            old_list = self.__postgre_db.get(
                 "snippet_offsets", "single_pattern_id=" + str(single_pattern_id) + " and snippet_id=" + str(
                     snippet_id), "offsets")
             old_list.append([offset_start, offset_end])
-            pid = self.postgre_db.get_id(
+            pid = self.__postgre_db.get_id(
                 "snippet_offsets", "single_pattern_id=" + str(single_pattern_id) + " and snippet_id=" + str(
                     snippet_id))
-            self.postgre_db.update(
+            self.__postgre_db.update(
                 "snippet_offsets", "offsets=" + add_quotes(replace_brackets(str(old_list))), "id=" + str(pid))
 
     def __push_relation(self, id1, id2, id1_name, id2_name, table):
         """Push a relation onto the PostGre DB. The relation has to have a primary key."""
         # case: No entry about relation is in DB yet
-        if not self.postgre_db.is_in_table(table, id1_name + "=" + str(
+        if not self.__postgre_db.is_in_table(table, id1_name + "=" + str(
                 id1)):
-            self.postgre_db.insert(table, {
+            self.__postgre_db.insert(table, {
                 id1_name: id1, id2_name: [id2], "aggregation": 0})
 
         # case: Entry about single_pattern is in DB
         else:
-            old_list = self.postgre_db.get(table, id1_name + "=" + str(
+            old_list = self.__postgre_db.get(table, id1_name + "=" + str(
                 id1), id2_name)
             new_list = list(set(old_list + [id2]))
-            self.postgre_db.update(
+            self.__postgre_db.update(
                 table, id2_name + "=" + add_quotes(replace_brackets(str(new_list))), id1_name + "=" + str(id1))
 
     def __push_aggregation_lowest_layer(self, aggregation_object, aggregation_name, table, id_name):
@@ -314,11 +351,11 @@ class Prototype:
         for aggregation in aggregation_object:
             id = aggregation[aggregation_name][0]
             aggregation_value = aggregation[aggregation_name][1]
-            self.postgre_db.update(table, "aggregation=" + str(aggregation_value), id_name + "=" + str(id))
+            self.__postgre_db.update(table, "aggregation=" + str(aggregation_value), id_name + "=" + str(id))
 
     def __push_aggregation(self, table, sub_table, table_id, sub_table_id):
         """Calculate and push aggregation on the rest layer tables."""
-        table_entries = self.postgre_db.get_data_from_table(table)
+        table_entries = self.__postgre_db.get_data_from_table(table)
         for entry in table_entries:
             aggregation = 0
             entry_id = entry[table_id]
@@ -327,30 +364,30 @@ class Prototype:
             for look_up in entries_to_look_up:
                 # calcutate aggregations differently depending on how the table structure is
                 if len(entries_to_look_up) > 1:
-                        stored_value = self.postgre_db.get(sub_table, sub_table_id + "=" + str(look_up), "aggregation")
+                        stored_value = self.__postgre_db.get(sub_table, sub_table_id + "=" + str(look_up), "aggregation")
                         if stored_value is None:
                             stored_value = 0
                         aggregation += stored_value
 
                 else:
                     query = "SELECT SUM(aggregation) FROM " + sub_table + " WHERE " + sub_table_id + "=" + str(look_up)
-                    aggregation = self.postgre_db.query(query)[0]['sum']
+                    aggregation = self.__postgre_db.query(query)[0]['sum']
                     if aggregation is None:
                         aggregation = 0
 
-            self.postgre_db.update(table, "aggregation=" + str(aggregation), table_id + "=" + str(entry_id))
+            self.__postgre_db.update(table, "aggregation=" + str(aggregation), table_id + "=" + str(entry_id))
 
     def get_snippets(self, constraints):
         """Get snippets for the whole corpus."""
-        for ind, text in enumerate(self.mongo_db.get({"title": "Chapter 1"})):
-            self.postgre_db.insert("texts", {"title": text['title']})
+        for ind, text in enumerate(self.__mongo_db.get({"title": "Chapter 1"})):
+            self.__postgre_db.insert("texts", {"title": text['title']})
             self.find_text_window(text['text'], text['id'], constraints)
             print("Chapter " + str(text['id']) + " done.")
 
     def aggregation(self):
         """Calculate aggregation bottom-up and store the interim data onto the database."""
-        aggregation_texts_snippets = self.postgre_db.query("SELECT aggregate_texts_snippets()")
-        aggregation_snippet_offsets = self.postgre_db.query("SELECT aggregate_snippet_offsets()")
+        aggregation_texts_snippets = self.__postgre_db.query("SELECT aggregate_texts_snippets()")
+        aggregation_snippet_offsets = self.__postgre_db.query("SELECT aggregate_snippet_offsets()")
 
         # push 2 lowest levels of the hierarchy
         self.__push_aggregation_lowest_layer(
@@ -366,7 +403,7 @@ class Prototype:
 
     def pos_tagging(self):
         """POS tag all dialogues and monologues."""
-        snippets = self.postgre_db.get_data_from_table("snippets")
+        snippets = self.__postgre_db.get_data_from_table("snippets")
 
 
 def check_pattern(pattern, token):

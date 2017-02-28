@@ -11,7 +11,6 @@ def compile_pattern(string):
 
 
 def replace_special_characters(string):
-    # TODO
     """Replaces special characters that cannot be stored by PostGre DB otherwise."""
     return string.replace("'", "''")
 
