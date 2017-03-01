@@ -6,7 +6,6 @@ from MongoDBConnector import MongoDBConnector
 from PostGreDBConnector import PostGreDBConnector
 from HelperMethods import read_in_csv_file
 
-
 MONGO_DB = MongoDBConnector()
 POSTGRE_DB = PostGreDBConnector()
 

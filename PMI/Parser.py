@@ -2,8 +2,7 @@ import spacy
 from nltk.chunk.regexp import RegexpParser
 import functools
 from nltk.tree import Tree
-#from nltk.stem.wordnet import WordNetLemmatizer
-from nltk.stem.snowball import GermanStemmer
+from textblob_de.lemmatizers import PatternParserLemmatizer
 import nltk
 ##### This module is for parsing german text using Spacy####
 # universal tags :ADJ, ADP, ADV, AUX, CONJ, DET, INTJ, NOUN, NUM, PART, PRON, PROPN, PUNCT, SCONJ, SYM, VERB, X, EOL, SPACE.
@@ -24,7 +23,7 @@ class Parser:
     def __init__(self):
         """Initialize a ...."""
         self.nlp = spacy.load('de')
-        self.lemmatizer = GermanStemmer()
+        self.lemmatizer = PatternParserLemmatizer()
         self.parser_NP = RegexpParser(self.NP_Noun_Simple)
         self.parser_smp = RegexpParser(self.Np_GRAMMAR_SIMPLE_UNIVERSAL)
     
@@ -58,7 +57,7 @@ class Parser:
                 adjs = []
                 for word, tag in subchunk:
                     if tag == 'ADJ':
-                        adjs.append(self.lemmatizer.stem(word))
+                        adjs.append(word)
                     nouns = self.related_noun(subchunk)
                     if nouns and adjs:
                         for adj in adjs:
@@ -80,7 +79,7 @@ class Parser:
                 else:
                     yield i.string
         if ent:
-            yield functools.reduce(lambda x, y: x + ' ' + y,ent).strip()
+            yield functools.reduce(lambda x, y: x + ' ' + y, ent).strip()
 
     def nouns_adj_spacy(self, doc):
         """
@@ -90,13 +89,22 @@ class Parser:
         """
         for chunk in doc.noun_chunks:
             adjs = []
+            ind = 0
             for i in chunk:
                 if i.pos_ == 'ADJ':
-                    adjs.append(self.lemmatizer.stem(i.string))
+                    chunk_list = [i.string for i in chunk]
+                    chunk_text = ''
+                    for ch in chunk_list:
+                        chunk_text = " " + chunk_text + str(ch)
+                    print("chunktext" + chunk_text)
+                    lemma = self.lemmatizer.lemmatize(chunk_text)
+                    print(lemma)
+                    adjs.append(lemma[ind][0])
+                ind = + 1
             if adjs:
                 for i in self.get_related_noun(chunk):
                     for j in adjs:
-                        yield {"noun": i.string, "adj": j.string}
+                        yield {"noun": i.strip(), "adj": j}
     
     # with NLTK
     def nouns_list(self, sent):
@@ -138,3 +146,6 @@ class Parser:
             nouns.append(self.related_noun(chunk))
         for i in range(len(nouns)-1):
             yield {"noun":nouns[i],"rnoun": nouns[i+1]}
+
+    def lemmatize_text(self, doc):
+        return self.lemmatizer.lemmatize(doc)
