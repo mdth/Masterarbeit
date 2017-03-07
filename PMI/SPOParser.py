@@ -122,16 +122,6 @@ def compound_last(tokens, so):
 # is it necessary ? because any one the verb and the subject refer to the same noun
 # about possessive in case John's mother equivalent to mother
 
-
-def possessive(tokens, so):
-    if tokens[so.i-1].string == "'s":
-        return tokens[so.i -1].head.string + """'s""" + tokens[so.i]
-    else:
-        return so.string
-
-# works fine !
-
-
 def findconjso(so):
         # PRECONJ: pre-correlative conjunctions
         #return a generator with yield !!! attention !!!

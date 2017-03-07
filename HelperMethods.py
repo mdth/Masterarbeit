@@ -1,6 +1,7 @@
 import re
 import csv
 
+
 def add_quotes(string):
     return "'" + string + "'"
 
@@ -18,6 +19,7 @@ def replace_special_characters(string):
 def replace_brackets(string):
     """Replaces brackets that cannot be stored by PostGre DB otherwise."""
     return string.replace("[", "{").replace("]", "}")
+
 
 def read_in_csv_file(filename):
     """Read in a csv_file with a specified file name."""

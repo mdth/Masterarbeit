@@ -89,10 +89,10 @@ class Parser:
         """
         for chunk in doc.noun_chunks:
             adjs = []
+            chunk_list = [i.string for i in chunk]
             ind = 0
             for i in chunk:
                 if i.pos_ == 'ADJ':
-                    chunk_list = [i.string for i in chunk]
                     chunk_text = ''
                     for ch in chunk_list:
                         chunk_text = " " + chunk_text + str(ch)
@@ -100,7 +100,8 @@ class Parser:
                     lemma = self.lemmatizer.lemmatize(chunk_text)
                     print(lemma)
                     adjs.append(lemma[ind][0])
-                ind = + 1
+                if not (i.dep_ == "punct"):
+                    ind += 1
             if adjs:
                 for i in self.get_related_noun(chunk):
                     for j in adjs:
