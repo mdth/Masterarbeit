@@ -4,12 +4,11 @@
     <bookmark url="file://$PROJECT_DIR$/Prototype.py" line="269" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8967fbb0-d593-4f05-9572-bb5e10e7e15f" name="Default" comment="">
+    <list default="true" id="8967fbb0-d593-4f05-9572-bb5e10e7e15f" name="Default" comment="SPO parser unit test -&gt; some tests are working fine, but conjuction is still a problem">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Unittests/TestSPOParser.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/PMI/SPOParser.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HelperMethods.py" afterPath="$PROJECT_DIR$/HelperMethods.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PMI/Parser.py" afterPath="$PROJECT_DIR$/PMI/Parser.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PMI/SPOParser.py" afterPath="$PROJECT_DIR$/PMI/SPOParser.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PMI/projectionprinciple.py" afterPath="$PROJECT_DIR$/PMI/projectionprinciple.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Unittests/TestGermanParser.py" afterPath="$PROJECT_DIR$/Unittests/TestGermanParser.py" />
     </list>
     <ignored path="Masterarbeit.iws" />
@@ -30,11 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Parser.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Parser.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/PMI/Parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="948">
-              <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+            <state relative-caret-position="256">
+              <caret line="109" column="43" selection-start-line="109" selection-start-column="43" selection-end-line="109" selection-end-column="43" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -42,31 +41,35 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="germanParser.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PMI/germanParser.py">
+      <file leaf-file-name="TestSPOParser.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Unittests/TestSPOParser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="581">
+              <caret line="68" column="61" selection-start-line="68" selection-start-column="61" selection-end-line="68" selection-end-column="61" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SPOParser.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PMI/SPOParser.py">
+      <file leaf-file-name="TestGermanParser.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Unittests/TestGermanParser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="258">
+              <caret line="64" column="65" selection-start-line="64" selection-start-column="65" selection-end-line="64" selection-end-column="65" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Prototype.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Prototype.py">
+      <file leaf-file-name="TestRDFParser.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Unittests/TestRDFParser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1156">
-              <caret line="74" column="11" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="11" />
+            <state relative-caret-position="51">
+              <caret line="3" column="23" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -75,33 +78,9 @@
       <file leaf-file-name="projectionprinciple.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PMI/projectionprinciple.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="632">
-              <caret line="296" column="0" selection-start-line="296" selection-start-column="0" selection-end-line="296" selection-end-column="0" />
+            <state relative-caret-position="-969">
+              <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="110" selection-end-column="15" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TestGermanParser.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Unittests/TestGermanParser.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" column="9" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TestPrototype.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Unittests/TestPrototype.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="29" column="20" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -178,11 +157,12 @@
         <option value="$PROJECT_DIR$/Unittests/TestPrototype.py" />
         <option value="$PROJECT_DIR$/Prototype.py" />
         <option value="$PROJECT_DIR$/Main.py" />
-        <option value="$PROJECT_DIR$/PMI/SPOParser.py" />
         <option value="$PROJECT_DIR$/PMI/projectionprinciple.py" />
         <option value="$PROJECT_DIR$/Unittests/Test.py" />
-        <option value="$PROJECT_DIR$/PMI/Parser.py" />
+        <option value="$PROJECT_DIR$/PMI/SPOParser.py" />
         <option value="$PROJECT_DIR$/Unittests/TestGermanParser.py" />
+        <option value="$PROJECT_DIR$/Unittests/TestSPOParser.py" />
+        <option value="$PROJECT_DIR$/PMI/Parser.py" />
       </list>
     </option>
   </component>
@@ -265,6 +245,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Problems" />
         <subPane subId="Project Files">
@@ -276,7 +257,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -307,29 +287,7 @@
       <recent name="C:\Users\din_m\PycharmProjects\Masterarbeit\PMI" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests in TestGermanParser">
-    <configuration default="false" name="Unittests in TestPrototype" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Unittests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Masterarbeit" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Unittests/TestPrototype.py" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python tests.Unittests in TestSPOParser">
     <configuration default="false" name="Unittests in TestGermanParser" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -401,6 +359,28 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PMI/germanParser.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittests in TestSPOParser" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Unittests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Masterarbeit" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Unittests/TestSPOParser.py" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -538,19 +518,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in TestPrototype" />
-      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in TestGermanParser" />
-      <item index="2" class="java.lang.String" itemvalue="Python.Test" />
-      <item index="3" class="java.lang.String" itemvalue="Python.projectionprinciple" />
-      <item index="4" class="java.lang.String" itemvalue="Python.germanParser" />
+      <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in TestGermanParser" />
+      <item index="1" class="java.lang.String" itemvalue="Python.Test" />
+      <item index="2" class="java.lang.String" itemvalue="Python.projectionprinciple" />
+      <item index="3" class="java.lang.String" itemvalue="Python.germanParser" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in TestSPOParser" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in TestGermanParser" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Test" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in TestSPOParser" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in TestGermanParser" />
         <item index="2" class="java.lang.String" itemvalue="Python.projectionprinciple" />
-        <item index="3" class="java.lang.String" itemvalue="Python.germanParser" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in TestPrototype" />
+        <item index="3" class="java.lang.String" itemvalue="Python.Test" />
+        <item index="4" class="java.lang.String" itemvalue="Python.germanParser" />
       </list>
     </recent_temporary>
   </component>
@@ -806,39 +786,46 @@
       <option name="project" value="LOCAL" />
       <updated>1488402792738</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Spacy adjective parser done. Lemmatizing words with Textblob is more or less ok. Some lemmas are plain wrong though.">
+      <created>1488890882055</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1488890882055</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_TestGermanParser - 2017.03.02 at 18h 22m 40s.xml">
+    <history-entry file="Unittests_in_TestGermanParser - 2017.03.09 at 15h 59m 13s.xml">
       <configuration name="Unittests in TestGermanParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestGermanParser - 2017.03.07 at 10h 59m 37s.xml">
+    <history-entry file="Unittests_in_TestGermanParser - 2017.03.09 at 16h 15m 47s.xml">
       <configuration name="Unittests in TestGermanParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestGermanParser - 2017.03.07 at 11h 36m 07s.xml">
+    <history-entry file="Unittests_in_TestGermanParser - 2017.03.09 at 16h 23m 25s.xml">
       <configuration name="Unittests in TestGermanParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestGermanParser - 2017.03.07 at 11h 45m 31s.xml">
+    <history-entry file="Unittests_in_TestGermanParser - 2017.03.09 at 16h 28m 04s.xml">
       <configuration name="Unittests in TestGermanParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestGermanParser - 2017.03.07 at 11h 46m 31s.xml">
-      <configuration name="Unittests in TestGermanParser" configurationId="tests" />
+    <history-entry file="Unittests_in_TestSPOParser - 2017.03.09 at 16h 36m 57s.xml">
+      <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestGermanParser - 2017.03.07 at 11h 46m 37s.xml">
-      <configuration name="Unittests in TestGermanParser" configurationId="tests" />
+    <history-entry file="Unittests_in_TestSPOParser - 2017.03.09 at 16h 40m 40s.xml">
+      <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestGermanParser - 2017.03.07 at 11h 49m 15s.xml">
-      <configuration name="Unittests in TestGermanParser" configurationId="tests" />
+    <history-entry file="Unittests_in_TestSPOParser - 2017.03.09 at 16h 48m 15s.xml">
+      <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestGermanParser - 2017.03.07 at 12h 18m 02s.xml">
-      <configuration name="Unittests in TestGermanParser" configurationId="tests" />
+    <history-entry file="Unittests_in_TestSPOParser - 2017.03.09 at 17h 05m 08s.xml">
+      <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestGermanParser - 2017.03.07 at 12h 18m 07s.xml">
-      <configuration name="Unittests in TestGermanParser" configurationId="tests" />
+    <history-entry file="Unittests_in_TestSPOParser - 2017.03.09 at 17h 08m 11s.xml">
+      <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestGermanParser - 2017.03.07 at 12h 20m 49s.xml">
-      <configuration name="Unittests in TestGermanParser" configurationId="tests" />
+    <history-entry file="Unittests_in_TestSPOParser - 2017.03.09 at 17h 11m 04s.xml">
+      <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
   </component>
   <component name="TodoView" selected-index="4">
@@ -852,15 +839,16 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-8" width="1936" height="1096" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="PlantUML" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32966226" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15677084" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32937685" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15677084" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3286004" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2967359" sideWeight="0.5146413" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3264095" sideWeight="0.4897511" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19979715" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29614604" sideWeight="0.48535872" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29614604" sideWeight="0.48535872" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -870,7 +858,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3264095" sideWeight="0.4897511" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -886,8 +873,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Small bug fix in find_borders for sentence window." />
-    <MESSAGE value="+ DB Connection to PostGre und POS Tagger eingebunden" />
     <MESSAGE value="Outsourced MongoDBConnector" />
     <MESSAGE value="Added needed initialization tables. And tested functions." />
     <MESSAGE value="Changing some MongoDB stuff to PostGre" />
@@ -911,7 +896,9 @@
     <MESSAGE value="Sentence and word window with constrained fixed and tested. Constraints with multiple words might not work." />
     <MESSAGE value="Unittests for adjective - noun correlation occurences to calculate later pmi. Does not work yet. Stem or changed adj-yield function is not working properly." />
     <MESSAGE value="Unittests for adjective - noun correlation occurences to calculate later pmi. Does not work for all. Lemmatizing works more or less.... with textblob" />
-    <option name="LAST_COMMIT_MESSAGE" value="Unittests for adjective - noun correlation occurences to calculate later pmi. Does not work for all. Lemmatizing works more or less.... with textblob" />
+    <MESSAGE value="Spacy adjective parser done. Lemmatizing words with Textblob is more or less ok. Some lemmas are plain wrong though." />
+    <MESSAGE value="SPO parser unit test -&gt; some tests are working fine, but conjuction is still a problem" />
+    <option name="LAST_COMMIT_MESSAGE" value="SPO parser unit test -&gt; some tests are working fine, but conjuction is still a problem" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -921,16 +908,6 @@
           <line>269</line>
           <option name="timeStamp" value="51" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/PMI/SPOParser.py</url>
-          <line>25</line>
-          <option name="timeStamp" value="61" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/PMI/SPOParser.py</url>
-          <line>26</line>
-          <option name="timeStamp" value="63" />
-        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -939,12 +916,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="71" />
+      <option name="time" value="72" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/classes.puml" />
     <entry file="file://$PROJECT_DIR$/test.rdf" />
     <entry file="file://$PROJECT_DIR$/Web_Scratcher.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -1066,13 +1042,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ConstraintReader.py" />
-    <entry file="file://$PROJECT_DIR$/Unittests/TestRDFParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="23" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/neues ergebnis von adj-extra.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
@@ -1199,14 +1168,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Prototype.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1156">
-          <caret line="74" column="11" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python35/Lib/unittest/case.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="127">
@@ -1231,27 +1192,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Unittests/Test.py">
+    <entry file="file://C:/Python35/Lib/site-packages/textblob_de/lemmatizers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="513">
-          <caret line="40" column="120" selection-start-line="40" selection-start-column="120" selection-end-line="40" selection-end-column="120" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PMI/SPOParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="144">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PMI/germanParser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
+        <state relative-caret-position="227">
           <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
           <folding />
         </state>
@@ -1262,43 +1212,79 @@
         <state relative-caret-position="493">
           <caret line="29" column="20" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="20" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PMI/SPOParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2176">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Prototype.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="74" column="11" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Unittests/TestRDFParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="23" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PMI/projectionprinciple.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="632">
-          <caret line="296" column="0" selection-start-line="296" selection-start-column="0" selection-end-line="296" selection-end-column="0" />
+        <state relative-caret-position="-969">
+          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="110" selection-end-column="15" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Python35/Lib/site-packages/textblob_de/lemmatizers.py">
+    <entry file="file://$PROJECT_DIR$/Unittests/Test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PMI/Parser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="948">
-          <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+        <state relative-caret-position="513">
+          <caret line="40" column="120" selection-start-line="40" selection-start-column="120" selection-end-line="40" selection-end-column="120" />
           <folding>
-            <element signature="e#0#12#0" expanded="true" />
+            <element signature="e#0#44#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Unittests/TestGermanParser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="9" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
+        <state relative-caret-position="258">
+          <caret line="64" column="65" selection-start-line="64" selection-start-column="65" selection-end-line="64" selection-end-column="65" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Unittests/TestSPOParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="581">
+          <caret line="68" column="61" selection-start-line="68" selection-start-column="61" selection-end-line="68" selection-end-column="61" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PMI/Parser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="109" column="43" selection-start-line="109" selection-start-column="43" selection-end-line="109" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
