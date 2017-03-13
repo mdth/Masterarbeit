@@ -17,8 +17,8 @@ class Parser:
     NOUNS = ["NOUN","PROPN"]
     NP_Noun_Simple = """NP: {(<NOUN|PROPN>)+}"""
 
-    SUBJECTS = ["sb", "oa"]
-    OBJECTS = ["oa", "nk", "pd", "sb"]
+    SUBJECTS = ["sb"]
+    OBJECTS = ["pd", "mo", "oa", "da"]
 
     def __init__(self):
         """Initialize a ...."""
@@ -101,6 +101,8 @@ class Parser:
         subs = [item for item in verb.lefts if item.dep_ in self.SUBJECTS]
         objs = [item for item in verb.rights if item.dep_ in self.OBJECTS]
 
+        text = [(item.string, item.dep_, item.head.string) for item in tokens]
+        print(text)
         for sub in subs:
             if sub.head.string == verb.string:
                 subject = sub.string.strip()
@@ -116,7 +118,7 @@ class Parser:
         """This method get's sentences with conjunctions."""
         root = next(item for item in tokens if item.dep_ == "ROOT")
         print(root.string, root.pos_)
-        if root.pos_ != "VERB":
+        if (root.pos_ != "VERB") and (root.pos_ != "AUX"):
             print("dependency error getsvo")
         else:
             subverbs = self.main_clause_split(tokens)
@@ -137,15 +139,14 @@ class Parser:
         # and -cc or punctuation  or mark to detect a second clause punct
         # returns just the subverbs not the root !!
         # coordination conjuction with verb as head
-        cc = [item.head for item in tokens if item.dep_ == "cc" and item.head.pos_ == "VERB"]
-        print(cc)
+        text = [(item.string, item.dep_, item.head.string, item.head.pos_) for item in tokens]
+        print(text)
+        cd = [item.head for item in tokens if item.dep_ == "cd"]
+        print(cd)
         # head is the verb coordinated with !!
-        subcc = [item for item in tokens if item.dep_ == "conj" and item.head in cc]
-        print(subcc)
-        marks = [item for item in tokens if item.dep_ == "mark"]
-        print(marks)
-        subverbs = [item.head for item in marks]
-        return subverbs + subcc
+        subverbs = [item for item in tokens if item.dep_ == "cj" and (item.head.pos_ == "VERB" or item.head.pos_ == "AUX")]
+        print(subverbs)
+        return subverbs
 
     def extractsvo(self, tokens, verb):
         print(verb)
