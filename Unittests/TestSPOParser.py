@@ -94,3 +94,9 @@ class TestGermanParser(unittest.TestCase):
         result_spacy = list(self.parser.getsvo(doc))
         expected_result = [('Ich', 'gut', 'esse'), ('Ich', 'viel', 'esse')]
         self.assertListEqual(expected_result, result_spacy)
+
+    def test16(self):
+        doc = self.parser.nlp("Hannah und Sarah sind Freunde.")
+        result_spacy = list(self.parser.getsvo(doc))
+        expected_result = []
+        self.assertListEqual(expected_result, result_spacy)

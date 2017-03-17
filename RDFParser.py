@@ -35,6 +35,10 @@ class RDFParser:
         self.__search = Forward()
         self.__search << (self.__is_a | self.__has_x)
 
+    def get_pattern_and_push(self, filename):
+        pattern = self.get_pattern_from_rdf(filename)
+        self.push_data(pattern[0], pattern[1], pattern[2], pattern[3])
+
     def get_pattern_from_rdf(self, filename):
         """Extract all needed pattern from a rdf file and then push them onto the database."""
         data = read_in_rdf_file(filename)
@@ -58,7 +62,7 @@ class RDFParser:
             else:
                 pass
 
-        self.push_data(pattern_list, attribute_list, object_list, scale_list)
+        return pattern_list, attribute_list, object_list, scale_list
 
     def push_data(self, pattern_list, attribute_list, object_list, scale_list):
         """Pushes found data onto the database."""

@@ -1,21 +1,17 @@
 import unittest
+from PostGreDBConnector import PostGreDBConnector
+from RDFParser import RDFParser
 
 
-class TestStringMethods(unittest.TestCase):
+class TestRDFParser(unittest.TestCase):
+    POSTGRE_DB = PostGreDBConnector()
+    rdfparser = RDFParser(POSTGRE_DB)
 
-    def test_upper(self):
-        self.assertEqual('foo'.upper(), 'FOO')
+    def test_get_pattern_from_rdf1(self):
+        self.rdfparser.get_pattern_from_rdf()
 
     def test_isupper(self):
         self.assertTrue('FOO'.isupper())
-        self.assertFalse('Foo'.isupper())
-
-    def test_split(self):
-        s = 'hello world'
-        self.assertEqual(s.split(), ['hello', 'world'])
-        # check that s.split fails when the separator is not a string
-        with self.assertRaises(TypeError):
-            s.split(2)
 
 if __name__ == '__main__':
     unittest.main()

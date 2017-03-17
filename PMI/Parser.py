@@ -5,9 +5,6 @@ import functools
 from nltk.tree import Tree
 from textblob_de.lemmatizers import PatternParserLemmatizer
 import nltk
-##### This module is for parsing german text using Spacy####
-# universal tags :ADJ, ADP, ADV, AUX, CONJ, DET, INTJ, NOUN, NUM, PART, PRON, PROPN, PUNCT, SCONJ, SYM, VERB, X, EOL, SPACE.
-
 
 class Parser:
     """A parser that ..."""
@@ -85,10 +82,8 @@ class Parser:
     def lemmatize_text(self, doc):
         return self.lemmatizer.lemmatize(doc)
 
-    def get_SVO(self, tokens):
+    def get_simple_sentence_SVO(self, tokens):
         """ this function return the main SVO of the sentence """
-        # active sentence
-        # @TODO examin the case where there is a conjuction CC related to verbs !!! (two main clauses in one sentence)
         subject = ''
         object = ''
         predicate = ''
@@ -96,11 +91,12 @@ class Parser:
         if (verb.pos_ == "VERB") or (verb.pos_ == "AUX"):
             predicate = verb.string.strip()
         else:
-            print("dependecy error")
+            print("Dependecy error.")
 
         subs = [item for item in verb.lefts if item.dep_ in self.SUBJECTS]
         objs = [item for item in verb.rights if item.dep_ in self.OBJECTS]
 
+        # TODO debug
         text = [(item.string, item.dep_, item.head.string) for item in tokens]
         print(text)
         for sub in subs:
@@ -121,14 +117,17 @@ class Parser:
         if (root.pos_ != "VERB") and (root.pos_ != "AUX"):
             print("dependency error getsvo")
         else:
-            subverbs = self.main_clause_split(tokens)
-            subverbs.append(root)
-            for verb in subverbs:
-                yield self.extractsvo(tokens, verb)
+            items = [item.dep_ for item in tokens]
+            print(items)
+            if "cd" in items:
+                subverbs = self.main_clause_split(root, tokens)
+                subverbs.append(root)
+                for verb in subverbs:
+                    yield self.extractsvo(tokens, verb)
 
     # for and check the head of the and conj if it is situated just the
 
-    def main_clause_split(self, tokens):
+    def main_clause_split(self, root, tokens):
         """
         this function should returns two or more than one main clause
         :param tokens:
@@ -139,14 +138,45 @@ class Parser:
         # and -cc or punctuation  or mark to detect a second clause punct
         # returns just the subverbs not the root !!
         # coordination conjuction with verb as head
+
+        subject = ''
+        object = ''
+        verb = ''
         text = [(item.string, item.dep_, item.head.string, item.head.pos_) for item in tokens]
         print(text)
-        cd = [item.head for item in tokens if item.dep_ == "cd"]
-        print(cd)
-        # head is the verb coordinated with !!
-        subverbs = [item for item in tokens if item.dep_ == "cj" and (item.head.pos_ == "VERB" or item.head.pos_ == "AUX")]
-        print(subverbs)
-        return subverbs
+        conj_word = next(item for item in tokens if item.dep_ == "cj")
+        print(conj_word, conj_word.pos_)
+        # conjunction but no second main clause
+        if (conj_word.pos_ == "VERB") or (conj_word.pos_ == "AUX"):
+            # TODO conj_word is the second verb
+            verb = conj_word
+            print(verb.lefts)
+            print(verb.rights)
+            subs = [item for item in verb.lefts if item.dep_ in self.SUBJECTS]
+            objs = [item for item in verb.rights if item.dep_ in self.OBJECTS]
+            print(subs)
+            print(objs)
+            for sub in subs:
+                if sub.head.string == verb.string:
+                    subject = sub.string.strip()
+                    break
+            for obj in objs:
+                if obj.head.string == verb.string:
+                    object = obj.string.strip()
+                    break
+            print(subject, object, verb)
+        else:
+            object = conj_word
+            verb = root.string
+            subs = [item for item in root.lefts if item.dep_ in self.SUBJECTS]
+            print(subs)
+            for sub in subs:
+                if sub.head.string == verb:
+                    subject = sub.string.strip()
+                    break
+            print(subject, object, verb)
+
+        return None
 
     def extractsvo(self, tokens, verb):
         print(verb)
