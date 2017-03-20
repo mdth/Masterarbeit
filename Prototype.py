@@ -11,8 +11,15 @@ class Prototype:
     """Prototype system that searches for RDF pattern (aka Q-Calculus pattern) to find textsnippets."""
 
     def __init__(self, mongo_db, postgre_db, postagger="spacy-tagger", sentence_mode=True, window_size=0):
-        """Initialize a prototype system with a specified POS tagger, sentence or word mode and decide on the size
-        for sentence or word windows size"""
+        """Initialize a prototype with a specified configurations.
+
+        Parameters:
+        mongo_db -- Mongo DB connection
+        postgre_db -- PostGre DB connection
+        postagger -- POS Tagger (default "spacy-tagger")
+        sentence_mode -- whether or not to use sentence window mode (default True)
+        window_size -- the size of the sentence or word window (default 0)
+        """
         self.__mongo_db = mongo_db
         self.__postgre_db = postgre_db
         self.__postagger = postagger
@@ -23,16 +30,20 @@ class Prototype:
         #self.parser = Parser()
 
     def exit(self):
+        """Close down the prototype."""
         self.__mongo_db.close_connection()
         self.__postgre_db.close_connection()
 
     def get_postagger(self):
+        """Gets the current POS Tagger in use."""
         return self.__postagger
 
     def get_window_size(self):
+        """Gets the current window size."""
         return self.__window_size
 
     def get_sentence_mode(self):
+        """Returns True if sentence window mode is activated, else False."""
         return self.__sentence_mode
 
     def change_postagger(self, name):
@@ -53,13 +64,21 @@ class Prototype:
             raise ValueError("Please type in a valid positive number.")
 
     def toggle_sentence_window_mode(self):
+        """Activate sentence window mode."""
         self.__sentence_mode = True
 
     def toggle_word_window_mode(self):
+        """De-activate sentence window mode."""
         self.__sentence_mode = False
 
     def get_word_window(self, pattern, tokens, constraints):
-        """Get a word window list with a specific number of words."""
+        """Get a word window list with a specific number of words.
+
+        Parameters:
+        pattern -- the pattern to search for
+        tokens -- the tokens to search in
+        constraints -- a constraint tuple list
+        """
         split_pattern = pattern.split()
         if len(split_pattern) > 1:
             textsnippets = self.__get_word_window_more_words_help(split_pattern, tokens, constraints)
@@ -69,7 +88,8 @@ class Prototype:
         return textsnippets
 
     def __get_word_window_more_words_help(self, split_pattern, tokens, constraints):
-        """Find pattern with more than one word."""
+        """Find pattern with more than one word.
+        """
         textsnippets = []
         textlength = len(tokens)
         for ind, token in enumerate(tokens):
@@ -89,6 +109,7 @@ class Prototype:
         return textsnippets
 
     def __get_word_window_one_word_help(self, pattern, tokens, constraints):
+        """Find pattern with only one word."""
         textsnippets = []
         textlength = len(tokens)
         for ind, token in enumerate(tokens):
@@ -108,6 +129,7 @@ class Prototype:
         textsnippets.append(SentObj(snippet=snippet, offset_start=offset_start, offset_end=offset_end))
 
     def dummy(self, string):
+        # TODO delete
         offsets = self.tokenizer.span_tokenize(string)
         for offset in offsets:
             print(offset[0], offset[1])
@@ -137,9 +159,15 @@ class Prototype:
             return " ".join(tokens[indl - self.__window_size:indr + (self.__window_size + 1)])
 
     def get_sentence_window(self, pattern, sentences, constraints):
-        """Get a word window list with a specific number of sentences. size 0 will return the
+        """Get a list with a specific number of sentences. size 0 will return the
         current sentence the pattern is found in. size n will return n sentences left and right
-        from the initial sentence."""
+        from the initial sentence.
+
+        Parameters:
+        pattern -- the pattern to search for
+        sentences -- the sentences to search in
+        constraints -- the constraint tuple list
+        """
         split_pattern = pattern.split()
 
         if len(split_pattern) > 1:
@@ -233,6 +261,7 @@ class Prototype:
         textsnippets.append(SentObj(snippet=sentence, offset_start=offset_start, offset_end=offset_end))
 
     def __adjust_offset(self, offset):
+        # TODO
         new_offset = offset - 1
         return new_offset
 
@@ -270,12 +299,17 @@ class Prototype:
             if left_window_border < 0:
                 left_window_border = 0
             if right_window_border >= len(sentences):
-                # TODO nicht ganz sauber
+                # TODO does this need to be more precise?
                 right_window_border = len(sentences)
             return " ".join(sentences[left_window_border:right_window_border])
 
     def find_text_window(self, text, text_id, constraints):
-        """Finds text windows with variable size."""
+        """Finds text windows with variable size and pushes the found results in the PostGre database.
+
+        Parameters:
+        text -- text to search in
+        text_id -- id of the text
+        constraints -- the constraint tuple list"""
         tokenized_text = self.tokenizer.tokenize(text)
         for pattern in self.__postgre_db.get_data_from_table("single_pattern"):
             if self.__sentence_mode:
@@ -283,10 +317,10 @@ class Prototype:
                 for ch in ['›', '‹', '»', '«']:
                     if ch in text:
                         text = text.replace(ch, '"')
-                windows_objects = self.__get_sentence_window(
+                windows_objects = self.get_sentence_window(
                     pattern['single_pattern'], sent_tokenize(text, language='german'), constraints)
             else:
-                windows_objects = self.__get_word_window(pattern['single_pattern'], tokenized_text, constraints)
+                windows_objects = self.get_word_window(pattern['single_pattern'], tokenized_text, constraints)
 
             # push found snippets onto database
             if len(windows_objects) > 0:
@@ -381,7 +415,10 @@ class Prototype:
             self.__postgre_db.update(table, "aggregation=" + str(aggregation), table_id + "=" + str(entry_id))
 
     def get_snippets(self, constraints):
-        """Get snippets for the whole corpus."""
+        """Get snippets for the whole corpus.
+
+        Parameter:
+        constraints -- the constraint tuple list"""
         for ind, text in enumerate(self.__mongo_db.get({"title": "Chapter 1"})):
             self.__postgre_db.insert("texts", {"title": text['title']})
             self.find_text_window(text['text'], text['id'], constraints)
@@ -404,13 +441,14 @@ class Prototype:
         self.__push_aggregation("has_object", "pattern_single_pattern", str('bscale_id'), str('pattern_id'))
         self.__push_aggregation("has_attribute", "has_object", str('bsort_id'), str('bscale_id'))
 
-    def pos_tagging(self):
-        """POS tag all dialogues and monologues."""
-        snippets = self.__postgre_db.get_data_from_table("snippets")
-
 
 def check_pattern(pattern, token):
-    """Strip token and check if the token matches the defined pattern."""
+    """Strip token and check if the token matches the defined pattern.
+
+    Parameter:
+    pattern -- the pattern to search for
+    token -- the token to match with the pattern
+    """
     split_token = re.split('\W+', token, 1)
     if split_token[0] == '':
         split_token = split_token[1]

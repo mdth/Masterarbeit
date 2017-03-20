@@ -128,7 +128,7 @@ def search_for_pattern(onlyPOS):
 	result = [None] * titlelist_length
 	for index, pos in enumerate(onlyPOS):
 		result[index] = (title_list[index], pos, pattern_list[index])
-		print result[index]
+		print(result[index])
 		
 		#print pattern_list[index]
 		

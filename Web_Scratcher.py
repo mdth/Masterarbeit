@@ -25,5 +25,4 @@ def main(save_path):
         print("Read page " + str(page) + " from 50.")
         page += 1
 
-path = "C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot"
-main(path)
+main(os.getcwd())

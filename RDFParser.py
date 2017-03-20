@@ -4,7 +4,8 @@ from HelperMethods import add_quotes
 
 
 class RDFParser:
-    """RDFParser is a parser to parse RDF files (aka ontologies) and pushing the found pattern onto the database."""
+    """RDFParser is a parser to parse specified RDF files (aka ontologies) and pushing the found pattern onto the
+    database."""
 
     def __init__(self, db):
         """Initialize a new RDF parser with pre-defined grammar. Takes database db as an argument."""

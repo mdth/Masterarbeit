@@ -41,4 +41,4 @@ expr = Forward()
 expr << (POS_NOUN)
 
 result = expr.parseString('DTNNPOSNN')
-print result.asList()
+print(result.asList())

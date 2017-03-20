@@ -1,6 +1,5 @@
 from pg import DB
 from HelperMethods import add_quotes
-from RDFParser import RDFParser
 
 
 class PostGreDBConnector:
@@ -98,7 +97,7 @@ class PostGreDBConnector:
         self.query(query)
 
     def get(self, table, where_clause, key):
-        """Search for a chosen key of a specific item in a table."""
+        """Return the key of a specific item in a table."""
         select = "SELECT "
         _from = " FROM "
         where = " WHERE "
@@ -114,7 +113,7 @@ class PostGreDBConnector:
         return self.__db.query("SELECT * FROM " + table).dictresult()
 
     def get_id(self, table, where_clause):
-        """Search for a specific id of an item in a table. If found return id number of found item, else None."""
+        """Return the id of an item in a table. If found return id number of found item, else None."""
         select = "SELECT id FROM "
         where = " WHERE "
         q = select + table + where + where_clause

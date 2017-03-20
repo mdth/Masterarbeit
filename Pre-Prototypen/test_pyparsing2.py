@@ -61,7 +61,7 @@ def read_in_rdf_file(filename):
 def get_pattern_from_RDF(data):
 	"""Returns only pattern list from RDF data."""
 	#TODO debug print
-	print "Found pattern in RDF."
+	print("Found pattern in RDF.")
 	
 	pattern_list = dict()
 	for statements in data:
@@ -71,7 +71,8 @@ def get_pattern_from_RDF(data):
 		if relation == 'hasPattern':
 			pattern_list.update({subject : object})
 			#TODO debug line		
-			print "%s %s %s" % (subject, has_pattern, object)				
+			print("%s %s %s" % (subject, has_pattern, object))
+
 	return pattern_list		
 
 def compile_pattern(string):
@@ -101,8 +102,8 @@ def search_for_pattern(text, rdf_pattern):
 				num_matches = num_matches + search_pattern(item, found_pattern, text)
 			found_pattern.update({key : num_matches})	
 	#TODO debug print
-	print "Found pattern in text:"
-	print found_pattern			
+	print("Found pattern in text:")
+	print(found_pattern)
 
 data = read_in_rdf_file('C:/Users/din_m/Google Drive/MA/Prototypen/vhs_qcalculus_mod.rdf')
 parsed_RDF = get_pattern_from_RDF(data)

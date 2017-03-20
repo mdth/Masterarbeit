@@ -13,7 +13,6 @@ class MongoDBConnector:
         self.__id = 1
         try:
             self.__client = MongoClient()
-            # TODO only throws exception if system can't access database...
             print("Mongo DB connection successfully built...")
         except ConnectionError:
             print("Mongo DB connection could not be built...")
@@ -34,6 +33,7 @@ class MongoDBConnector:
                 self.__id += 1
 
     def delete_all(self):
+        """Delete all db entries in """
         self.__db.dostojewski.delete_many({})
 
     def get(self, search_term):
