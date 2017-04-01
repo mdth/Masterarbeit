@@ -1,10 +1,11 @@
 import spacy
-import itertools
 from nltk.chunk.regexp import RegexpParser
 import functools
 from nltk.tree import Tree
 from textblob_de.lemmatizers import PatternParserLemmatizer
 import nltk
+from collections import namedtuple
+
 
 class Parser:
     """A parser that ..."""
@@ -15,7 +16,10 @@ class Parser:
     NP_Noun_Simple = """NP: {(<NOUN|PROPN>)+}"""
 
     SUBJECTS = ["sb"]
-    OBJECTS = ["pd", "mo", "oa", "da"]
+    OBJECTS = ["pd", "mo", "oa", "da", "oc"]
+    VERBS = ["VERB", "AUX"]
+
+    svo_obj = namedtuple('svo_object', ['subject', 'object', 'verb'])
 
     def __init__(self):
         """Initialize a ...."""
@@ -82,199 +86,88 @@ class Parser:
     def lemmatize_text(self, doc):
         return self.lemmatizer.lemmatize(doc)
 
-    def get_simple_sentence_SVO(self, tokens):
+    def get_SVO(self, tokens):
         """ this function return the main SVO of the sentence """
-        subject = ''
-        object = ''
-        predicate = ''
-        verb = next(item for item in tokens if item.dep_ == "ROOT")
+        svo_pairs = []
+        # search svo for the root verb
+        print([(item.string, item.dep_, item.pos_, item.head) for item in tokens])
+        root = next(item for item in tokens if item.dep_ == "ROOT")
+        if self.is_passive(root):
+            print("passive")
+            svo_pairs.append(self.extract_passive_SVO(root))
+        else:
+            svo_pairs.append(self.svo_searcher(root))
+
+        dependencies = [item.dep_ for item in tokens]
+        item_tokens = [item for item in tokens]
+        if "cd" in dependencies:
+            conj_word = next(item for item in tokens if item.dep_ == "cj")
+            if (conj_word.pos_ == "VERB") or (conj_word.pos_ == "AUX"):
+                svo_pairs.append(self.svo_searcher(conj_word))
+            else:
+                verb = root.string.strip()
+                verb_index = item_tokens.index(root)
+                if item_tokens[verb_index - 1].dep_ == "cj":
+                    # root verb is next to conjunction word
+                    subject = conj_word.string.strip()
+                    object = svo_pairs[0].object
+                    print(subject, object, verb)
+                    svo_pairs.append(self.svo_obj(subject=subject, object=svo_pairs[0].object, verb=verb))
+                else:
+                    object = conj_word.string.strip()
+                    subject = self.extract_subject(root, self.SUBJECTS)
+                    print(subject, object, root)
+                    svo_pairs.append(self.svo_obj(subject=subject, object=object, verb=verb))
+        print(svo_pairs)
+        return svo_pairs
+
+    def svo_searcher(self, verb):
         if (verb.pos_ == "VERB") or (verb.pos_ == "AUX"):
             predicate = verb.string.strip()
+            subject = self.extract_subject(verb, self.SUBJECTS)
+            object = self.extract_object(verb, self.OBJECTS)
+            print(subject, object, predicate)
+            return self.svo_obj(subject=subject, object=object, verb=predicate)
         else:
-            print("Dependecy error.")
+            print("Dependecy error. No verb root found.")
 
-        subs = [item for item in verb.lefts if item.dep_ in self.SUBJECTS]
-        objs = [item for item in verb.rights if item.dep_ in self.OBJECTS]
+    def extract_object(self, verb, object_criteria):
+        object = ''
+        objects = [item for item in verb.rights if item.dep_ in object_criteria]
+        possible_objects = [obj for obj in objects if obj.head.string == verb.string]
+        if len(possible_objects) == 1:
+            if possible_objects[0].dep_ == 'oc':
+                object_temp = possible_objects[0].lefts
+                object = [item.string.strip() for item in object_temp][0]
+            else:
+                object = possible_objects[0].string.strip()
+        elif len(possible_objects) > 1:
+            if possible_objects[0].dep_ == 'da' and possible_objects[1].dep_ == 'oa':
+                object = possible_objects[1].string.strip()
+            elif possible_objects[0].dep_ == 'oa' and possible_objects[1].dep_ == 'mo':
+                object = possible_objects[1].string.strip()
+        else:
+            pass
+        return object
 
-        # TODO debug
-        text = [(item.string, item.dep_, item.head.string) for item in tokens]
-        print(text)
-        for sub in subs:
+    def extract_subject(self, verb, subject_criteria):
+        #TODO maybe match subject like if length == 0 then could not find subject
+        subject = ''
+        subjects = [item for item in verb.lefts if item.dep_ in subject_criteria]
+        for sub in subjects:
             if sub.head.string == verb.string:
                 subject = sub.string.strip()
                 break
-        for obj in objs:
-            if obj.head.string == verb.string:
-                object = obj.string.strip()
-                break
+        return subject
 
-        return (subject, object, predicate)
+    def extract_passive_SVO(self, verb):
+        subject = self.extract_object(verb, self.SUBJECTS)
+        object = self.extract_subject(verb, self.OBJECTS)
+        return self.svo_obj(subject=subject, object=object, verb=verb.string.strip())
 
-    def getsvo(self, tokens):
-        """This method get's sentences with conjunctions."""
-        root = next(item for item in tokens if item.dep_ == "ROOT")
-        print(root.string, root.pos_)
-        if (root.pos_ != "VERB") and (root.pos_ != "AUX"):
-            print("dependency error getsvo")
+    def is_passive(self, verb):
+        """Checks if sentence or part-sentence is in passive form by looking for a subject right from the verb."""
+        if len([item for item in verb.rights if item.dep_ in self.SUBJECTS]) == 0:
+            return False
         else:
-            items = [item.dep_ for item in tokens]
-            print(items)
-            if "cd" in items:
-                subverbs = self.main_clause_split(root, tokens)
-                subverbs.append(root)
-                for verb in subverbs:
-                    yield self.extractsvo(tokens, verb)
-
-    # for and check the head of the and conj if it is situated just the
-
-    def main_clause_split(self, root, tokens):
-        """
-        this function should returns two or more than one main clause
-        :param tokens:
-        :return:
-        """
-        # starting from a subordination conjunction that enclose a new clause you
-        # can find the clauses included in one sentence
-        # and -cc or punctuation  or mark to detect a second clause punct
-        # returns just the subverbs not the root !!
-        # coordination conjuction with verb as head
-
-        subject = ''
-        object = ''
-        verb = ''
-        text = [(item.string, item.dep_, item.head.string, item.head.pos_) for item in tokens]
-        print(text)
-        conj_word = next(item for item in tokens if item.dep_ == "cj")
-        print(conj_word, conj_word.pos_)
-        # conjunction but no second main clause
-        if (conj_word.pos_ == "VERB") or (conj_word.pos_ == "AUX"):
-            # TODO conj_word is the second verb
-            verb = conj_word
-            print(verb.lefts)
-            print(verb.rights)
-            subs = [item for item in verb.lefts if item.dep_ in self.SUBJECTS]
-            objs = [item for item in verb.rights if item.dep_ in self.OBJECTS]
-            print(subs)
-            print(objs)
-            for sub in subs:
-                if sub.head.string == verb.string:
-                    subject = sub.string.strip()
-                    break
-            for obj in objs:
-                if obj.head.string == verb.string:
-                    object = obj.string.strip()
-                    break
-            print(subject, object, verb)
-        else:
-            object = conj_word
-            verb = root.string
-            subs = [item for item in root.lefts if item.dep_ in self.SUBJECTS]
-            print(subs)
-            for sub in subs:
-                if sub.head.string == verb:
-                    subject = sub.string.strip()
-                    break
-            print(subject, object, verb)
-
-        return None
-
-    def extractsvo(self, tokens, verb):
-        print(verb)
-        subj = self.get_subject(verb)
-        if subj:
-            subs = self.extractcompso(tokens, subj)
-            if not self.get_object(tokens, verb)[1] or not subj:
-                print("no object in this sentence")
-                return ("", "", "")
-            else:
-                for subject in subs:
-                    passive, obj = self.get_object(tokens, verb)
-
-                    if passive:
-                        yield (obj, subject, verb.lemma_)
-                    else:
-                        yield (subject, obj, verb.lemma_)
-        else:
-            print("no subject")
-
-    def extractcompso(self, tokens, so):
-        conj = self.findconjso(so)
-
-        for sub in itertools.chain([so], conj):
-            yield self.compound(tokens, sub)
-
-    def findconjso(self, so):
-        # PRECONJ: pre-correlative conjunctions
-        # return a generator with yield !!! attention !!!
-        rights = [item for item in so.rights if item.dep_ == "conj"]
-        while (rights):
-            for i in rights:
-                if i.head.string == so.string:
-                    yield i
-                    so = i
-                    rights = [item for item in so.rights if item.dep_ == "conj"]
-
-    def get_subject(self, root):
-        subs = [item for item in root.lefts if item.dep_ in self.SUBJECTS]
-        # check 6 dependecies related to subject :
-        correct = True
-        subs1 = [item for item in subs if item.dep_ == "nsubj" and item.head.string == root.string]
-        subs2 = [item for item in subs if item.dep_ == "nsubjpass" and item.head.string == root.string]
-        if subs1:
-            return next(item for item in subs if item.dep_ == "nsubj" and item.head.string == root.string)
-        elif subs2:
-            return next(item for item in subs if item.dep_ == "nsubjpass" and item.head.string == root.string)
-        """if subs1:
-            return
-        if  rsubs:
-            nsubj = next(item for item in subs if item.dep_ == "nsubj" and item.head.string == root.string)
-            print(nsubj,"nsubj")
-            # check if nsubj is a correct nominal subject (comparing to 5 others dep on subjects)
-
-            # for each nsubj
-            for sub in nsubj.rights:
-                if sub.dep == "csubjpass":
-                    correct = False
-                    pass
-                elif sub.dep == "csubj":
-                    correct = False
-                    pass
-        # we can check the right the second condition the real subject when it is related to the root :
-            if correct :
-                return nsubj
-        elif next(item for item in subs if item.dep_ == "nsubjpass" and item.head.string == root.string):
-            return  next(item for item in subs if item.dep_ == "nsubjpass" and item.head.string == root.string)"""
-
-    # check conjunctions in subjects and objects !!
-    # maybe we need to check conjunctions because lefts and rights will not get into depth more than one level remember !!
-
-
-    def get_object(self, tokens, root):
-        """
-        thus function returns ( if the sentence is passive or active and the object or the passive subject)
-        :param root:
-        :return:    """
-        objs = [item for item in tokens[root.i + 1:] if item.dep_ in self.OBJECTS]
-        if len(objs) > 0:
-            for i in objs:
-                if i.dep_ == "attr" or i.dep_ == "dobj" and i.head.string == root.string:
-                    return False, i.string
-                if i.dep_ == "pobj":
-                    if i.head.dep_ == "agent":
-                        return True, i.string
-                    else:
-                        return False, i.string
-
-        return False, ""
-
-    def compound(self, tokens, so):
-        # for Mr. Bingley and for video camera example
-        index = so.i - 1
-        comp = so.string
-        while index > -1:
-            if tokens[index].dep_ == "compound":
-                comp = tokens[index].string + '' + comp
-                index -= 1
-            else:
-                return comp
-        return comp
+            return True

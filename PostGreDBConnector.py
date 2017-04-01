@@ -44,11 +44,11 @@ class PostGreDBConnector:
             " single_pattern_id int, snippet_id int, offsets integer[][], aggregation int)")
 
         # adjective and verb extractions
-        self._add_table("CREATE TABLE subject_occ (id serial primary key, subject text)")
-        self._add_table("CREATE TABLE adjective_occ (id serial primary key, adjective text)")
-        self._add_table("CREATE TABLE verb_occ (id serial primary key, verb text)")
-        self._add_table("CREATE TABLE subject_adjective (id serial primary key, subject int, adjective int)")
-        self._add_table("CREATE TABLE subject_verb (id serial primary key, subject int, verb int)")
+        self._add_table("CREATE TABLE subject_occ (id serial primary key, subject text, count int)")
+        self._add_table("CREATE TABLE adjective_occ (id serial primary key, adjective text, count int)")
+        self._add_table("CREATE TABLE verb_occ (id serial primary key, verb text, count int)")
+        self._add_table("CREATE TABLE subject_adjective (id serial primary key, subject int, adjective int, count int)")
+        self._add_table("CREATE TABLE subject_verb (id serial primary key, subject int, verb int, count int)")
 
     def __create_functions(self):
         """Create all necessary functions to aggregate the results saved in the database."""
