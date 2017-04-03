@@ -116,6 +116,6 @@ class TestGermanParser(unittest.TestCase):
         doc = self.parser.nlp("Hannah, Lisa und Sarah sind jung.")
         result_spacy = self.parser.get_SVO(doc)
         expected_result = [self.svo_obj(subject='Hannah', object='jung', verb='sind'),
-                           self.svo_obj(subject='Sarah', object='jung', verb='sind'),
-                           self.svo_obj(subject='Lisa', object='jung', verb='sind')]
+                           self.svo_obj(subject='Lisa', object='jung', verb='sind'),
+                           self.svo_obj(subject='Sarah', object='jung', verb='sind')]
         self.assertListEqual(expected_result, result_spacy)

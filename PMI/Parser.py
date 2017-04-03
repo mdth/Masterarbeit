@@ -100,6 +100,10 @@ class Parser:
 
         dependencies = [item.dep_ for item in tokens]
         item_tokens = [item for item in tokens]
+        if ("cj" in dependencies) and ("cd" not in dependencies):
+            # more than one main clause
+            second_verb = next(item for item in tokens if item.dep_ == "cj")
+            svo_pairs.append(self.svo_searcher(second_verb))
         if "cd" in dependencies:
             conj_word = next(item for item in tokens if item.dep_ == "cj")
             if (conj_word.pos_ == "VERB") or (conj_word.pos_ == "AUX"):

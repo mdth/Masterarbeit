@@ -27,7 +27,7 @@ class Prototype:
         self.__sentence_mode = sentence_mode
         self.__window_size = window_size
         self.tokenizer = WhitespaceTokenizer()
-        #self.parser = Parser()
+        self.parser = Parser()
 
     def exit(self):
         """Close down the prototype."""
@@ -127,12 +127,6 @@ class Prototype:
         offset_end = offsets[self.__window_size][1]
         SentObj = namedtuple('Sentence_Object', ['snippet', 'offset_start', 'offset_end'])
         textsnippets.append(SentObj(snippet=snippet, offset_start=offset_start, offset_end=offset_end))
-
-    def dummy(self, string):
-        # TODO delete
-        offsets = self.tokenizer.span_tokenize(string)
-        for offset in offsets:
-            print(offset[0], offset[1])
 
     def __get_textsnippets(self, indl, indr, textlength, tokens):
         if (indl - self.__window_size < 0) and (indr + self.__window_size > textlength):
@@ -310,13 +304,15 @@ class Prototype:
         text -- text to search in
         text_id -- id of the text
         constraints -- the constraint tuple list"""
+
+        # this is only a quick and dirty fix: replace weird quotes to basic ones
+        for ch in ['›', '‹', '»', '«']:
+            if ch in text:
+                text = text.replace(ch, '"')
+
         tokenized_text = self.tokenizer.tokenize(text)
         for pattern in self.__postgre_db.get_data_from_table("single_pattern"):
             if self.__sentence_mode:
-                # this is only a quick and dirty fix: replace weird quotes to basic ones
-                for ch in ['›', '‹', '»', '«']:
-                    if ch in text:
-                        text = text.replace(ch, '"')
                 windows_objects = self.get_sentence_window(
                     pattern['single_pattern'], sent_tokenize(text, language='german'), constraints)
             else:
@@ -334,6 +330,8 @@ class Prototype:
                     self.__push_texts_snippets(text_id, snippet_id)
                     self.__push_snippet_offsets(
                         single_pattern_id, snippet_id, sent_obj.offset_start, sent_obj.offset_end)
+
+    
 
     def __push_snippets(self, snippet):
         """Push found snippets onto the snippets table in PostGre DB, if not already in the table.
