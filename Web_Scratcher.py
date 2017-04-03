@@ -12,7 +12,7 @@ def get_web_text(url):
 
 def write_into_file(text, filename, file_path):
     os.chdir(file_path)
-    with open("Chapter " + str(filename) + ".txt", "w") as file:
+    with open("Chapter " + str(filename) + ".txt", "w", encoding='utf-8') as file:
         file.writelines(text)
 
 

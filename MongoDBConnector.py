@@ -12,14 +12,15 @@ class MongoDBConnector:
             base and collections."""
         self.__id = 1
         try:
+            print("Connecting to Mongo DB...")
             self.__client = MongoClient()
-            print("Mongo DB connection successfully built...")
+            print("Mongo DB connection successfully built.")
         except ConnectionError:
-            print("Mongo DB connection could not be built...")
+            print("Mongo DB connection could not be built.")
 
         self.__db = self.__client.database
         self.delete_all()
-        #self.add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
+        self.add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
         self.__db.dostojewski.create_index([('id', pymongo.ASCENDING)], unique=True)
 
     def add_articles(self, file_directory):

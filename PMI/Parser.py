@@ -23,7 +23,9 @@ class Parser:
 
     def __init__(self):
         """Initialize a ...."""
+        print('Initializing Spacy...')
         self.nlp = spacy.load('de')
+        print('Spacy was successfully initialized.')
         self.lemmatizer = PatternParserLemmatizer()
         self.parser_NP = RegexpParser(self.NP_Noun_Simple)
     
@@ -72,9 +74,7 @@ class Parser:
                     chunk_text = ''
                     for ch in chunk_list:
                         chunk_text = " " + chunk_text + str(ch)
-                    print("chunktext" + chunk_text)
                     lemma = self.lemmatizer.lemmatize(chunk_text)
-                    print(lemma)
                     adjs.append(lemma[ind][0])
                 if not (i.dep_ == "punct"):
                     ind += 1
@@ -90,16 +90,16 @@ class Parser:
         """ this function return the main SVO of the sentence """
         svo_pairs = []
         # search svo for the root verb
-        print([(item.string, item.dep_, item.pos_, item.head) for item in tokens])
         root = next(item for item in tokens if item.dep_ == "ROOT")
+
         if self.is_passive(root):
-            print("passive")
             svo_pairs.append(self.extract_passive_SVO(root))
         else:
             svo_pairs.append(self.svo_searcher(root))
 
         dependencies = [item.dep_ for item in tokens]
         item_tokens = [item for item in tokens]
+        print([(item.string, item.dep_) for item in tokens])
         if ("cj" in dependencies) and ("cd" not in dependencies):
             # more than one main clause
             second_verb = next(item for item in tokens if item.dep_ == "cj")
@@ -115,14 +115,11 @@ class Parser:
                     # root verb is next to conjunction word
                     subject = conj_word.string.strip()
                     object = svo_pairs[0].object
-                    print(subject, object, verb)
                     svo_pairs.append(self.svo_obj(subject=subject, object=svo_pairs[0].object, verb=verb))
                 else:
                     object = conj_word.string.strip()
                     subject = self.extract_subject(root, self.SUBJECTS)
-                    print(subject, object, root)
                     svo_pairs.append(self.svo_obj(subject=subject, object=object, verb=verb))
-        print(svo_pairs)
         return svo_pairs
 
     def svo_searcher(self, verb):
@@ -130,10 +127,10 @@ class Parser:
             predicate = verb.string.strip()
             subject = self.extract_subject(verb, self.SUBJECTS)
             object = self.extract_object(verb, self.OBJECTS)
-            print(subject, object, predicate)
             return self.svo_obj(subject=subject, object=object, verb=predicate)
         else:
             print("Dependecy error. No verb root found.")
+            pass
 
     def extract_object(self, verb, object_criteria):
         object = ''
@@ -160,9 +157,19 @@ class Parser:
         subjects = [item for item in verb.lefts if item.dep_ in subject_criteria]
         for sub in subjects:
             if sub.head.string == verb.string:
-                subject = sub.string.strip()
+                subject = self.find_long_ne(sub)
                 break
         return subject
+
+    def find_long_ne(self, noun):
+        nounright = [item for item in noun.rights]
+        if len(nounright) > 0:
+            noun = noun.string.strip()
+            for sub_noun in nounright:
+                noun = noun + ' ' + sub_noun.string.strip()
+        else:
+            noun = noun.string.strip()
+        return noun
 
     def extract_passive_SVO(self, verb):
         subject = self.extract_object(verb, self.SUBJECTS)

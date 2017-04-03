@@ -119,3 +119,9 @@ class TestGermanParser(unittest.TestCase):
                            self.svo_obj(subject='Lisa', object='jung', verb='sind'),
                            self.svo_obj(subject='Sarah', object='jung', verb='sind')]
         self.assertListEqual(expected_result, result_spacy)
+
+    def test18(self):
+        doc = self.parser.nlp("Herr Paul war ein einsamer Einsiedler.")
+        result_spacy = self.parser.get_SVO(doc)
+        expected_result = [self.svo_obj(subject='Herr Paul', object='Einsiedler', verb='war')]
+        self.assertListEqual(expected_result, result_spacy)

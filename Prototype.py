@@ -84,7 +84,6 @@ class Prototype:
             textsnippets = self.__get_word_window_more_words_help(split_pattern, tokens, constraints)
         else:
             textsnippets = self.__get_word_window_one_word_help(pattern, tokens, constraints)
-        print(textsnippets)
         return textsnippets
 
     def __get_word_window_more_words_help(self, split_pattern, tokens, constraints):
@@ -168,7 +167,6 @@ class Prototype:
             textsnippets = self.__get_sentence_window_more_words(split_pattern, sentences, constraints)
         else:
             textsnippets = self.__get_sentence_window_one_word(pattern, sentences, constraints)
-        print(textsnippets)
         return textsnippets
 
     def __get_sentence_window_one_word(self, pattern, sentences, constraints):
@@ -297,7 +295,7 @@ class Prototype:
                 right_window_border = len(sentences)
             return " ".join(sentences[left_window_border:right_window_border])
 
-    def find_text_window(self, text, text_id, constraints):
+    def find_text_window(self, text, text_id, constraints=None):
         """Finds text windows with variable size and pushes the found results in the PostGre database.
 
         Parameters:
@@ -330,8 +328,6 @@ class Prototype:
                     self.__push_texts_snippets(text_id, snippet_id)
                     self.__push_snippet_offsets(
                         single_pattern_id, snippet_id, sent_obj.offset_start, sent_obj.offset_end)
-
-    
 
     def __push_snippets(self, snippet):
         """Push found snippets onto the snippets table in PostGre DB, if not already in the table.
@@ -417,10 +413,10 @@ class Prototype:
 
         Parameter:
         constraints -- the constraint tuple list"""
-        for ind, text in enumerate(self.__mongo_db.get({"title": "Chapter 1"})):
+        for ind, text in enumerate(self.__mongo_db.get({"title": "Chapter 7"})):
             self.__postgre_db.insert("texts", {"title": text['title']})
             self.find_text_window(text['text'], text['id'], constraints)
-            print("Chapter " + str(text['id']) + " done.")
+            print("Finished extracting snippets from chapter " + str(text['id']) + ".")
 
     def aggregation(self):
         """Calculate aggregation bottom-up and store the interim data onto the database."""
@@ -438,6 +434,46 @@ class Prototype:
             "pattern_single_pattern", "snippet_offsets", str('pattern_id'), str('single_pattern_id'))
         self.__push_aggregation("has_object", "pattern_single_pattern", str('bscale_id'), str('pattern_id'))
         self.__push_aggregation("has_attribute", "has_object", str('bsort_id'), str('bscale_id'))
+
+    def find_spo_and_adjectives(self):
+        all_snippets = self.__postgre_db.get_data_from_table("snippets")
+        for snippet in all_snippets:
+            text = self.parser.nlp(snippet[str("snippet")])
+            noun_adjectives = self.parser.nouns_adj_spacy(text)
+            spo = self.parser.get_SVO(text)
+            for item in spo:
+                # TODO maybe don't need this anymore -> test later
+                if item is not None:
+                    if len(item.object) > 0:
+                        if self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.subject)) or \
+                                self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.object)):
+                            self.push_parser_items(item.subject, "subject_occ", "subject")
+                            self.push_parser_items(item.object, "object_occ", "object")
+                            self.push_parser_items(item.verb, "verb_occ", "verb")
+            for item in noun_adjectives:
+                #self.push_parser_items(item)
+                pass
+
+    def push_parser_items(self, word, table, word_type):
+        if not self.__postgre_db.is_in_table(table, word_type + "=" + add_quotes(word)):
+            self.__postgre_db.insert(table, {word_type: word, "count": 0})
+        else:
+            word_id = self.__postgre_db.get_id(table, word_type + "=" + add_quotes(word))
+            print("id " + str(word_id))
+            old_count = self.__postgre_db.get(word_type, "id=" + str(word_id), "count")
+            print("new count " + str(old_count + 1))
+            self.__postgre_db.update(table, "count=" + str(old_count + 1), "id=" + str(word_id))
+
+    def push_parser_item_relationship(self, word1, word2, table, word_type1, word_type2):
+        word1_id = self.__postgre_db.get_id(table, word_type1 + "=" + add_quotes(word1))
+        if not self.__postgre_db.is_in_table(table, word_type + "=" + add_quotes(word)):
+            self.__postgre_db.insert(table, {word_type: word, "count": 0})
+        else:
+            word_id = self.__postgre_db.get_id(table, word_type + "=" + add_quotes(word))
+            print(word_id)
+            old_count = self.__postgre_db.get(word_type, "id=" + str(word_id), "count")
+            print(old_count)
+            self.__postgre_db.update(table, "count=" + str(old_count + 1), "id=" + str(word_id))
 
 
 def check_pattern(pattern, token):

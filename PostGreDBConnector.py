@@ -10,12 +10,13 @@ class PostGreDBConnector:
         """Connecting to localhost (default host and port [localhost, 4532]) PostGre DB and initializing needed data
             base and tables."""
         try:
+            print("Connecting to PostGre DB...")
             self.__db = DB(dbname='testdb', host='localhost', port=5432, user='postgres', passwd='superuser')
-            print("PostGre DB connection successfully built...")
+            print("PostGre DB connection successfully built.")
         except ConnectionError:
-            print("PostGre DB connection could not be built...")
+            print("PostGre DB connection could not be built.")
 
-        # self.delete_all_data()
+        self.delete_all_data()
         self.drop_all_tables()
         self.__create_tables()
         # self.__create_functions()
@@ -48,9 +49,10 @@ class PostGreDBConnector:
         self._add_table("CREATE TABLE adjective_occ (id serial primary key, adjective text, count int)")
         self._add_table("CREATE TABLE verb_occ (id serial primary key, verb text, count int)")
         self._add_table("CREATE TABLE object_occ (id serial primary key, object text, count int)")
-        self._add_table("CREATE TABLE subject_adjective (id serial primary key, subject int, adjective int, count int)")
+        self._add_table("CREATE TABLE subject_adjective_occ (id serial primary key, subject int, adjective int, count int)")
         self._add_table("CREATE TABLE subject_object_occ (id serial primary key, subject int, object int, count int)")
-        self._add_table("CREATE TABLE subject_verb (id serial primary key, subject int, verb int, count int)")
+        self._add_table("CREATE TABLE object_verb_occ (id serial primary key, object int, verb int, count int)")
+        self._add_table("CREATE TABLE subject_verb_occ (id serial primary key, subject int, verb int, count int)")
 
     def __create_functions(self):
         """Create all necessary functions to aggregate the results saved in the database."""
@@ -84,6 +86,7 @@ class PostGreDBConnector:
         select = "SELECT * FROM "
         where = " WHERE "
         q = select + table + where + where_clause
+        print(q)
         result = self.__db.query(q).dictresult()
         if len(result) > 0:
             return True
@@ -96,6 +99,7 @@ class PostGreDBConnector:
         SET = " SET "
         WHERE = " WHERE "
         query = UPDATE + table + SET + values + WHERE + where_clause
+        print(query)
         self.query(query)
 
     def get(self, table, where_clause, key):
@@ -104,7 +108,9 @@ class PostGreDBConnector:
         _from = " FROM "
         where = " WHERE "
         q = select + key + _from + table + where + where_clause
+        print(q)
         result = self.__db.query(q).dictresult()
+        print(result)
         if len(result) > 0:
             return result[0][key]
         else:
@@ -119,8 +125,11 @@ class PostGreDBConnector:
         select = "SELECT id FROM "
         where = " WHERE "
         q = select + table + where + where_clause
+        print(q)
         result = self.__db.query(q).dictresult()
+        print(result)
         if len(result) > 0:
+            print("get id")
             return result[0]['id']
         else:
             return None
