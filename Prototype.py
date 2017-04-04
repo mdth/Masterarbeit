@@ -1,6 +1,6 @@
 import re
-from HelperMethods import add_quotes, compile_pattern, replace_brackets, replace_special_characters
-from collections import namedtuple
+from HelperMethods import add_quotes, replace_brackets, replace_special_characters
+from collections import Counter, namedtuple
 from POSTagger import POSTagger
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import WhitespaceTokenizer
@@ -70,6 +70,9 @@ class Prototype:
     def toggle_word_window_mode(self):
         """De-activate sentence window mode."""
         self.__sentence_mode = False
+
+    def get_mongo_db(self):
+        return self.__mongo_db
 
     def get_word_window(self, pattern, tokens, constraints):
         """Get a word window list with a specific number of words.
@@ -441,54 +444,65 @@ class Prototype:
             text = self.parser.nlp(snippet[str("snippet")])
             spo = self.parser.get_SVO(text)
             for item in spo:
-                # TODO maybe don't need this anymore -> test later
                 if item is not None:
-                    if len(item.object) > 0:
-                        # subject is pattern
-                        if self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.subject)):
-                            self.push_parser_items(item.subject, "subject_occ", "subject")
-                            self.push_parser_items(item.object, "object_occ", "object")
-                            self.push_parser_items(item.verb, "verb_occ", "verb")
+                    # subject is pattern
+                    if self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.subject)):
+                        self.push_parser_items(item.subject, "subject_occ", "subject")
+                        self.push_parser_items(item.object, "object_occ", "object")
+                        self.push_parser_items(item.verb, "verb_occ", "verb")
+                        self.push_parser_item_relationship(
+                            item.subject, item.verb, "subject_verb_occ", "subject", "verb")
+                        if item.object != '':
                             self.push_parser_item_relationship(
                                 item.subject, item.object, "subject_object_occ", "subject", "object")
-                            self.push_parser_item_relationship(
-                                item.subject, item.verb, "subject_verb_occ", "subject", "verb")
-
-                        # object is pattern
-                        elif self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.object)):
-                            self.push_parser_items(item.subject, "subject_occ", "subject")
-                            self.push_parser_items(item.object, "object_occ", "object")
-                            self.push_parser_items(item.verb, "verb_occ", "verb")
-                            self.push_parser_item_relationship(
-                                item.subject, item.object, "subject_object_occ", "subject", "object")
-                            self.push_parser_item_relationship(
-                                item.object, item.verb, "object_verb_occ", "object", "verb")
+                    #object is pattern
+                    elif self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.object)):
+                        self.push_parser_items(item.subject, "subject_occ", "subject")
+                        self.push_parser_items(item.object, "object_occ", "object")
+                        self.push_parser_items(item.verb, "verb_occ", "verb")
+                        self.push_parser_item_relationship(
+                            item.subject, item.object, "subject_object_occ", "subject", "object")
+                        self.push_parser_item_relationship(
+                            item.object, item.verb, "object_verb_occ", "object", "verb")
 
             noun_adjectives = self.parser.nouns_adj_spacy(text)
             for item in noun_adjectives:
-                #self.push_parser_items(item)
-                pass
+                subject = item['noun']
+                adjective = item['adj']
+                if self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item['noun'])):
+                    self.push_parser_items(subject, "subject_occ", "subject")
+                    self.push_parser_items(adjective, "adjective_occ", "adjective")
+                    self.push_parser_item_relationship(subject, adjective, "subject_adjective_occ", "subject", "adjective")
 
     def push_parser_items(self, word, table, word_type):
         if not self.__postgre_db.is_in_table(table, word_type + "=" + add_quotes(word)):
-            self.__postgre_db.insert(table, {word_type: word, "count": 1})
-        else:
-            word_id = self.__postgre_db.get_id(table, word_type + "=" + add_quotes(word))
-            print("id " + str(word_id))
-            old_count = self.__postgre_db.get(table, "id=" + str(word_id), "count")
-            print("new count " + str(old_count + 1))
-            self.__postgre_db.update(table, "count=" + str(old_count + 1), "id=" + str(word_id))
+            count = self.aggregate_occurences(word)
+            self.__postgre_db.insert(table, {word_type: word, "count": count})
 
     def push_parser_item_relationship(self, word1, word2, table, word_type1, word_type2):
-        word1_id = self.__postgre_db.get_id(table, word_type1 + "=" + add_quotes(word1))
-        if not self.__postgre_db.is_in_table(table, word_type + "=" + add_quotes(word)):
-            self.__postgre_db.insert(table, {word_type: word, "count": 0})
+        word1_id = self.__postgre_db.get_id(word_type1 + "_occ", word_type1 + "=" + add_quotes(word1))
+        word2_id = self.__postgre_db.get_id(word_type2 + "_occ", word_type2 + "=" + add_quotes(word2))
+
+        if not self.__postgre_db.is_in_table(table, word_type1 + "=" + str(word1_id) + " and " + word_type2 + "=" + str(word2_id)):
+            self.__postgre_db.insert(table, {word_type1: word1_id, word_type2: word2_id, "count": 1})
         else:
-            word_id = self.__postgre_db.get_id(table, word_type + "=" + add_quotes(word))
-            print(word_id)
-            old_count = self.__postgre_db.get(word_type, "id=" + str(word_id), "count")
-            print(old_count)
-            self.__postgre_db.update(table, "count=" + str(old_count + 1), "id=" + str(word_id))
+            table_id = self.__postgre_db.get_id(table, word_type1 + "=" + str(word1_id) + " and " + word_type2 + "=" + str(word2_id))
+            old_count = self.__postgre_db.get(table, "id=" + str(table_id), "count")
+            self.__postgre_db.update(table, "count=" + str(old_count + 1), "id=" + str(table_id))
+
+    def aggregate_occurences(self, word):
+        for ind, text in enumerate(self.__mongo_db.get({"title": "Chapter 2"})):
+            doc = text['text']
+            for ch in ['›', '‹', '»', '«']:
+                if ch in doc:
+                    doc = doc.replace(ch, '"')
+            lemmatized_text = self.parser.lemmatize(doc)
+            counts = Counter(lemmatized_text)
+        return counts[word]
+
+    def calculate_pmi(self):
+        noun_adj_occ = self.__postgre_db.get("subject_adjective_occ", "id=0", "count")
+        print(noun_adj_occ)
 
 
 def check_pattern(pattern, token):

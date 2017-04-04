@@ -1,6 +1,7 @@
 import pymongo
 import os
 from pymongo import MongoClient
+from HelperMethods import read_in_txt_file
 
 
 class MongoDBConnector:
@@ -42,12 +43,3 @@ class MongoDBConnector:
 
     def close_connection(self):
         self.__client.close()
-
-
-def read_in_txt_file(filename):
-    """Read in file and return file content as string."""
-    if not filename.endswith(".txt"):
-        raise Exception("Invalid file format.")
-
-    with open(filename, 'r') as file:
-        return file.read()

@@ -86,7 +86,6 @@ class PostGreDBConnector:
         select = "SELECT * FROM "
         where = " WHERE "
         q = select + table + where + where_clause
-        print(q)
         result = self.__db.query(q).dictresult()
         if len(result) > 0:
             return True
@@ -99,7 +98,6 @@ class PostGreDBConnector:
         SET = " SET "
         WHERE = " WHERE "
         query = UPDATE + table + SET + values + WHERE + where_clause
-        print(query)
         self.query(query)
 
     def get(self, table, where_clause, key):
@@ -108,9 +106,7 @@ class PostGreDBConnector:
         _from = " FROM "
         where = " WHERE "
         q = select + key + _from + table + where + where_clause
-        print(q)
         result = self.__db.query(q).dictresult()
-        print(result)
         if len(result) > 0:
             return result[0][key]
         else:
@@ -125,11 +121,8 @@ class PostGreDBConnector:
         select = "SELECT id FROM "
         where = " WHERE "
         q = select + table + where + where_clause
-        print(q)
         result = self.__db.query(q).dictresult()
-        print(result)
         if len(result) > 0:
-            print("get id")
             return result[0]['id']
         else:
             return None

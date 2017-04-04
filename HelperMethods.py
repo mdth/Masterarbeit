@@ -35,3 +35,12 @@ def read_in_csv_file(filename):
             else:
                 return None
     return constraint_list
+
+
+def read_in_txt_file(filename):
+    """Read in file and return file content as string."""
+    if not filename.endswith(".txt"):
+        raise Exception("Invalid file format.")
+
+    with open(filename, 'r') as file:
+        return file.read()

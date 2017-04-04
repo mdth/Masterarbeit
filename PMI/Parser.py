@@ -91,37 +91,39 @@ class Parser:
         """ this function return the main SVO of the sentence """
         svo_pairs = []
         # search svo for the root verb
-        root = next(item for item in tokens if item.dep_ == "ROOT")
+        roots = [item for item in tokens if item.dep_ == "ROOT"]
+        root = next(item for item in roots if (item.pos_ == "VERB") or (item.pos_ == "AUX"))
+        if root is not None:
+            if self.is_passive(root):
+                svo_pairs.append(self.extract_passive_SVO(root))
+            else:
+                svo_pairs.append(self.svo_searcher(root))
 
-        if self.is_passive(root):
-            svo_pairs.append(self.extract_passive_SVO(root))
-        else:
-            svo_pairs.append(self.svo_searcher(root))
-
-        dependencies = [item.dep_ for item in tokens]
-        item_tokens = [item for item in tokens]
-        print([(item.string, item.dep_) for item in tokens])
-        if ("cj" in dependencies) and ("cd" not in dependencies):
-            # more than one main clause
-            second_verb = next(item for item in tokens if item.dep_ == "cj")
-            svo_pairs.append(self.svo_searcher(second_verb))
-        if "cd" in dependencies:
-            conj_word = next((item for item in tokens if item.dep_ == "cj"), None)
-            if conj_word is not None:
-                if (conj_word.pos_ == "VERB") or (conj_word.pos_ == "AUX"):
-                    svo_pairs.append(self.svo_searcher(conj_word))
-                else:
-                    verb = root.string.strip()
-                    verb_index = item_tokens.index(root)
-                    if item_tokens[verb_index - 1].dep_ == "cj":
-                        # root verb is next to conjunction word
-                        subject = conj_word.string.strip()
-                        object = svo_pairs[0].object
-                        svo_pairs.append(self.svo_obj(subject=subject, object=svo_pairs[0].object, verb=verb))
+            dependencies = [item.dep_ for item in tokens]
+            item_tokens = [item for item in tokens]
+            print([(item.string, item.dep_) for item in tokens])
+            if ("cj" in dependencies) and ("cd" not in dependencies):
+                # more than one main clause
+                second_verb = next(item for item in tokens if item.dep_ == "cj")
+                svo_pairs.append(self.svo_searcher(second_verb))
+            if "cd" in dependencies:
+                conj_word = next((item for item in tokens if item.dep_ == "cj"), None)
+                if conj_word is not None:
+                    if (conj_word.pos_ == "VERB") or (conj_word.pos_ == "AUX"):
+                        svo_pairs.append(self.svo_searcher(conj_word))
                     else:
-                        object = conj_word.string.strip()
-                        subject = self.extract_subject(root, self.SUBJECTS)
-                        svo_pairs.append(self.svo_obj(subject=subject, object=object, verb=verb))
+                        verb = root.string.strip()
+                        verb_index = item_tokens.index(root)
+                        if item_tokens[verb_index - 1].dep_ == "cj":
+                            # root verb is next to conjunction word
+                            subject = conj_word.string.strip()
+                            object = svo_pairs[0].object
+                            svo_pairs.append(self.svo_obj(subject=subject, object=svo_pairs[0].object, verb=verb))
+                        else:
+                            object = conj_word.string.strip()
+                            subject = self.extract_subject(root, self.SUBJECTS)
+                            svo_pairs.append(self.svo_obj(subject=subject, object=object, verb=verb))
+        print(svo_pairs)
         return svo_pairs
 
     def svo_searcher(self, verb):
@@ -143,6 +145,8 @@ class Parser:
                 object_temp = possible_objects[0].lefts
                 if list(item for item in object_temp):
                     object = [item.string.strip() for item in object_temp]
+                    if not object:
+                        object = ''
             else:
                 object = possible_objects[0].string.strip()
         elif len(possible_objects) > 1:
@@ -169,7 +173,8 @@ class Parser:
         if len(nounright) > 0:
             noun = noun.string.strip()
             for sub_noun in nounright:
-                noun = noun + ' ' + sub_noun.string.strip()
+                if sub_noun.dep_ != 'ag':
+                    noun = noun + ' ' + sub_noun.string.strip()
         else:
             noun = noun.string.strip()
         return noun
