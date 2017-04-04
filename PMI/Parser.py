@@ -2,9 +2,9 @@ import spacy
 from nltk.chunk.regexp import RegexpParser
 import functools
 from nltk.tree import Tree
-from textblob_de.lemmatizers import PatternParserLemmatizer
 import nltk
 from collections import namedtuple
+import treetaggerwrapper
 
 
 class Parser:
@@ -26,7 +26,7 @@ class Parser:
         print('Initializing Spacy...')
         self.nlp = spacy.load('de')
         print('Spacy was successfully initialized.')
-        self.lemmatizer = PatternParserLemmatizer()
+        self.lemmatizer = treetaggerwrapper.TreeTagger(TAGLANG='de')
         self.parser_NP = RegexpParser(self.NP_Noun_Simple)
     
     def related_noun(self, chunk):
@@ -74,17 +74,18 @@ class Parser:
                     chunk_text = ''
                     for ch in chunk_list:
                         chunk_text = " " + chunk_text + str(ch)
-                    lemma = self.lemmatizer.lemmatize(chunk_text)
-                    adjs.append(lemma[ind][0])
-                if not (i.dep_ == "punct"):
-                    ind += 1
+                    lemma = self.lemmatize(chunk_text)
+                    adjs.append(lemma[ind])
+                ind += 1
             if adjs:
                 for i in self.get_related_noun(chunk):
                     for j in adjs:
                         yield {"noun": i.strip(), "adj": j}
 
-    def lemmatize_text(self, doc):
-        return self.lemmatizer.lemmatize(doc)
+    def lemmatize(self, doc):
+        tags = self.lemmatizer.tag_text(doc)
+        tags2 = treetaggerwrapper.make_tags(tags)
+        return [item.lemma for item in tags2]
 
     def get_SVO(self, tokens):
         """ this function return the main SVO of the sentence """
@@ -105,21 +106,22 @@ class Parser:
             second_verb = next(item for item in tokens if item.dep_ == "cj")
             svo_pairs.append(self.svo_searcher(second_verb))
         if "cd" in dependencies:
-            conj_word = next(item for item in tokens if item.dep_ == "cj")
-            if (conj_word.pos_ == "VERB") or (conj_word.pos_ == "AUX"):
-                svo_pairs.append(self.svo_searcher(conj_word))
-            else:
-                verb = root.string.strip()
-                verb_index = item_tokens.index(root)
-                if item_tokens[verb_index - 1].dep_ == "cj":
-                    # root verb is next to conjunction word
-                    subject = conj_word.string.strip()
-                    object = svo_pairs[0].object
-                    svo_pairs.append(self.svo_obj(subject=subject, object=svo_pairs[0].object, verb=verb))
+            conj_word = next((item for item in tokens if item.dep_ == "cj"), None)
+            if conj_word is not None:
+                if (conj_word.pos_ == "VERB") or (conj_word.pos_ == "AUX"):
+                    svo_pairs.append(self.svo_searcher(conj_word))
                 else:
-                    object = conj_word.string.strip()
-                    subject = self.extract_subject(root, self.SUBJECTS)
-                    svo_pairs.append(self.svo_obj(subject=subject, object=object, verb=verb))
+                    verb = root.string.strip()
+                    verb_index = item_tokens.index(root)
+                    if item_tokens[verb_index - 1].dep_ == "cj":
+                        # root verb is next to conjunction word
+                        subject = conj_word.string.strip()
+                        object = svo_pairs[0].object
+                        svo_pairs.append(self.svo_obj(subject=subject, object=svo_pairs[0].object, verb=verb))
+                    else:
+                        object = conj_word.string.strip()
+                        subject = self.extract_subject(root, self.SUBJECTS)
+                        svo_pairs.append(self.svo_obj(subject=subject, object=object, verb=verb))
         return svo_pairs
 
     def svo_searcher(self, verb):
@@ -130,7 +132,7 @@ class Parser:
             return self.svo_obj(subject=subject, object=object, verb=predicate)
         else:
             print("Dependecy error. No verb root found.")
-            pass
+            return None
 
     def extract_object(self, verb, object_criteria):
         object = ''
@@ -139,7 +141,8 @@ class Parser:
         if len(possible_objects) == 1:
             if possible_objects[0].dep_ == 'oc':
                 object_temp = possible_objects[0].lefts
-                object = [item.string.strip() for item in object_temp][0]
+                if list(item for item in object_temp):
+                    object = [item.string.strip() for item in object_temp]
             else:
                 object = possible_objects[0].string.strip()
         elif len(possible_objects) > 1:

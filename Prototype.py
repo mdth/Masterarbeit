@@ -413,7 +413,7 @@ class Prototype:
 
         Parameter:
         constraints -- the constraint tuple list"""
-        for ind, text in enumerate(self.__mongo_db.get({"title": "Chapter 7"})):
+        for ind, text in enumerate(self.__mongo_db.get({"title": "Chapter 2"})):
             self.__postgre_db.insert("texts", {"title": text['title']})
             self.find_text_window(text['text'], text['id'], constraints)
             print("Finished extracting snippets from chapter " + str(text['id']) + ".")
@@ -439,28 +439,43 @@ class Prototype:
         all_snippets = self.__postgre_db.get_data_from_table("snippets")
         for snippet in all_snippets:
             text = self.parser.nlp(snippet[str("snippet")])
-            noun_adjectives = self.parser.nouns_adj_spacy(text)
             spo = self.parser.get_SVO(text)
             for item in spo:
                 # TODO maybe don't need this anymore -> test later
                 if item is not None:
                     if len(item.object) > 0:
-                        if self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.subject)) or \
-                                self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.object)):
+                        # subject is pattern
+                        if self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.subject)):
                             self.push_parser_items(item.subject, "subject_occ", "subject")
                             self.push_parser_items(item.object, "object_occ", "object")
                             self.push_parser_items(item.verb, "verb_occ", "verb")
+                            self.push_parser_item_relationship(
+                                item.subject, item.object, "subject_object_occ", "subject", "object")
+                            self.push_parser_item_relationship(
+                                item.subject, item.verb, "subject_verb_occ", "subject", "verb")
+
+                        # object is pattern
+                        elif self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.object)):
+                            self.push_parser_items(item.subject, "subject_occ", "subject")
+                            self.push_parser_items(item.object, "object_occ", "object")
+                            self.push_parser_items(item.verb, "verb_occ", "verb")
+                            self.push_parser_item_relationship(
+                                item.subject, item.object, "subject_object_occ", "subject", "object")
+                            self.push_parser_item_relationship(
+                                item.object, item.verb, "object_verb_occ", "object", "verb")
+
+            noun_adjectives = self.parser.nouns_adj_spacy(text)
             for item in noun_adjectives:
                 #self.push_parser_items(item)
                 pass
 
     def push_parser_items(self, word, table, word_type):
         if not self.__postgre_db.is_in_table(table, word_type + "=" + add_quotes(word)):
-            self.__postgre_db.insert(table, {word_type: word, "count": 0})
+            self.__postgre_db.insert(table, {word_type: word, "count": 1})
         else:
             word_id = self.__postgre_db.get_id(table, word_type + "=" + add_quotes(word))
             print("id " + str(word_id))
-            old_count = self.__postgre_db.get(word_type, "id=" + str(word_id), "count")
+            old_count = self.__postgre_db.get(table, "id=" + str(word_id), "count")
             print("new count " + str(old_count + 1))
             self.__postgre_db.update(table, "count=" + str(old_count + 1), "id=" + str(word_id))
 
