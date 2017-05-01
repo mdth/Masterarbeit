@@ -23,8 +23,8 @@ PROTOTYPE = Prototype(
 #print("Extraction of snippets done.")
 #PROTOTYPE.aggregation()
 #print("Aggregation of q-calculus done.")
-PROTOTYPE.find_spo_and_adjectives()
-print("Extraction of SPO and adjective noun pairs done.")
+#PROTOTYPE.find_spo_and_adjectives()
+#print("Extraction of SPO and adjective noun pairs done.")
 PROTOTYPE.calculate_pmi()
 #PROTOTYPE.intersect_bscale("FemMainCharacter", "Character", "MainCharacter", "Female")
 

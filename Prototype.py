@@ -519,10 +519,10 @@ class Prototype:
         self.__postgre_db.delete_data_in_table("subject_object_occ")
         self.__postgre_db.delete_data_in_table("subject_verb_occ")
         self.__postgre_db.delete_data_in_table("object_verb_occ")
-        all_snippets = self.__postgre_db.get_data_from_table("snippets")
-        for snippet in all_snippets:
-            text = self.parser.nlp(snippet[str("snippet")])
-            spo = self.parser.get_SVO(text)
+        all_snippets_table = self.__postgre_db.get_data_from_table("snippets")
+        all_snippets = [snippet['snippet'] for snippet in all_snippets_table]
+        for snippet in self.parser.nlp.pipe(all_snippets, batch_size=3000, n_threads=-1):
+            spo = self.parser.get_SVO(snippet)
             for item in spo:
                 if item is not None:
                     # subject is pattern
@@ -546,7 +546,7 @@ class Prototype:
                             self.push_parser_item_relationship(
                                     item.object, item.verb, "object_verb_occ", "object", "verb")
 
-            noun_adjectives = self.parser.nouns_adj_spacy(text)
+            noun_adjectives = self.parser.nouns_adj_spacy(snippet)
             for item in noun_adjectives:
                 subject = item['noun']
                 adjective = item['adj']
@@ -586,11 +586,18 @@ class Prototype:
             return count
 
     def calculate_pmi(self):
-        corpus_count = [len(item['text']) for item in self.__mongo_db.get({})][0]
+        corpus_count = 0
+        for item in self.__mongo_db.get({}):
+            corpus_count += len(item['text'])
+        print(corpus_count)
         self.aggregate_occurences("subject")
+        print("subject done")
         self.aggregate_occurences("object")
+        print("obj done")
         self.aggregate_occurences("adjective")
+        print("adf done")
         self.aggregate_occurences("verb")
+        print("verb done")
         self.calculate_pmi_helper(corpus_count, "subject_adjective_occ", "subject", "adjective")
         print("sub_adjective")
         self.calculate_pmi_helper(corpus_count, "subject_verb_occ", "subject", "verb")
@@ -605,6 +612,7 @@ class Prototype:
         for item in self.__postgre_db.get_data_from_table(word_table + "_occ"):
             word = item[word_table]
             count = self.aggregate_occurences_help(word)
+            print(word, str(count))
             self.__postgre_db.update(word_table + "_occ", "count=" + str(count), "id=" + str(item['id']))
 
     def calculate_pmi_helper(self, corpus_count, co_occurence, word1, word2):
