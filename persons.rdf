@@ -29,13 +29,7 @@ lit:Burdowskij q:hasPattern ("Antip Burdowskij", "Burdowskij") .
 
 lit:Male q:hasObject (lit:Myshkin, lit:Rogoshin, lit:Jepantschin, lit:Ganja, lit:Ippolit, lit:Tozkij, lit:Radomskij, lit:PrinceS, lit:Lebedew, lit:Ptizyn, lit:Iwolgin, lit:Nikolai, lit:Ferdyschtschenko, lit:Burdowskij) .
 lit:Female q:hasObject (lit:Nastasja, lit:Alexandra, lit:Adelaida, lit:Aglaja, lit: Jepantschina, lit:Alexandrowna, lit:Warwara) .
-
 lit:MainCharacter q:hasObject (lit:Myshkin, lit:Rogoshin, lit:Nastasja, lit:Aglaja) .
 
-lit:FemMainCharacter a q:BSort .
-lit:MaleMainCharacter a q:BSort .
-
-lit:MainCharacter q:hasAttribute lit:MainCharacter .
-
-lit:MaleMainCharacter q:hasAttribute (lit:MainCharacter, lit:Male) .
-lit:FemMainCharacter q:hasAttribute (lit:MainCharacter, lit:Female) .
+lit:Character q:hasAttribute (lit:MainCharacter, lit:Male, lit:Female, lit:SubCharacter) .
+lit:Character a q:BSort .

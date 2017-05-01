@@ -20,9 +20,9 @@ class MongoDBConnector:
             print("Mongo DB connection could not be built.")
 
         self.__db = self.__client.database
-        self.delete_all()
-        self.add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
-        self.__db.dostojewski.create_index([('id', pymongo.ASCENDING)], unique=True)
+        #self.delete_all()
+        #self.add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
+        #self.__db.dostojewski.create_index([('id', pymongo.ASCENDING)], unique=True)
 
     def add_articles(self, file_directory):
         """Add one article into database."""

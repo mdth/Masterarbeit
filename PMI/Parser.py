@@ -1,8 +1,5 @@
 import spacy
-from nltk.chunk.regexp import RegexpParser
 import functools
-from nltk.tree import Tree
-import nltk
 from collections import namedtuple
 import treetaggerwrapper
 
@@ -10,13 +7,9 @@ import treetaggerwrapper
 class Parser:
     """A parser that ..."""
 
-    NAMED_ENTITIES_TAGS = ["GPE", "PERSON", "ORGANIZATION", "LOCATION", "DATE", "TIME", "MONEY", "PERCENT",
-                                "FACILITY"]
     NOUNS = ["NOUN","PROPN"]
-    NP_Noun_Simple = """NP: {(<NOUN|PROPN>)+}"""
-
-    SUBJECTS = ["sb"]
     OBJECTS = ["pd", "mo", "oa", "da", "oc"]
+    SUBJECT = ["sb"]
     VERBS = ["VERB", "AUX"]
 
     svo_obj = namedtuple('svo_object', ['subject', 'object', 'verb'])
@@ -27,21 +20,6 @@ class Parser:
         self.nlp = spacy.load('de')
         print('Spacy was successfully initialized.')
         self.lemmatizer = treetaggerwrapper.TreeTagger(TAGLANG='de')
-        self.parser_NP = RegexpParser(self.NP_Noun_Simple)
-    
-    def related_noun(self, chunk):
-        tree = self.parser_NP.parse(chunk.leaves())
-        for chunk in tree:
-            if isinstance(chunk, Tree) and chunk.label() == 'NP':
-                rchunk = nltk.ne_chunk(chunk.leaves())
-                named_en = []
-                for subchunk in rchunk:
-                    if isinstance(subchunk, Tree) and subchunk.label() in self.NAMED_ENTITIES_TAGS:
-                        for word, tag in subchunk:
-                            named_en.append(word)
-                        yield functools.reduce(lambda x, y: x + ' ' + y, named_en).strip()
-                    else:
-                        yield subchunk[0]
 
     def get_related_noun(self, chunk):
         """
@@ -53,11 +31,11 @@ class Parser:
         for i in chunk:
             if i.pos_ in self.NOUNS:
                 if i.ent_type:
-                    ent.append(i.string)
+                    ent.append(self.lemmatize_word(i.string))
                 else:
-                    yield i.string
+                    yield self.lemmatize_word(i.string)
         if ent:
-            yield functools.reduce(lambda x, y: x + y, ent).strip()
+            yield functools.reduce(lambda x, y: x + " " + y, ent)
 
     def nouns_adj_spacy(self, doc):
         """
@@ -68,31 +46,39 @@ class Parser:
         for chunk in doc.noun_chunks:
             adjs = []
             chunk_list = [i.string for i in chunk]
+            chunk_text = ''
+            for item in chunk_list:
+                chunk_text = " " + chunk_text + str(item)
             ind = 0
-            for i in chunk:
-                if i.pos_ == 'ADJ':
-                    chunk_text = ''
-                    for ch in chunk_list:
-                        chunk_text = " " + chunk_text + str(ch)
-                    lemma = self.lemmatize(chunk_text)
+            for chunk_part in chunk:
+                if chunk_part.pos_ == 'ADJ':
+                    lemma = self.lemmatize_chunk(chunk_text)
                     adjs.append(lemma[ind])
                 ind += 1
             if adjs:
-                for i in self.get_related_noun(chunk):
-                    for j in adjs:
-                        yield {"noun": i.strip(), "adj": j}
+                for noun in self.get_related_noun(chunk):
+                    for adj in adjs:
+                        yield {"noun": noun, "adj": adj}
 
-    def lemmatize(self, doc):
+    def lemmatize_chunk(self, doc):
         tags = self.lemmatizer.tag_text(doc)
         tags2 = treetaggerwrapper.make_tags(tags)
         return [item.lemma for item in tags2]
+
+    def lemmatize_word(self, doc):
+        tags = self.lemmatizer.tag_text(doc)
+        tags2 = treetaggerwrapper.make_tags(tags)
+        if tags2:
+            return tags2[0].lemma
+        else:
+            return ""
 
     def get_SVO(self, tokens):
         """ this function return the main SVO of the sentence """
         svo_pairs = []
         # search svo for the root verb
         roots = [item for item in tokens if item.dep_ == "ROOT"]
-        root = next(item for item in roots if (item.pos_ == "VERB") or (item.pos_ == "AUX"))
+        root = next(item for item in roots if item.pos_ in self.VERBS)
         if root is not None:
             if self.is_passive(root):
                 svo_pairs.append(self.extract_passive_SVO(root))
@@ -101,7 +87,7 @@ class Parser:
 
             dependencies = [item.dep_ for item in tokens]
             item_tokens = [item for item in tokens]
-            print([(item.string, item.dep_) for item in tokens])
+            print([(item.string, item.dep_, item.head) for item in tokens])
             if ("cj" in dependencies) and ("cd" not in dependencies):
                 # more than one main clause
                 second_verb = next(item for item in tokens if item.dep_ == "cj")
@@ -109,10 +95,10 @@ class Parser:
             if "cd" in dependencies:
                 conj_word = next((item for item in tokens if item.dep_ == "cj"), None)
                 if conj_word is not None:
-                    if (conj_word.pos_ == "VERB") or (conj_word.pos_ == "AUX"):
+                    if conj_word.pos_ in self.VERBS:
                         svo_pairs.append(self.svo_searcher(conj_word))
                     else:
-                        verb = root.string.strip()
+                        verb = self.lemmatize_word(root.string)
                         verb_index = item_tokens.index(root)
                         if item_tokens[verb_index - 1].dep_ == "cj":
                             # root verb is next to conjunction word
@@ -121,15 +107,15 @@ class Parser:
                             svo_pairs.append(self.svo_obj(subject=subject, object=svo_pairs[0].object, verb=verb))
                         else:
                             object = conj_word.string.strip()
-                            subject = self.extract_subject(root, self.SUBJECTS)
+                            subject = self.extract_subject(root, self.SUBJECT)
                             svo_pairs.append(self.svo_obj(subject=subject, object=object, verb=verb))
         print(svo_pairs)
         return svo_pairs
 
     def svo_searcher(self, verb):
-        if (verb.pos_ == "VERB") or (verb.pos_ == "AUX"):
-            predicate = verb.string.strip()
-            subject = self.extract_subject(verb, self.SUBJECTS)
+        if verb.pos_ in self.VERBS:
+            predicate = self.lemmatize_word(verb.string)
+            subject = self.extract_subject(verb, self.SUBJECT)
             object = self.extract_object(verb, self.OBJECTS)
             return self.svo_obj(subject=subject, object=object, verb=predicate)
         else:
@@ -156,7 +142,7 @@ class Parser:
                 object = possible_objects[1].string.strip()
         else:
             pass
-        return object
+        return self.lemmatize_word(object)
 
     def extract_subject(self, verb, subject_criteria):
         #TODO maybe match subject like if length == 0 then could not find subject
@@ -172,21 +158,23 @@ class Parser:
         nounright = [item for item in noun.rights]
         if len(nounright) > 0:
             noun = noun.string.strip()
+            print([(sub_noun.string, sub_noun.dep_, sub_noun.pos_) for sub_noun in nounright])
             for sub_noun in nounright:
-                if sub_noun.dep_ != 'ag':
+                if sub_noun.ent_type:
                     noun = noun + ' ' + sub_noun.string.strip()
+            noun = self.lemmatize_chunk(noun)[0]
         else:
-            noun = noun.string.strip()
+            noun = self.lemmatize_word(noun.string.strip())
         return noun
 
     def extract_passive_SVO(self, verb):
-        subject = self.extract_object(verb, self.SUBJECTS)
+        subject = self.extract_object(verb, self.SUBJECT)
         object = self.extract_subject(verb, self.OBJECTS)
         return self.svo_obj(subject=subject, object=object, verb=verb.string.strip())
 
     def is_passive(self, verb):
         """Checks if sentence or part-sentence is in passive form by looking for a subject right from the verb."""
-        if len([item for item in verb.rights if item.dep_ in self.SUBJECTS]) == 0:
+        if len([item for item in verb.rights if item.dep in self.SUBJECT]) == 0:
             return False
         else:
             return True

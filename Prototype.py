@@ -5,6 +5,7 @@ from POSTagger import POSTagger
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import WhitespaceTokenizer
 from PMI.Parser import Parser
+from math import log10
 
 
 class Prototype:
@@ -27,7 +28,7 @@ class Prototype:
         self.__sentence_mode = sentence_mode
         self.__window_size = window_size
         self.tokenizer = WhitespaceTokenizer()
-        self.parser = Parser()
+        #self.parser = Parser()
 
     def exit(self):
         """Close down the prototype."""
@@ -438,6 +439,78 @@ class Prototype:
         self.__push_aggregation("has_object", "pattern_single_pattern", str('bscale_id'), str('pattern_id'))
         self.__push_aggregation("has_attribute", "has_object", str('bsort_id'), str('bscale_id'))
 
+    def aggregate_bscale(self, new_bscale, bsort, *args):
+        if args is not None:
+            bscale_table = self.__postgre_db.get_data_from_table("bscale")
+            bscale_ids = []
+            for scale in args:
+                scale_found = False
+                for bscale in bscale_table:
+                    if scale == bscale['bscale']:
+                        bscale_ids.append(bscale['id'])
+                        scale_found = True
+                if not scale_found:
+                    raise Exception("Chosen Bscale do not exist.")
+            if not self.__postgre_db.is_in_table("bscale", "bscale=" + add_quotes(new_bscale)):
+                self.__postgre_db.insert("bscale", {"bscale": add_quotes(new_bscale)})
+            new_bscale_id = self.__postgre_db.get_id("bscale", "bscale=" + add_quotes(new_bscale))
+            bsort_id = self.__postgre_db.get_id("bsort", "bsort=" + add_quotes(bsort))
+            if self.__postgre_db.is_in_table("has_attribute", "bsort_id=" + str(bsort_id)):
+                old_list = self.__postgre_db.get("has_attribute", "bsort_id=" + str(bsort_id), "bscale_id")
+                new_list = old_list.append(new_bscale_id)
+                self.__postgre_db.update("has_attribute", "bscale_id=" + add_quotes(str(new_list)), "bsort_id=" + str(bsort_id))
+            else:
+                self.__postgre_db.insert("has_attribute", {"bsort_id": bsort_id, "bscale_id": [new_bscale_id], "aggregation": 0})
+
+            scale_obj = self.__postgre_db.get_data_from_table("has_object")
+            pattern_ids = []
+            for scale_id in bscale_ids:
+                for item in scale_obj:
+                    if scale_id == item['bscale_id']:
+                        pattern_ids.append(item['pattern_id'])
+
+            new_pattern_list = list(set.union(*[set(item) for item in pattern_ids]))
+            aggregation = 0
+            for item in new_pattern_list:
+                aggregation += self.__postgre_db.get("pattern_single_pattern", "pattern_id=" + str(item), "aggregation")
+            self.__postgre_db.insert("has_object", {"bscale_id": new_bscale_id, "pattern_id": new_pattern_list, "aggregation": aggregation})
+
+    def intersect_bscale(self, new_bscale, bsort, *args):
+        if args is not None:
+            bscale_table = self.__postgre_db.get_data_from_table("bscale")
+            bscale_ids = []
+            for scale in args:
+                scale_found = False
+                for bscale in bscale_table:
+                    if scale == bscale['bscale']:
+                        bscale_ids.append(bscale['id'])
+                        scale_found = True
+                if not scale_found:
+                    raise Exception("Chosen Bscale does not exist.")
+            if not self.__postgre_db.is_in_table("bscale", "bscale=" + add_quotes(new_bscale)):
+                self.__postgre_db.insert("bscale", {"bscale": add_quotes(new_bscale)})
+            new_bscale_id = self.__postgre_db.get_id("bscale", "bscale=" + add_quotes(new_bscale))
+            bsort_id = self.__postgre_db.get_id("bsort", "bsort=" + add_quotes(bsort))
+            if self.__postgre_db.is_in_table("has_attribute", "bsort_id=" + str(bsort_id)):
+                old_list = self.__postgre_db.get("has_attribute", "bsort_id=" + str(bsort_id), "bscale_id")
+                new_list = old_list.append(new_bscale_id)
+                self.__postgre_db.update("has_attribute", "bscale_id=" + add_quotes(str(new_list)), "bsort_id=" + str(bsort_id))
+            else:
+                self.__postgre_db.insert("has_attribute", {"bsort_id": bsort_id, "bscale_id": [new_bscale_id], "aggregation": 0})
+
+            scale_obj = self.__postgre_db.get_data_from_table("has_object")
+            pattern_ids = []
+            for scale_id in bscale_ids:
+                for item in scale_obj:
+                    if scale_id == item['bscale_id']:
+                        pattern_ids.append(item['pattern_id'])
+
+            new_pattern_list = list(set.intersection(*[set(item) for item in pattern_ids]))
+            aggregation = 0
+            for item in new_pattern_list:
+                aggregation += self.__postgre_db.get("pattern_single_pattern", "pattern_id=" + str(item), "aggregation")
+            self.__postgre_db.insert("has_object", {"bscale_id": new_bscale_id, "pattern_id": new_pattern_list, "aggregation": aggregation})
+
     def find_spo_and_adjectives(self):
         all_snippets = self.__postgre_db.get_data_from_table("snippets")
         for snippet in all_snippets:
@@ -491,18 +564,36 @@ class Prototype:
             self.__postgre_db.update(table, "count=" + str(old_count + 1), "id=" + str(table_id))
 
     def aggregate_occurences(self, word):
+        count = 0
         for ind, text in enumerate(self.__mongo_db.get({"title": "Chapter 2"})):
             doc = text['text']
             for ch in ['›', '‹', '»', '«']:
                 if ch in doc:
                     doc = doc.replace(ch, '"')
-            lemmatized_text = self.parser.lemmatize(doc)
+            lemmatized_text = self.parser.lemmatize_chunk(doc)
             counts = Counter(lemmatized_text)
-        return counts[word]
+            count += counts[word]
+        return count
 
     def calculate_pmi(self):
-        noun_adj_occ = self.__postgre_db.get("subject_adjective_occ", "id=0", "count")
-        print(noun_adj_occ)
+        corpus_count = [len(item['text']) for item in self.__mongo_db.get({})][0]
+        self.calculate_pmi_helper(corpus_count, "subject_adjective_occ", "subject", "adjective")
+        self.calculate_pmi_helper(corpus_count, "subject_verb_occ", "subject", "verb")
+        self.calculate_pmi_helper(corpus_count, "subject_object_occ", "subject", "object")
+        self.calculate_pmi_helper(corpus_count, "object_verb_occ", "object", "verb")
+
+    def calculate_pmi_helper(self, corpus_count, noun_adj_verb, noun, adj_verb):
+        noun_adj_occ_table = self.__postgre_db.get_data_from_table(noun_adj_verb)
+        for item in noun_adj_occ_table:
+            item_id = item['id']
+            noun_adj_freq = float(item['count'] / corpus_count)
+            noun_id = item[noun]
+            adj_id = item[adj_verb]
+            noun_occ = self.__postgre_db.get(noun + "_occ", "id=" + str(noun_id), "count")
+            adj_occ = self.__postgre_db.get(adj_verb + "_occ", "id=" + str(adj_id), "count")
+            pmi = log10(noun_adj_freq / (float(noun_occ / corpus_count) * float(adj_occ / corpus_count)))
+            # TODO can't save long?
+            self.__postgre_db.update(noun_adj_verb, "pmi=" + str(pmi), "id=" + str(item_id))
 
 
 def check_pattern(pattern, token):

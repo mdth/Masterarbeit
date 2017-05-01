@@ -20,7 +20,7 @@ class TestGermanParser(unittest.TestCase):
     def test3(self):
         doc = self.parser.nlp("Schöne Mädchen und hübsche Jungen sitzen auf der gelben Bank.")
         result_spacy = list(self.parser.nouns_adj_spacy(doc))
-        expected_result = [{'noun': 'Mädchen', 'adj': 'schön'}, {'noun': 'Jungen', 'adj': 'hübsch'}, {'noun': 'Bank', 'adj': 'gelb'}]
+        expected_result = [{'noun': 'Mädchen', 'adj': 'schön'}, {'noun': 'Junge', 'adj': 'hübsch'}, {'noun': 'Bank', 'adj': 'gelb'}]
         self.assertListEqual(expected_result, result_spacy)
 
     def test4(self):
@@ -73,5 +73,5 @@ class TestGermanParser(unittest.TestCase):
         # this adjective is a predicate, so this parser can't find it
         doc = self.parser.nlp("Im warmen Playa de la Cruz gibt es viele deutsche Touristen.")
         result_spacy = list(self.parser.nouns_adj_spacy(doc))
-        expected_result = [{'noun': 'Playa de la Cruz', 'adj': 'warm'}, {'noun': 'Touristen', 'adj': 'deutsch'}]
+        expected_result = [{'noun': 'Playa de la Cruz', 'adj': 'warm'}, {'noun': 'Tourist', 'adj': 'deutsch'}]
         self.assertListEqual(expected_result, result_spacy)

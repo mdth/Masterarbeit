@@ -16,9 +16,9 @@ class PostGreDBConnector:
         except ConnectionError:
             print("PostGre DB connection could not be built.")
 
-        self.delete_all_data()
-        self.drop_all_tables()
-        self.__create_tables()
+        #self.delete_all_data()
+        #self.drop_all_tables()
+        #self.__create_tables()
         # self.__create_functions()
 
     def close_connection(self):
@@ -49,10 +49,10 @@ class PostGreDBConnector:
         self._add_table("CREATE TABLE adjective_occ (id serial primary key, adjective text, count int)")
         self._add_table("CREATE TABLE verb_occ (id serial primary key, verb text, count int)")
         self._add_table("CREATE TABLE object_occ (id serial primary key, object text, count int)")
-        self._add_table("CREATE TABLE subject_adjective_occ (id serial primary key, subject int, adjective int, count int)")
+        self._add_table("CREATE TABLE subject_adjective_occ (id serial primary key, subject int, adjective int, count int, pmi double)")
         self._add_table("CREATE TABLE subject_object_occ (id serial primary key, subject int, object int, count int)")
         self._add_table("CREATE TABLE object_verb_occ (id serial primary key, object int, verb int, count int)")
-        self._add_table("CREATE TABLE subject_verb_occ (id serial primary key, subject int, verb int, count int)")
+        self._add_table("CREATE TABLE subject_verb_occ (id serial primary key, subject int, verb int, count int, pmi double)")
 
     def __create_functions(self):
         """Create all necessary functions to aggregate the results saved in the database."""
