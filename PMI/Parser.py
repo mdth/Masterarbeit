@@ -78,7 +78,7 @@ class Parser:
         svo_pairs = []
         # search svo for the root verb
         roots = [item for item in tokens if item.dep_ == "ROOT"]
-        root = next(item for item in roots if item.pos_ in self.VERBS)
+        root = next((item for item in roots if item.pos_ in self.VERBS), None)
         if root is not None:
             if self.is_passive(root):
                 svo_pairs.append(self.extract_passive_SVO(root))
@@ -87,7 +87,6 @@ class Parser:
 
             dependencies = [item.dep_ for item in tokens]
             item_tokens = [item for item in tokens]
-            print([(item.string, item.dep_, item.head) for item in tokens])
             if ("cj" in dependencies) and ("cd" not in dependencies):
                 # more than one main clause
                 second_verb = next(item for item in tokens if item.dep_ == "cj")
@@ -109,7 +108,6 @@ class Parser:
                             object = conj_word.string.strip()
                             subject = self.extract_subject(root, self.SUBJECT)
                             svo_pairs.append(self.svo_obj(subject=subject, object=object, verb=verb))
-        print(svo_pairs)
         return svo_pairs
 
     def svo_searcher(self, verb):
@@ -158,7 +156,6 @@ class Parser:
         nounright = [item for item in noun.rights]
         if len(nounright) > 0:
             noun = noun.string.strip()
-            print([(sub_noun.string, sub_noun.dep_, sub_noun.pos_) for sub_noun in nounright])
             for sub_noun in nounright:
                 if sub_noun.ent_type:
                     noun = noun + ' ' + sub_noun.string.strip()

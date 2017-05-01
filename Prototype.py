@@ -28,7 +28,7 @@ class Prototype:
         self.__sentence_mode = sentence_mode
         self.__window_size = window_size
         self.tokenizer = WhitespaceTokenizer()
-        #self.parser = Parser()
+        self.parser = Parser()
 
     def exit(self):
         """Close down the prototype."""
@@ -99,7 +99,7 @@ class Prototype:
             p_index = 0
             end_index = ind
             while p_index < len(split_pattern):
-                if check_pattern(split_pattern[p_index], tokens[end_index]):
+                if self.check_pattern(split_pattern[p_index], tokens[end_index]):
                     p_index += 1
                     end_index += 1
                 else:
@@ -116,7 +116,7 @@ class Prototype:
         textsnippets = []
         textlength = len(tokens)
         for ind, token in enumerate(tokens):
-            if check_pattern(pattern, token):
+            if self.check_pattern(pattern, token):
                 if constraints is not None:
                     self.__check_constraints(constraints, (ind, ind), ind, pattern, None, None, textsnippets, tokens)
                 else:
@@ -179,7 +179,7 @@ class Prototype:
         for ind, sent in enumerate(sentences):
             tokens = self.tokenizer.tokenize(sent)
             for i, token in enumerate(tokens):
-                if check_pattern(pattern, token):
+                if self.check_pattern(pattern, token):
                     if constraints is not None:
                         self.__check_constraints(constraints, (i, i), ind, pattern, sent, sentences, textsnippets, tokens)
                     else:
@@ -207,14 +207,14 @@ class Prototype:
                 constraint = add_info[0].split()
                 i = 0
                 while found_constraint_flag and i < len(pattern) and i < len(constraint):
-                    if check_pattern(pattern[i], constraint[i]):
+                    if self.check_pattern(pattern[i], constraint[i]):
                         pass
                     else:
                         found_constraint_flag = False
                         break
                     i += 1
 
-            if found_constraint_flag or check_pattern(pattern, add_info[0]):
+            if found_constraint_flag or self.check_pattern(pattern, add_info[0]):
                 # set token_pos depending if index is positive or negative
                 if more_words_flag and index > 0:
                     pos = token_pos[1]
@@ -222,7 +222,7 @@ class Prototype:
                     pos = token_pos[0]
 
                 if self.__sentence_mode:
-                    if (0 <= pos + index < len(tokens)) and check_pattern(add_info[1], tokens[pos + index]):
+                    if (0 <= pos + index < len(tokens)) and self.check_pattern(add_info[1], tokens[pos + index]):
                         self.__get_sentence_window_help(pos, sent_num, sentences, textsnippets)
                     else:
                         while index != 0:
@@ -230,11 +230,11 @@ class Prototype:
                                 index -= 1
                             else:
                                 index += 1
-                            if (0 < pos + index < len(tokens)) and check_pattern(add_info[1], tokens[pos + index]):
+                            if (0 < pos + index < len(tokens)) and self.check_pattern(add_info[1], tokens[pos + index]):
                                 self.__get_sentence_window_help(pos, sent_num, sentences, textsnippets)
                                 break
                 else:
-                    if (0 <= pos + index < len(tokens)) and check_pattern(add_info[1], tokens[pos + index]):
+                    if (0 <= pos + index < len(tokens)) and self.check_pattern(add_info[1], tokens[pos + index]):
                         self.__get_word_window_help(token_pos, textsnippets, len(tokens), tokens)
                     else:
                         while index != 0:
@@ -242,12 +242,11 @@ class Prototype:
                                 index -= 1
                             else:
                                 index += 1
-                            if (0 < pos + index < len(tokens)) and check_pattern(add_info[1], tokens[pos + index]):
+                            if (0 < pos + index < len(tokens)) and self.check_pattern(add_info[1], tokens[pos + index]):
                                 self.__get_word_window_help(token_pos, textsnippets, sent, tokens)
                                 break
 
     def __get_sentence_window_help(self, pos_token, ind, sentences, textsnippets):
-        #TODO pos_token isn't right here at all
         sentence = self.__get_sentences(ind, sentences)
         # get offsets
         offsets = list(self.tokenizer.span_tokenize(sentence))
@@ -267,14 +266,19 @@ class Prototype:
         for ind, sent in enumerate(sentences):
             tokens = self.tokenizer.tokenize(sent)
             p_index = 0
-            begin_index = ind
-            end_index = ind
+            begin_index = 0
+            end_index = 0
             while p_index < len(split_pattern):
-                if (end_index < len(tokens)) and check_pattern(split_pattern[p_index], tokens[end_index]):
+                if (end_index < len(tokens)) and self.check_pattern(split_pattern[p_index], tokens[end_index]):
+                    if p_index == 0:
+                        begin_index = end_index
+                    else:
+                        begin_index = begin_index + end_index - end_index
                     p_index += 1
                     end_index += 1
                 else:
                     break
+            end_index -= 1
             if p_index == len(split_pattern):
                 # search for constraints in sentence
                 if constraints is not None:
@@ -417,7 +421,7 @@ class Prototype:
 
         Parameter:
         constraints -- the constraint tuple list"""
-        for ind, text in enumerate(self.__mongo_db.get({"title": "Chapter 2"})):
+        for ind, text in enumerate(self.__mongo_db.get({})):
             self.__postgre_db.insert("texts", {"title": text['title']})
             self.find_text_window(text['text'], text['id'], constraints)
             print("Finished extracting snippets from chapter " + str(text['id']) + ".")
@@ -512,6 +516,9 @@ class Prototype:
             self.__postgre_db.insert("has_object", {"bscale_id": new_bscale_id, "pattern_id": new_pattern_list, "aggregation": aggregation})
 
     def find_spo_and_adjectives(self):
+        self.__postgre_db.delete_data_in_table("subject_object_occ")
+        self.__postgre_db.delete_data_in_table("subject_verb_occ")
+        self.__postgre_db.delete_data_in_table("object_verb_occ")
         all_snippets = self.__postgre_db.get_data_from_table("snippets")
         for snippet in all_snippets:
             text = self.parser.nlp(snippet[str("snippet")])
@@ -520,23 +527,24 @@ class Prototype:
                 if item is not None:
                     # subject is pattern
                     if self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.subject)):
-                        self.push_parser_items(item.subject, "subject_occ", "subject")
-                        self.push_parser_items(item.object, "object_occ", "object")
-                        self.push_parser_items(item.verb, "verb_occ", "verb")
-                        self.push_parser_item_relationship(
-                            item.subject, item.verb, "subject_verb_occ", "subject", "verb")
                         if item.object != '':
+                            self.push_parser_items(item.subject, "subject_occ", "subject")
+                            self.push_parser_items(item.object, "object_occ", "object")
+                            self.push_parser_items(item.verb, "verb_occ", "verb")
                             self.push_parser_item_relationship(
-                                item.subject, item.object, "subject_object_occ", "subject", "object")
+                                    item.subject, item.verb, "subject_verb_occ", "subject", "verb")
+                            self.push_parser_item_relationship(
+                                    item.subject, item.object, "subject_object_occ", "subject", "object")
                     #object is pattern
                     elif self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.object)):
-                        self.push_parser_items(item.subject, "subject_occ", "subject")
-                        self.push_parser_items(item.object, "object_occ", "object")
-                        self.push_parser_items(item.verb, "verb_occ", "verb")
-                        self.push_parser_item_relationship(
-                            item.subject, item.object, "subject_object_occ", "subject", "object")
-                        self.push_parser_item_relationship(
-                            item.object, item.verb, "object_verb_occ", "object", "verb")
+                        if item.subject != '':
+                            self.push_parser_items(item.subject, "subject_occ", "subject")
+                            self.push_parser_items(item.object, "object_occ", "object")
+                            self.push_parser_items(item.verb, "verb_occ", "verb")
+                            self.push_parser_item_relationship(
+                                    item.subject, item.object, "subject_object_occ", "subject", "object")
+                            self.push_parser_item_relationship(
+                                    item.object, item.verb, "object_verb_occ", "object", "verb")
 
             noun_adjectives = self.parser.nouns_adj_spacy(text)
             for item in noun_adjectives:
@@ -549,8 +557,7 @@ class Prototype:
 
     def push_parser_items(self, word, table, word_type):
         if not self.__postgre_db.is_in_table(table, word_type + "=" + add_quotes(word)):
-            count = self.aggregate_occurences(word)
-            self.__postgre_db.insert(table, {word_type: word, "count": count})
+            self.__postgre_db.insert(table, {word_type: word, "count": 0})
 
     def push_parser_item_relationship(self, word1, word2, table, word_type1, word_type2):
         word1_id = self.__postgre_db.get_id(word_type1 + "_occ", word_type1 + "=" + add_quotes(word1))
@@ -563,9 +570,9 @@ class Prototype:
             old_count = self.__postgre_db.get(table, "id=" + str(table_id), "count")
             self.__postgre_db.update(table, "count=" + str(old_count + 1), "id=" + str(table_id))
 
-    def aggregate_occurences(self, word):
+    def aggregate_occurences_help(self, word):
         count = 0
-        for ind, text in enumerate(self.__mongo_db.get({"title": "Chapter 2"})):
+        for ind, text in enumerate(self.__mongo_db.get({})):
             doc = text['text']
             for ch in ['›', '‹', '»', '«']:
                 if ch in doc:
@@ -573,39 +580,56 @@ class Prototype:
             lemmatized_text = self.parser.lemmatize_chunk(doc)
             counts = Counter(lemmatized_text)
             count += counts[word]
-        return count
+        if count == 0:
+            return 1
+        else:
+            return count
 
     def calculate_pmi(self):
         corpus_count = [len(item['text']) for item in self.__mongo_db.get({})][0]
+        self.aggregate_occurences("subject")
+        self.aggregate_occurences("object")
+        self.aggregate_occurences("adjective")
+        self.aggregate_occurences("verb")
         self.calculate_pmi_helper(corpus_count, "subject_adjective_occ", "subject", "adjective")
+        print("sub_adjective")
         self.calculate_pmi_helper(corpus_count, "subject_verb_occ", "subject", "verb")
+        print("sub_verb")
         self.calculate_pmi_helper(corpus_count, "subject_object_occ", "subject", "object")
+        print("sub_obj")
         self.calculate_pmi_helper(corpus_count, "object_verb_occ", "object", "verb")
+        print("obj_verb")
+        # TODO self.calculate_pmi_helper(corpus_count, "noun_verb_occ", "subject", "verb")
 
-    def calculate_pmi_helper(self, corpus_count, noun_adj_verb, noun, adj_verb):
-        noun_adj_occ_table = self.__postgre_db.get_data_from_table(noun_adj_verb)
-        for item in noun_adj_occ_table:
+    def aggregate_occurences(self, word_table):
+        for item in self.__postgre_db.get_data_from_table(word_table + "_occ"):
+            word = item[word_table]
+            count = self.aggregate_occurences_help(word)
+            self.__postgre_db.update(word_table + "_occ", "count=" + str(count), "id=" + str(item['id']))
+
+    def calculate_pmi_helper(self, corpus_count, co_occurence, word1, word2):
+        co_occ_table = self.__postgre_db.get_data_from_table(co_occurence)
+        for item in co_occ_table:
             item_id = item['id']
-            noun_adj_freq = float(item['count'] / corpus_count)
-            noun_id = item[noun]
-            adj_id = item[adj_verb]
-            noun_occ = self.__postgre_db.get(noun + "_occ", "id=" + str(noun_id), "count")
-            adj_occ = self.__postgre_db.get(adj_verb + "_occ", "id=" + str(adj_id), "count")
-            pmi = log10(noun_adj_freq / (float(noun_occ / corpus_count) * float(adj_occ / corpus_count)))
-            # TODO can't save long?
-            self.__postgre_db.update(noun_adj_verb, "pmi=" + str(pmi), "id=" + str(item_id))
+            co_occ_freq = float(item['count'] / corpus_count)
+            word1_id = item[word1]
+            word2_id = item[word2]
+            word1_occ = self.__postgre_db.get(word1 + "_occ", "id=" + str(word1_id), "count")
+            word2_occ = self.__postgre_db.get(word2 + "_occ", "id=" + str(word2_id), "count")
+            pmi = log10(co_occ_freq / (float(word1_occ / corpus_count) * float(word2_occ / corpus_count)))
+            self.__postgre_db.update(co_occurence, "pmi=" + str(pmi), "id=" + str(item_id))
 
 
-def check_pattern(pattern, token):
-    """Strip token and check if the token matches the defined pattern.
+    def check_pattern(self, pattern, token):
+        """Strip token and check if the token matches the defined pattern.
 
-    Parameter:
-    pattern -- the pattern to search for
-    token -- the token to match with the pattern
-    """
-    split_token = re.split('\W+', token, 1)
-    if split_token[0] == '':
-        split_token = split_token[1]
-    else:
-        split_token = split_token[0]
-    return split_token == pattern
+        Parameter:
+        pattern -- the pattern to search for
+        token -- the token to match with the pattern
+        """
+        split_token = re.split('\W+', token, 1)
+        if split_token[0] == '':
+            split_token = split_token[1]
+        else:
+            split_token = split_token[0]
+        return split_token == pattern
