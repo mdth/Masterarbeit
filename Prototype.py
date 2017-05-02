@@ -570,16 +570,8 @@ class Prototype:
             old_count = self.__postgre_db.get(table, "id=" + str(table_id), "count")
             self.__postgre_db.update(table, "count=" + str(old_count + 1), "id=" + str(table_id))
 
-    def aggregate_occurences_help(self, word):
-        count = 0
-        for ind, text in enumerate(self.__mongo_db.get({})):
-            doc = text['text']
-            for ch in ['›', '‹', '»', '«']:
-                if ch in doc:
-                    doc = doc.replace(ch, '"')
-            lemmatized_text = self.parser.lemmatize_chunk(doc)
-            counts = Counter(lemmatized_text)
-            count += counts[word]
+    def aggregate_occurences_help(self, text_counter, word):
+        count = text_counter[word]
         if count == 0:
             return 1
         else:
@@ -589,14 +581,25 @@ class Prototype:
         corpus_count = 0
         for item in self.__mongo_db.get({}):
             corpus_count += len(item['text'])
-        print(corpus_count)
-        self.aggregate_occurences("subject")
+
+        lemmatized_text = []
+        for ind, text in enumerate(self.__mongo_db.get({})):
+            doc = text['text']
+            for ch in ['›', '‹', '»', '«']:
+                if ch in doc:
+                    doc = doc.replace(ch, '"')
+            lemmatized_text += self.parser.lemmatize_chunk(doc)
+            print(ind)
+        print(len(lemmatized_text))
+        word_counts = Counter(lemmatized_text)
+        print(word_counts)
+        self.aggregate_occurences("subject", word_counts)
         print("subject done")
-        self.aggregate_occurences("object")
+        self.aggregate_occurences("object", word_counts)
         print("obj done")
-        self.aggregate_occurences("adjective")
+        self.aggregate_occurences("adjective", word_counts)
         print("adf done")
-        self.aggregate_occurences("verb")
+        self.aggregate_occurences("verb", word_counts)
         print("verb done")
         self.calculate_pmi_helper(corpus_count, "subject_adjective_occ", "subject", "adjective")
         print("sub_adjective")
@@ -608,10 +611,11 @@ class Prototype:
         print("obj_verb")
         # TODO self.calculate_pmi_helper(corpus_count, "noun_verb_occ", "subject", "verb")
 
-    def aggregate_occurences(self, word_table):
-        for item in self.__postgre_db.get_data_from_table(word_table + "_occ"):
+    def aggregate_occurences(self, word_table, counter):
+        table =  self.__postgre_db.get_data_from_table(word_table + "_occ")
+        for item in table:
             word = item[word_table]
-            count = self.aggregate_occurences_help(word)
+            count = self.aggregate_occurences_help(counter, word)
             print(word, str(count))
             self.__postgre_db.update(word_table + "_occ", "count=" + str(count), "id=" + str(item['id']))
 
@@ -627,7 +631,6 @@ class Prototype:
             pmi = log10(co_occ_freq / (float(word1_occ / corpus_count) * float(word2_occ / corpus_count)))
             self.__postgre_db.update(co_occurence, "pmi=" + str(pmi), "id=" + str(item_id))
 
-
     def check_pattern(self, pattern, token):
         """Strip token and check if the token matches the defined pattern.
 
@@ -641,3 +644,10 @@ class Prototype:
         else:
             split_token = split_token[0]
         return split_token == pattern
+
+
+    def get_result(self):
+        print(self.__postgre_db.query("""SELECT S.subject, V.verb, SV.pmi FROM subject_verb_occ SV, subject_occ S, verb_occ V WHERE SV.subject = S.id AND SV.verb = V.id ORDER BY subject DESC"""))
+        print(self.__postgre_db.query("""SELECT O.object, V.verb, OV.pmi FROM object_verb_occ OV, object_occ O, verb_occ V WHERE OV.object = O.id AND OV.verb = V.id ORDER BY object DESC"""))
+        print(self.__postgre_db.query("""SELECT O.object, S.subject, SO.pmi FROM subject_object_occ SO, subject_occ S, object_occ O WHERE SO.object = O.id AND SO.subject = S.id ORDER BY subject DESC"""))
+        print(self.__postgre_db.query("""SELECT S.subject, A.adjective, AS.pmi FROM subject_adjective_occ AS, subject_occ S, adjective_occ A WHERE AS.subject = S.id AND AS.adjective = A.id ORDER BY subject DESC"""))
