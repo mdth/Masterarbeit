@@ -1,20 +1,27 @@
 lit a q:Vocabulary .
 
-lit:Stadt a q:BScale .
+lit:Town a q:BScale .
 lit:Building a q:BScale .
-lit:Land a q:BScale .
+lit:Country a q:BScale .
 
 lit:Russland q:hasPattern "Rußland" .
 lit:Schweiz q:hasPattern "Schweiz" .
 lit:Frankreich q:hasPattern "Frankreich" .
+lit:Polen q:hasPattern "Polen" .
 lit:Petersburg q:hasPattern "Petersburg" .
 lit:Pawlowsk q:hasPattern "Pawlowsk" .
 lit:Kolmino q:hasPattern "Kolmino" .
 lit:Paris q:hasPattern "Paris" .
+lit:Moskau q:hasPattern "Moskau" .
+lit:Otradnoje q:hasPattern "Otradnoje" .
 
-lit:Ort a q:BSort .
+lit:Place a q:BSort .
 
-lit:Stadt q:hasObject (lit:Petersburg, lit:Pawlowsk, lit:Kolmino, lit:Paris) .
-lit:Land q:hasObject (lit:Russland, lit:Schweiz, lit:Frankreich) .
+lit:Town q:hasObject (lit:Petersburg, lit:Pawlowsk, lit:Kolmino, lit:Paris, lit:Moskau) .
+lit:Country q:hasObject (lit:Russland, lit:Schweiz, lit:Frankreich, lit:Polen) .
+lit:Building q:hasObject lit:Otradnoje .
+lit:Place q:hasAttribute (lit:Building, lit:Country, lit:Town) .
 
-lit:Ort q:hasAttribute (lit:Building, lit:Land, lit:Stadt) .
+lit:Town q:hasScale "nominal" .
+lit:Building q:hasScale "nominal" .
+lit:Country q:hasScale "nominal" .

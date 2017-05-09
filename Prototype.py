@@ -6,6 +6,7 @@ from nltk.tokenize import sent_tokenize
 from nltk.tokenize import WhitespaceTokenizer
 from PMI.Parser import Parser
 from math import log10
+from pprint import pprint
 
 
 class Prototype:
@@ -385,8 +386,6 @@ class Prototype:
 
     def __push_aggregation_lowest_layer(self, aggregation_object, aggregation_name, table, id_name):
         """Push the aggregated snippet numbers onto corresponding the lower layer tables."""
-        id = 0
-        aggregation_value = 0
         for aggregation in aggregation_object:
             id = aggregation[aggregation_name][0]
             aggregation_value = aggregation[aggregation_name][1]
@@ -403,10 +402,11 @@ class Prototype:
             for look_up in entries_to_look_up:
                 # calcutate aggregations differently depending on how the table structure is
                 if len(entries_to_look_up) > 1:
-                        stored_value = self.__postgre_db.get(sub_table, sub_table_id + "=" + str(look_up), "aggregation")
-                        if stored_value is None:
-                            stored_value = 0
-                        aggregation += stored_value
+                    query = "SELECT SUM(aggregation) FROM " + sub_table + " WHERE " + sub_table_id + "=" + str(look_up)
+                    stored_value = self.__postgre_db.query(query)[0]['sum']
+                    if stored_value is None:
+                        stored_value = 0
+                    aggregation += stored_value
 
                 else:
                     query = "SELECT SUM(aggregation) FROM " + sub_table + " WHERE " + sub_table_id + "=" + str(look_up)
@@ -416,12 +416,12 @@ class Prototype:
 
             self.__postgre_db.update(table, "aggregation=" + str(aggregation), table_id + "=" + str(entry_id))
 
-    def get_snippets(self, constraints):
+    def get_snippets(self, collection, constraints):
         """Get snippets for the whole corpus.
 
         Parameter:
         constraints -- the constraint tuple list"""
-        for ind, text in enumerate(self.__mongo_db.get({})):
+        for ind, text in enumerate(self.__mongo_db.get(collection, {})):
             self.__postgre_db.insert("texts", {"title": text['title']})
             self.find_text_window(text['text'], text['id'], constraints)
             print("Finished extracting snippets from chapter " + str(text['id']) + ".")
@@ -577,13 +577,13 @@ class Prototype:
         else:
             return count
 
-    def calculate_pmi(self):
+    def calculate_pmi(self, collection):
         corpus_count = 0
-        for item in self.__mongo_db.get({}):
+        for item in self.__mongo_db.get(collection, {}):
             corpus_count += len(item['text'])
 
         lemmatized_text = []
-        for ind, text in enumerate(self.__mongo_db.get({})):
+        for ind, text in enumerate(self.__mongo_db.get(collection, {})):
             doc = text['text']
             for ch in ['›', '‹', '»', '«']:
                 if ch in doc:
@@ -645,9 +645,8 @@ class Prototype:
             split_token = split_token[0]
         return split_token == pattern
 
-
     def get_result(self):
-        print(self.__postgre_db.query("""SELECT S.subject, V.verb, SV.pmi FROM subject_verb_occ SV, subject_occ S, verb_occ V WHERE SV.subject = S.id AND SV.verb = V.id ORDER BY subject DESC"""))
-        print(self.__postgre_db.query("""SELECT O.object, V.verb, OV.pmi FROM object_verb_occ OV, object_occ O, verb_occ V WHERE OV.object = O.id AND OV.verb = V.id ORDER BY object DESC"""))
-        print(self.__postgre_db.query("""SELECT O.object, S.subject, SO.pmi FROM subject_object_occ SO, subject_occ S, object_occ O WHERE SO.object = O.id AND SO.subject = S.id ORDER BY subject DESC"""))
-        print(self.__postgre_db.query("""SELECT S.subject, A.adjective, AS.pmi FROM subject_adjective_occ AS, subject_occ S, adjective_occ A WHERE AS.subject = S.id AND AS.adjective = A.id ORDER BY subject DESC"""))
+        pprint(self.__postgre_db.query("""SELECT S.subject, V.verb, SV.pmi FROM subject_verb_occ SV, subject_occ S, verb_occ V WHERE SV.subject = S.id AND SV.verb = V.id ORDER BY subject DESC"""))
+        pprint(self.__postgre_db.query("""SELECT O.object, V.verb, OV.pmi FROM object_verb_occ OV, object_occ O, verb_occ V WHERE OV.object = O.id AND OV.verb = V.id ORDER BY object DESC"""))
+        pprint(self.__postgre_db.query("""SELECT O.object, S.subject, SO.pmi FROM subject_object_occ SO, subject_occ S, object_occ O WHERE SO.object = O.id AND SO.subject = S.id ORDER BY subject DESC"""))
+        pprint(self.__postgre_db.query("""SELECT S.subject, A.adjective, SA.pmi FROM subject_adjective_occ SA, subject_occ S, adjective_occ A WHERE SA.subject = S.id AND SA.adjective = A.id ORDER BY subject DESC"""))

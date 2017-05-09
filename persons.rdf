@@ -33,3 +33,8 @@ lit:MainCharacter q:hasObject (lit:Myshkin, lit:Rogoshin, lit:Nastasja, lit:Agla
 
 lit:Character q:hasAttribute (lit:MainCharacter, lit:Male, lit:Female, lit:SubCharacter) .
 lit:Character a q:BSort .
+
+lit:Male q:hasScale "nominal".
+lit:Female q:hasScale "nominal" .
+lit:MainCharacter q:hasScale "nominal" .
+lit:SubCharacter q:hasScale "nominal" .

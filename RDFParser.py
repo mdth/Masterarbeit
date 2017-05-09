@@ -125,7 +125,6 @@ class RDFParser:
             self.__db.insert("has_object", {"bscale_id": bscale_id, "pattern_id": new_attributes, "aggregation": 0})
 
     def __push_scales(self, scale_list):
-        #TODO
         """Push found rdf bscale attributes onto the database."""
         for key in scale_list:
             #

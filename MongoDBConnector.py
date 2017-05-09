@@ -20,26 +20,31 @@ class MongoDBConnector:
             print("Mongo DB connection could not be built.")
 
         self.__db = self.__client.database
-        #self.delete_all()
-        #self.add_articles("C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
-        #self.__db.dostojewski.create_index([('id', pymongo.ASCENDING)], unique=True)
+        self.delete_all("dostojewski")
+        self.create_collection("dostojewski")
+        self.create_collection("storm")
+        self.add_articles("dostojewski", "C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
 
-    def add_articles(self, file_directory):
+    def add_articles(self, collection, file_directory):
         """Add one article into database."""
         for file in os.listdir(file_directory):
             if file.endswith(".txt"):
                 article = {"id": self.__id,
                            "title": os.path.splitext(os.path.basename(file))[0],
                            "text": read_in_txt_file(file_directory + file)}
-                self.__db.dostojewski.insert_one(article)
+                self.__db[collection].insert_one(article)
                 self.__id += 1
 
-    def delete_all(self):
-        """Delete all db entries in """
-        self.__db.dostojewski.delete_many({})
+    def delete_all(self, collection):
+        """Delete all db entries in a specific collection."""
+        self.__db[collection].delete_many({})
 
-    def get(self, search_term):
-        return self.__db.dostojewski.find(search_term)
+    def get(self, collection, search_term):
+        """Get all db entries in a specific collection and the specified search_term."""
+        return self.__db[collection].find(search_term)
+
+    def create_collection(self, collection_name):
+        self.__db[collection_name].create_index([('id', pymongo.ASCENDING)], unique=True)
 
     def close_connection(self):
         self.__client.close()

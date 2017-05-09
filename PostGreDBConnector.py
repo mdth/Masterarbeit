@@ -16,48 +16,55 @@ class PostGreDBConnector:
         except ConnectionError:
             print("PostGre DB connection could not be built.")
 
-        #self.delete_all_data()
-        #self.drop_all_tables()
-        #self.__create_tables()
-        # self.__create_functions()
+        self.delete_all_data()
+        self.drop_all_tables()
+        self.create_schema("dostojewski")
+        self.create_schema("storm")
 
     def close_connection(self):
         self.__db.close()
 
-    def __create_tables(self):
+    def create_schema(self, schema_name):
+        self.__db.query("CREATE SCHEMA " + schema_name)
+        self.__create_tables(schema_name)
+        self.__create_functions(schema_name)
+
+    def __create_tables(self, schema):
         """Create needed tables for RDF parsing."""
-        self._add_table("CREATE TABLE texts (id serial primary key, title text)")
+        schema += "."
+        self._add_table("CREATE TABLE " + schema + "texts (id serial primary key, title text)")
         self._add_table(
-            "CREATE TABLE bscale (id serial primary key, bscale text, nominal bool, ordinal bool, interval bool)")
-        self._add_table("CREATE TABLE bsort (id serial primary key, bsort text)")
-        self._add_table("CREATE TABLE pattern (id serial primary key, pattern text)")
-        self._add_table("CREATE TABLE single_pattern (id serial primary key, single_pattern text)")
-        self._add_table("CREATE TABLE snippets (id serial primary key, snippet text)")
+            "CREATE TABLE " + schema + "bscale (id serial primary key, bscale text, nominal bool, ordinal bool, interval bool)")
+        self._add_table("CREATE TABLE " + schema + "bsort (id serial primary key, bsort text)")
+        self._add_table("CREATE TABLE " + schema + "pattern (id serial primary key, pattern text)")
+        self._add_table("CREATE TABLE " + schema + "single_pattern (id serial primary key, single_pattern text)")
+        self._add_table("CREATE TABLE " + schema + "snippets (id serial primary key, snippet text)")
 
         # relations
-        self._add_table("CREATE TABLE has_attribute (bsort_id int, bscale_id integer[], aggregation int)")
-        self._add_table("CREATE TABLE has_object (bscale_id int, pattern_id integer[], aggregation int)")
+        self._add_table("CREATE TABLE " + schema + "has_attribute (bsort_id int, bscale_id integer[], aggregation int)")
+        self._add_table("CREATE TABLE " + schema + "has_object (bscale_id int, pattern_id integer[], aggregation int)")
         self._add_table(
-            "CREATE TABLE pattern_single_pattern (pattern_id int, single_pattern_id integer[], aggregation int)")
-        self._add_table("CREATE TABLE texts_snippets (text_id int primary key, snippet_id integer[], aggregation int)")
+            "CREATE TABLE " + schema + "pattern_single_pattern (pattern_id int, single_pattern_id integer[], aggregation int)")
+        self._add_table("CREATE TABLE " + schema + "texts_snippets (text_id int primary key, snippet_id integer[], aggregation int)")
         self._add_table(
-            "CREATE TABLE snippet_offsets (id serial primary key,"
+            "CREATE TABLE " + schema + "snippet_offsets (id serial primary key,"
             " single_pattern_id int, snippet_id int, offsets integer[][], aggregation int)")
 
         # adjective and verb extractions
-        self._add_table("CREATE TABLE subject_occ (id serial primary key, subject text, count int)")
-        self._add_table("CREATE TABLE adjective_occ (id serial primary key, adjective text, count int)")
-        self._add_table("CREATE TABLE verb_occ (id serial primary key, verb text, count int)")
-        self._add_table("CREATE TABLE object_occ (id serial primary key, object text, count int)")
-        self._add_table("CREATE TABLE subject_adjective_occ (id serial primary key, subject int, adjective int, count int, pmi float)")
-        self._add_table("CREATE TABLE subject_object_occ (id serial primary key, subject int, object int, count int, pmi float)")
-        self._add_table("CREATE TABLE object_verb_occ (id serial primary key, object int, verb int, count int, pmi float)")
-        self._add_table("CREATE TABLE subject_verb_occ (id serial primary key, subject int, verb int, count int, pmi float)")
+        self._add_table("CREATE TABLE " + schema + "subject_occ (id serial primary key, subject text, count int)")
+        self._add_table("CREATE TABLE " + schema + "adjective_occ (id serial primary key, adjective text, count int)")
+        self._add_table("CREATE TABLE " + schema + "verb_occ (id serial primary key, verb text, count int)")
+        self._add_table("CREATE TABLE " + schema + "object_occ (id serial primary key, object text, count int)")
+        self._add_table("CREATE TABLE " + schema + "subject_adjective_occ (id serial primary key, subject int, adjective int, count int, pmi float)")
+        self._add_table("CREATE TABLE " + schema + "subject_object_occ (id serial primary key, subject int, object int, count int, pmi float)")
+        self._add_table("CREATE TABLE " + schema + "object_verb_occ (id serial primary key, object int, verb int, count int, pmi float)")
+        self._add_table("CREATE TABLE " + schema + "subject_verb_occ (id serial primary key, subject int, verb int, count int, pmi float)")
 
-    def __create_functions(self):
+    def __create_functions(self, schema):
         """Create all necessary functions to aggregate the results saved in the database."""
-        self.add_function("aggregate_texts_snippets", "SELECT text_id, array_length(snippet_id, 1) FROM texts_snippets")
-        self.add_function("aggregate_snippet_offsets", "SELECT id, array_length(offsets, 1) FROM snippet_offsets")
+        schema += schema + "."
+        self.add_function(schema + "aggregate_texts_snippets", "SELECT text_id, array_length(snippet_id, 1) FROM texts_snippets")
+        self.add_function(schema + "aggregate_snippet_offsets", "SELECT id, array_length(offsets, 1) FROM snippet_offsets")
 
     def add_function(self, name, function):
         """Create a new function in the db."""
@@ -184,56 +191,3 @@ class PostGreDBConnector:
                 return result.dictresult()
         else:
             return result
-
-#db = PostGreDBConnector()
-
-#parser = RDFParser(db)
-#parser.get_pattern_from_rdf("C:/Users/din_m/PycharmProjects/Masterarbeit/bscale_test.rdf")
-#db.insert("bscale", {"bscale": "test", "nominal": True})
-#print(db.get("bscale", "id=1", "id"))
-#db.update("bscale", "interval='False'","id=1")
-#str = "Rogoshin"
-#key = "MainCharacter"
-#print(db.insert("bsort", {"bsort": "Maincharacter"}))
-#db.drop_table("test")
-#db.add_table1("CREATE TABLE integer (id serial primary key, title integer[])")
-#print(db.is_in_table("snippet_offsets", "single_pattern_id=59 and snippet_id=1"))
-#print(db.insert("snippet_offsets", {"single_pattern_id": 59, "snippet_id": 1, "offsets": [[3, 8], [14,17]]}))
-#print(db.insert("snippet_offsets", {"single_pattern_id": 59, "snippet_id": 5, "offsets": [[9, 14]]}))
-#print(db.insert("snippet_offsets", {"single_pattern_id": 57, "snippet_id": 57, "offsets": [[3, 8], [9, 14], [67, 71]]}))
-#print(db.insert("single_pattern_snippets", {"single_pattern_id": 1, "snippet_id": [3,4,5]}))
-#print(db.insert("single_pattern_snippets", {"single_pattern_id": 2, "snippet_id": [6,8,9,10]}))
-#print(db.insert("pattern_single_pattern", {"pattern_id": 1, "single_pattern_id": [3,4,5]}))
-#print(db.insert("pattern_single_pattern", {"pattern_id": 2, "single_pattern_id": [6,8,9,10]}))
-#print(db.get_all("single_pattern_snippets", "snippet_id"))
-#print(db.get_id("bsort", "bsort='Maincharacter'"))
-#print(db.get("pattern_single_pattern", "pattern_id=3", "single_pattern_id"))
-#print(db.is_in_table("pattern_single_pattern", "pattern_id=" + str(3)))
-#pattern = db.get_all("single_pattern")
-#for patter in pattern:
-#    print(patter['single_pattern'])
-#print(db.is_in_table("pattern_single_pattern", "pattern_id=58"))
-#print(db.insert('fruits', {"name": "kirsche"}))
-#print(db.get_attributes('fruits'))
-#print(db.get_tables())
-#print(db.insert("single_pattern_snippets", {"single_pattern_id": 1}))
-#print(db.is_in_table("single_pattern_snippets", "single_pattern_id=1"))
-#db.insert("texts", {"title": "Chapter 1"})
-#print(db.insert("snippets", {"snippet": "»Nun, wenn's so ist«, rief Rogoshin, »so bist du ja ein richtiger Gottesnarr, Fürst, und solche Menschen wie dich liebt Gott.«"}))
-
-#print(db.query("""CREATE FUNCTION arraycount() RETURNS int AS 'SELECT table.snippet_id.COUNT FROM single_pattern_snippets table WHERE single_pattern_id = 57' LANGUAGE SQL"""))
-#print(db.query("SELECT arraycount() AS answer"))
-
-# TODO use with for loop if only snippet_offsets relation is used
-#print(db.create_function("counting", "'SELECT COUNT(single_pattern_id) FROM single_pattern_snippets WHERE single_pattern_id=57'"))
-
-#print(db.query("SELECT single_pattern_id, array_length(offsets, 1) FROM snippet_offsets"))
-#print(db.query("SELECT single_pattern_id, array_length(snippet_id, 1) FROM single_pattern_snippets"))
-#print(db.query("""CREATE FUNCTION OR REPLACE double_salary(single_pattern_snippets) RETURNS integer[] AS $$ SELECT $COUNT(snippet_id) AS newid $$ LANGUAGE SQL"""))
-#print(db.query("""SELECT double_salary(single_pattern_snippets) FROM single_pattern_snippets WHERE single_pattern_snippets.single_pattern_id = 57"""))
-#print(db.query("CREATE FUNCTION array_lengths() RETURNS SETOF RECORD AS 'SELECT single_pattern_id, array_length(snippet_id, 1) FROM single_pattern_snippets' LANGUAGE SQL"))
-#snippet_no = db.query("SELECT array_lengths()")
-#print(snippet_no[1]['array_lengths']) # can extract the tuple like this.
-#print(db.query("SELECT unnest_pattern_single_pattern()"))
-#print(db.update("single_pattern_snippets", "aggregation=3", "single_pattern_id=1"))
-#print(db.get_data_from_table("single_pattern_snippets"))
