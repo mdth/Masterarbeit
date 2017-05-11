@@ -490,60 +490,63 @@ class Prototype:
 
             return (pattern_ids, new_bscale_id)
 
-    def find_spo_and_adjectives(self):
-        self.__postgre_db.delete_data_in_table("subject_object_occ")
-        self.__postgre_db.delete_data_in_table("subject_verb_occ")
-        self.__postgre_db.delete_data_in_table("object_verb_occ")
-        all_snippets_table = self.__postgre_db.get_data_from_table("snippets")
+    def find_spo_and_adjectives(self, schema):
+        self.__postgre_db.delete_data_in_table(schema, "subject_object_occ")
+        self.__postgre_db.delete_data_in_table(schema, "subject_verb_occ")
+        self.__postgre_db.delete_data_in_table(schema, "object_verb_occ")
+        all_snippets_table = self.__postgre_db.get_data_from_table(schema, "snippets")
         all_snippets = [snippet['snippet'] for snippet in all_snippets_table]
         for snippet in self.parser.nlp.pipe(all_snippets, batch_size=3000, n_threads=-1):
             spo = self.parser.get_SVO(snippet)
             for item in spo:
                 if item is not None:
                     # subject is pattern
-                    if self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.subject)):
+                    if self.__postgre_db.is_in_table(schema, "single_pattern", "single_pattern=" + add_quotes(item.subject)):
                         if item.object != '':
-                            self.push_parser_items(item.subject, "subject_occ", "subject")
-                            self.push_parser_items(item.object, "object_occ", "object")
-                            self.push_parser_items(item.verb, "verb_occ", "verb")
-                            self.push_parser_item_relationship(
+                            self.push_parser_items(schema, item.subject, "subject_occ", "subject")
+                            self.push_parser_items(schema, item.object, "object_occ", "object")
+                            self.push_parser_items(schema, item.verb, "verb_occ", "verb")
+                            self.push_parser_item_relationship(schema,
                                     item.subject, item.verb, "subject_verb_occ", "subject", "verb")
-                            self.push_parser_item_relationship(
+                            self.push_parser_item_relationship(schema,
                                     item.subject, item.object, "subject_object_occ", "subject", "object")
                     #object is pattern
-                    elif self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item.object)):
+                    elif self.__postgre_db.is_in_table(schema, "single_pattern", "single_pattern=" + add_quotes(item.object)):
                         if item.subject != '':
-                            self.push_parser_items(item.subject, "subject_occ", "subject")
-                            self.push_parser_items(item.object, "object_occ", "object")
-                            self.push_parser_items(item.verb, "verb_occ", "verb")
-                            self.push_parser_item_relationship(
+                            self.push_parser_items(schema, item.subject, "subject_occ", "subject")
+                            self.push_parser_items(schema, item.object, "object_occ", "object")
+                            self.push_parser_items(schema, item.verb, "verb_occ", "verb")
+                            self.push_parser_item_relationship(schema,
                                     item.subject, item.object, "subject_object_occ", "subject", "object")
-                            self.push_parser_item_relationship(
+                            self.push_parser_item_relationship(schema,
                                     item.object, item.verb, "object_verb_occ", "object", "verb")
 
             noun_adjectives = self.parser.nouns_adj_spacy(snippet)
             for item in noun_adjectives:
                 subject = item['noun']
                 adjective = item['adj']
-                if self.__postgre_db.is_in_table("single_pattern", "single_pattern=" + add_quotes(item['noun'])):
-                    self.push_parser_items(subject, "subject_occ", "subject")
-                    self.push_parser_items(adjective, "adjective_occ", "adjective")
-                    self.push_parser_item_relationship(subject, adjective, "subject_adjective_occ", "subject", "adjective")
+                if self.__postgre_db.is_in_table(
+                        schema, "single_pattern", "single_pattern=" + add_quotes(item['noun'])):
+                    self.push_parser_items(schema, subject, "subject_occ", "subject")
+                    self.push_parser_items(schema, adjective, "adjective_occ", "adjective")
+                    self.push_parser_item_relationship(
+                        schema, subject, adjective, "subject_adjective_occ", "subject", "adjective")
 
-    def push_parser_items(self, word, table, word_type):
-        if not self.__postgre_db.is_in_table(table, word_type + "=" + add_quotes(word)):
-            self.__postgre_db.insert(table, {word_type: word, "count": 0})
+    def push_parser_items(self, schema, word, table, word_type):
+        if not self.__postgre_db.is_in_table(schema, table, word_type + "=" + add_quotes(word)):
+            self.__postgre_db.insert(schema, table, {word_type: word, "count": 0})
 
-    def push_parser_item_relationship(self, word1, word2, table, word_type1, word_type2):
-        word1_id = self.__postgre_db.get_id(word_type1 + "_occ", word_type1 + "=" + add_quotes(word1))
-        word2_id = self.__postgre_db.get_id(word_type2 + "_occ", word_type2 + "=" + add_quotes(word2))
+    def push_parser_item_relationship(self, schema, word1, word2, table, word_type1, word_type2):
+        word1_id = self.__postgre_db.get_id(schema, word_type1 + "_occ", word_type1 + "=" + add_quotes(word1))
+        word2_id = self.__postgre_db.get_id(schema, word_type2 + "_occ", word_type2 + "=" + add_quotes(word2))
 
-        if not self.__postgre_db.is_in_table(table, word_type1 + "=" + str(word1_id) + " and " + word_type2 + "=" + str(word2_id)):
-            self.__postgre_db.insert(table, {word_type1: word1_id, word_type2: word2_id, "count": 1})
+        if not self.__postgre_db.is_in_table(schema, table, word_type1 + "=" + str(
+                word1_id) + " and " + word_type2 + "=" + str(word2_id)):
+            self.__postgre_db.insert(schema, table, {word_type1: word1_id, word_type2: word2_id, "count": 1})
         else:
-            table_id = self.__postgre_db.get_id(table, word_type1 + "=" + str(word1_id) + " and " + word_type2 + "=" + str(word2_id))
-            old_count = self.__postgre_db.get(table, "id=" + str(table_id), "count")
-            self.__postgre_db.update(table, "count=" + str(old_count + 1), "id=" + str(table_id))
+            table_id = self.__postgre_db.get_id(schema, table, word_type1 + "=" + str(word1_id) + " and " + word_type2 + "=" + str(word2_id))
+            old_count = self.__postgre_db.get(schema, table, "id=" + str(table_id), "count")
+            self.__postgre_db.update(schema, table, "count=" + str(old_count + 1), "id=" + str(table_id))
 
     def aggregate_occurences_help(self, text_counter, word):
         count = text_counter[word]
@@ -552,13 +555,13 @@ class Prototype:
         else:
             return count
 
-    def calculate_pmi(self, collection):
+    def calculate_pmi(self, schema):
         corpus_count = 0
-        for item in self.__mongo_db.get(collection, {}):
+        for item in self.__mongo_db.get(schema, {}):
             corpus_count += len(item['text'])
 
         lemmatized_text = []
-        for ind, text in enumerate(self.__mongo_db.get(collection, {})):
+        for ind, text in enumerate(self.__mongo_db.get(schema, {})):
             doc = text['text']
             for ch in ['›', '‹', '»', '«']:
                 if ch in doc:
@@ -568,43 +571,43 @@ class Prototype:
         print(len(lemmatized_text))
         word_counts = Counter(lemmatized_text)
         print(word_counts)
-        self.aggregate_occurences("subject", word_counts)
+        self.aggregate_occurences(schema, "subject", word_counts)
         print("subject done")
-        self.aggregate_occurences("object", word_counts)
+        self.aggregate_occurences(schema, "object", word_counts)
         print("obj done")
-        self.aggregate_occurences("adjective", word_counts)
+        self.aggregate_occurences(schema, "adjective", word_counts)
         print("adf done")
-        self.aggregate_occurences("verb", word_counts)
+        self.aggregate_occurences(schema, "verb", word_counts)
         print("verb done")
-        self.calculate_pmi_helper(corpus_count, "subject_adjective_occ", "subject", "adjective")
+        self.calculate_pmi_helper(schema, corpus_count, "subject_adjective_occ", "subject", "adjective")
         print("sub_adjective")
-        self.calculate_pmi_helper(corpus_count, "subject_verb_occ", "subject", "verb")
+        self.calculate_pmi_helper(schema, corpus_count, "subject_verb_occ", "subject", "verb")
         print("sub_verb")
-        self.calculate_pmi_helper(corpus_count, "subject_object_occ", "subject", "object")
+        self.calculate_pmi_helper(schema, corpus_count, "subject_object_occ", "subject", "object")
         print("sub_obj")
-        self.calculate_pmi_helper(corpus_count, "object_verb_occ", "object", "verb")
+        self.calculate_pmi_helper(schema, corpus_count, "object_verb_occ", "object", "verb")
         print("obj_verb")
-        # TODO self.calculate_pmi_helper(corpus_count, "noun_verb_occ", "subject", "verb")
+        # TODO self.calculate_pmi_helper(schema, corpus_count, "noun_verb_occ", "subject", "verb")
 
-    def aggregate_occurences(self, word_table, counter):
-        table =  self.__postgre_db.get_data_from_table(word_table + "_occ")
+    def aggregate_occurences(self, schema, word_table, counter):
+        table =  self.__postgre_db.get_data_from_table(schema, word_table + "_occ")
         for item in table:
             word = item[word_table]
             count = self.aggregate_occurences_help(counter, word)
             print(word, str(count))
-            self.__postgre_db.update(word_table + "_occ", "count=" + str(count), "id=" + str(item['id']))
+            self.__postgre_db.update(schema, word_table + "_occ", "count=" + str(count), "id=" + str(item['id']))
 
-    def calculate_pmi_helper(self, corpus_count, co_occurence, word1, word2):
-        co_occ_table = self.__postgre_db.get_data_from_table(co_occurence)
+    def calculate_pmi_helper(self, schema, corpus_count, co_occurence, word1, word2):
+        co_occ_table = self.__postgre_db.get_data_from_table(schema, co_occurence)
         for item in co_occ_table:
             item_id = item['id']
             co_occ_freq = float(item['count'] / corpus_count)
             word1_id = item[word1]
             word2_id = item[word2]
-            word1_occ = self.__postgre_db.get(word1 + "_occ", "id=" + str(word1_id), "count")
-            word2_occ = self.__postgre_db.get(word2 + "_occ", "id=" + str(word2_id), "count")
+            word1_occ = self.__postgre_db.get(schema, word1 + "_occ", "id=" + str(word1_id), "count")
+            word2_occ = self.__postgre_db.get(schema, word2 + "_occ", "id=" + str(word2_id), "count")
             pmi = log10(co_occ_freq / (float(word1_occ / corpus_count) * float(word2_occ / corpus_count)))
-            self.__postgre_db.update(co_occurence, "pmi=" + str(pmi), "id=" + str(item_id))
+            self.__postgre_db.update(schema, co_occurence, "pmi=" + str(pmi), "id=" + str(item_id))
 
     def check_pattern(self, pattern, token):
         """Strip token and check if the token matches the defined pattern.
@@ -620,8 +623,8 @@ class Prototype:
             split_token = split_token[0]
         return split_token == pattern
 
-    def get_result(self):
-        pprint(self.__postgre_db.query("""SELECT S.subject, V.verb, SV.pmi FROM subject_verb_occ SV, subject_occ S, verb_occ V WHERE SV.subject = S.id AND SV.verb = V.id ORDER BY subject DESC"""))
-        pprint(self.__postgre_db.query("""SELECT O.object, V.verb, OV.pmi FROM object_verb_occ OV, object_occ O, verb_occ V WHERE OV.object = O.id AND OV.verb = V.id ORDER BY object DESC"""))
-        pprint(self.__postgre_db.query("""SELECT O.object, S.subject, SO.pmi FROM subject_object_occ SO, subject_occ S, object_occ O WHERE SO.object = O.id AND SO.subject = S.id ORDER BY subject DESC"""))
-        pprint(self.__postgre_db.query("""SELECT S.subject, A.adjective, SA.pmi FROM subject_adjective_occ SA, subject_occ S, adjective_occ A WHERE SA.subject = S.id AND SA.adjective = A.id ORDER BY subject DESC"""))
+    def get_result(self, schema):
+        pprint(self.__postgre_db.query("""SELECT S.subject, V.verb, SV.pmi FROM """ + schema + """.subject_verb_occ SV, """ + schema + """.subject_occ S, """ + schema + """.verb_occ V WHERE SV.subject = S.id AND SV.verb = V.id ORDER BY subject DESC"""))
+        pprint(self.__postgre_db.query("""SELECT O.object, V.verb, OV.pmi FROM """ + schema + """.object_verb_occ OV, """ + schema + """.object_occ O, """ + schema + """.verb_occ V WHERE OV.object = O.id AND OV.verb = V.id ORDER BY object DESC"""))
+        pprint(self.__postgre_db.query("""SELECT O.object, S.subject, SO.pmi FROM """ + schema + """.subject_object_occ SO, """ + schema + """.subject_occ S, """ + schema + """.object_occ O WHERE SO.object = O.id AND SO.subject = S.id ORDER BY subject DESC"""))
+        pprint(self.__postgre_db.query("""SELECT S.subject, A.adjective, SA.pmi FROM """ + schema + """.subject_adjective_occ SA, """ + schema + """.subject_occ S, """ + schema + """.adjective_occ A WHERE SA.subject = S.id AND SA.adjective = A.id ORDER BY subject DESC"""))
