@@ -16,10 +16,10 @@ class PostGreDBConnector:
         except ConnectionError:
             print("PostGre DB connection could not be built.")
 
-        self.delete_all_data()
-        self.drop_all_tables()
-        self.create_schema("dostojewski")
-        self.create_schema("storm")
+        #self.delete_all_data()
+        #self.drop_all_tables()
+        #self.create_schema("dostojewski")
+        #self.create_schema("storm")
 
     def close_connection(self):
         self.__db.close()
@@ -62,9 +62,9 @@ class PostGreDBConnector:
 
     def __create_functions(self, schema):
         """Create all necessary functions to aggregate the results saved in the database."""
-        schema += schema + "."
-        self.add_function(schema + "aggregate_texts_snippets", "SELECT text_id, array_length(snippet_id, 1) FROM texts_snippets")
-        self.add_function(schema + "aggregate_snippet_offsets", "SELECT id, array_length(offsets, 1) FROM snippet_offsets")
+        schema += "."
+        self.add_function(schema + "aggregate_texts_snippets", "SELECT text_id, array_length(snippet_id, 1) FROM " + schema + "texts_snippets")
+        self.add_function(schema + "aggregate_snippet_offsets", "SELECT id, array_length(offsets, 1) FROM " + schema + "snippet_offsets")
 
     def add_function(self, name, function):
         """Create a new function in the db."""
@@ -78,89 +78,89 @@ class PostGreDBConnector:
         """Create a new table with a query."""
         self.__db.query(query)
 
-    def add_table(self, name, rows):
+    def add_table(self, schema, name, rows):
         """Create a new table with a name and rows given in query form."""
         create_table = "CREATE TABLE "
-        query = create_table + name + rows
+        query = create_table + schema + "." + name + rows
         self.__db.query(query)
 
-    def insert(self, table, row):
+    def insert(self, schema, table, row):
         """Insert a new row element into a specified table."""
-        return self.__db.insert(table, row)
+        return self.__db.insert(schema + "." + table, row)
 
-    def is_in_table(self, table, where_clause):
+    def is_in_table(self, schema, table, where_clause):
         """Returns whether a row already exists in a table or not."""
         select = "SELECT * FROM "
         where = " WHERE "
-        q = select + table + where + where_clause
+        q = select + schema + "." + table + where + where_clause
         result = self.__db.query(q).dictresult()
         if len(result) > 0:
             return True
         else:
             return False
 
-    def update(self, table, values, where_clause):
+    def update(self, schema, table, values, where_clause):
         """Update an entry in a specified table."""
         UPDATE = "UPDATE "
         SET = " SET "
         WHERE = " WHERE "
-        query = UPDATE + table + SET + values + WHERE + where_clause
+        query = UPDATE + schema + "." + table + SET + values + WHERE + where_clause
         self.query(query)
 
-    def get(self, table, where_clause, key):
+    def get(self, schema, table, where_clause, key):
         """Return the key of a specific item in a table."""
         select = "SELECT "
         _from = " FROM "
         where = " WHERE "
-        q = select + key + _from + table + where + where_clause
+        q = select + key + _from + schema + "." + table + where + where_clause
         result = self.__db.query(q).dictresult()
         if len(result) > 0:
             return result[0][key]
         else:
             return None
 
-    def get_data_from_table(self, table):
+    def get_data_from_table(self, schema, table):
         """Gets all data available in a specific table."""
-        return self.__db.query("SELECT * FROM " + table).dictresult()
+        return self.__db.query("SELECT * FROM " + schema + "." + table).dictresult()
 
-    def get_id(self, table, where_clause):
+    def get_id(self, schema, table, where_clause):
         """Return the id of an item in a table. If found return id number of found item, else None."""
         select = "SELECT id FROM "
         where = " WHERE "
-        q = select + table + where + where_clause
+        q = select + schema + "." + table + where + where_clause
         result = self.__db.query(q).dictresult()
         if len(result) > 0:
             return result[0]['id']
         else:
             return None
 
-    def delete_from_table(self, table, row):
+    def delete_from_table(self, schema, table, row):
         """Delete a row element form a specific table."""
-        return self.__db.delete(table, row)
+        return self.__db.delete(schema + "." + table, row)
 
-    def delete_data_in_table(self, table):
+    def delete_data_in_table(self, schema, table):
         """Delete all data in a specific table."""
-        self.__db.truncate(table, restart=True, cascade=True, only=False)
+        self.__db.truncate(schema + "." + table, restart=True, cascade=True, only=False)
 
     def delete_all_data(self):
         """Deletes all data from all existing tables."""
         tables = self.get_tables()
         for table in tables:
-            table_name = str(table.split('.')[1])
-            self.delete_data_in_table(table_name)
+            table_name = str(table)
+            self.__db.truncate(table_name, restart=True, cascade=True, only=False)
 
     def get_tables(self):
         """Get all available tables in the database."""
         return self.__db.get_tables()
 
-    def get_attributes(self, table):
+    def get_attributes(self, schema, table):
         """Get all attributes of a specified table."""
-        return self.__db.get_attnames(table)
+        return self.__db.get_attnames(schema + "." + table)
 
-    def drop_table(self, table):
+    def drop_table(self, schema, table):
         """Drops a specified table."""
         query = "DROP TABLE "
-        self.__db.query(query + table)
+        self.__db.query(query + schema + "." + table)
 
     def drop_all_tables(self):
         """Drops all existing tables."""
@@ -176,11 +176,11 @@ class PostGreDBConnector:
         else:
             print("Nothing to delete.")
 
-    def get_all(self, table, attribute):
+    def get_all(self, schema, table, attribute):
         """Gets one or more attributes of all entries from a specified table."""
         select = "SELECT "
         _from = " FROM "
-        query = select + attribute + _from + table
+        query = select + attribute + _from + schema + "." + table
         return self.__db.query(query).dictresult()
 
     def query(self, query):

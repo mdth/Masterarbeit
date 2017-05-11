@@ -29,12 +29,17 @@ class Prototype:
         self.__sentence_mode = sentence_mode
         self.__window_size = window_size
         self.tokenizer = WhitespaceTokenizer()
-        self.parser = Parser()
+        #self.parser = Parser()
 
     def exit(self):
         """Close down the prototype."""
         self.__mongo_db.close_connection()
         self.__postgre_db.close_connection()
+
+    def create_new_collection(self, schema_name):
+        self.__mongo_db.create_collection(schema_name)
+        self.__postgre_db.create_schema(schema_name)
+
 
     def get_postagger(self):
         """Gets the current POS Tagger in use."""
@@ -72,9 +77,6 @@ class Prototype:
     def toggle_word_window_mode(self):
         """De-activate sentence window mode."""
         self.__sentence_mode = False
-
-    def get_mongo_db(self):
-        return self.__mongo_db
 
     def get_word_window(self, pattern, tokens, constraints):
         """Get a word window list with a specific number of words.
@@ -304,7 +306,7 @@ class Prototype:
                 right_window_border = len(sentences)
             return " ".join(sentences[left_window_border:right_window_border])
 
-    def find_text_window(self, text, text_id, constraints=None):
+    def find_text_window(self, schema, text, text_id, constraints=None):
         """Finds text windows with variable size and pushes the found results in the PostGre database.
 
         Parameters:
@@ -318,7 +320,7 @@ class Prototype:
                 text = text.replace(ch, '"')
 
         tokenized_text = self.tokenizer.tokenize(text)
-        for pattern in self.__postgre_db.get_data_from_table("single_pattern"):
+        for pattern in self.__postgre_db.get_data_from_table(schema, "single_pattern"):
             if self.__sentence_mode:
                 windows_objects = self.get_sentence_window(
                     pattern['single_pattern'], sent_tokenize(text, language='german'), constraints)
@@ -330,158 +332,133 @@ class Prototype:
                 single_pattern_id = pattern['id']
                 for sent_obj in windows_objects:
                     # push snippets
-                    self.__push_snippets(sent_obj.snippet)
-                    snippet_id = self.__postgre_db.get_id("snippets", "snippet=" + add_quotes(
+                    self.__push_snippets(schema, sent_obj.snippet)
+                    snippet_id = self.__postgre_db.get_id(schema,"snippets", "snippet=" + add_quotes(
                         replace_special_characters(sent_obj.snippet)))
                     # push relations
-                    self.__push_texts_snippets(text_id, snippet_id)
-                    self.__push_snippet_offsets(
+                    self.__push_texts_snippets(schema, text_id, snippet_id)
+                    self.__push_snippet_offsets(schema,
                         single_pattern_id, snippet_id, sent_obj.offset_start, sent_obj.offset_end)
 
-    def __push_snippets(self, snippet):
+    def __push_snippets(self, schema, snippet):
         """Push found snippets onto the snippets table in PostGre DB, if not already in the table.
         Afterwards push the single_pattern and snippets relation."""
-        if not self.__postgre_db.is_in_table("snippets", "snippet=" + add_quotes(
+        if not self.__postgre_db.is_in_table(schema, "snippets", "snippet=" + add_quotes(
                 replace_special_characters(snippet))):
-            self.__postgre_db.insert("snippets", {"snippet": snippet})
+            self.__postgre_db.insert(schema,"snippets", {"snippet": snippet})
 
-    def __push_texts_snippets(self, text_id, snippet_id):
+    def __push_texts_snippets(self, schema, text_id, snippet_id):
         """Get all saved snippets that occur in a text and push them onto PostGre DB."""
-        self.__push_relation(text_id, snippet_id, "text_id", "snippet_id", "texts_snippets")
+        self.__push_relation(schema, text_id, snippet_id, "text_id", "snippet_id", "texts_snippets")
 
-    def __push_snippet_offsets(self, single_pattern_id, snippet_id, offset_start, offset_end):
+    def __push_snippet_offsets(self, schema, single_pattern_id, snippet_id, offset_start, offset_end):
         """Push found single_pattern in snippets and their respective offset."""
         if not self.__postgre_db.is_in_table(
-                "snippet_offsets", "single_pattern_id=" + str(single_pattern_id) + " and snippet_id=" + str(
+                schema, "snippet_offsets", "single_pattern_id=" + str(single_pattern_id) + " and snippet_id=" + str(
                     snippet_id)):
-            self.__postgre_db.insert("snippet_offsets", {
+            self.__postgre_db.insert(schema, "snippet_offsets", {
                 "single_pattern_id": single_pattern_id, "snippet_id": snippet_id, "offsets": [
                     [offset_start, offset_end]]})
         else:
-            old_list = self.__postgre_db.get(
-                "snippet_offsets", "single_pattern_id=" + str(single_pattern_id) + " and snippet_id=" + str(
-                    snippet_id), "offsets")
+            old_list = self.__postgre_db.get(schema, "snippet_offsets", "single_pattern_id=" + str(
+                single_pattern_id) + " and snippet_id=" + str(snippet_id), "offsets")
             old_list.append([offset_start, offset_end])
-            pid = self.__postgre_db.get_id(
-                "snippet_offsets", "single_pattern_id=" + str(single_pattern_id) + " and snippet_id=" + str(
-                    snippet_id))
-            self.__postgre_db.update(
-                "snippet_offsets", "offsets=" + add_quotes(replace_brackets(str(old_list))), "id=" + str(pid))
+            pid = self.__postgre_db.get_id(schema, "snippet_offsets", "single_pattern_id=" + str(
+                single_pattern_id) + " and snippet_id=" + str(snippet_id))
+            self.__postgre_db.update(schema, "snippet_offsets", "offsets=" + add_quotes(replace_brackets(str(
+                old_list))), "id=" + str(pid))
 
-    def __push_relation(self, id1, id2, id1_name, id2_name, table):
+    def __push_relation(self, schema, id1, id2, id1_name, id2_name, table):
         """Push a relation onto the PostGre DB. The relation has to have a primary key."""
         # case: No entry about relation is in DB yet
-        if not self.__postgre_db.is_in_table(table, id1_name + "=" + str(
+        if not self.__postgre_db.is_in_table(schema, table, id1_name + "=" + str(
                 id1)):
-            self.__postgre_db.insert(table, {
+            self.__postgre_db.insert(schema, table, {
                 id1_name: id1, id2_name: [id2], "aggregation": 0})
 
         # case: Entry about single_pattern is in DB
         else:
-            old_list = self.__postgre_db.get(table, id1_name + "=" + str(
+            old_list = self.__postgre_db.get(schema, table, id1_name + "=" + str(
                 id1), id2_name)
             new_list = list(set(old_list + [id2]))
-            self.__postgre_db.update(
-                table, id2_name + "=" + add_quotes(replace_brackets(str(new_list))), id1_name + "=" + str(id1))
+            self.__postgre_db.update(schema, table, id2_name + "=" + add_quotes(replace_brackets(str(
+                new_list))), id1_name + "=" + str(id1))
 
-    def __push_aggregation_lowest_layer(self, aggregation_object, aggregation_name, table, id_name):
+    def __push_aggregation_lowest_layer(self, schema, aggregation_object, aggregation_name, table, id_name):
         """Push the aggregated snippet numbers onto corresponding the lower layer tables."""
         for aggregation in aggregation_object:
             id = aggregation[aggregation_name][0]
             aggregation_value = aggregation[aggregation_name][1]
-            self.__postgre_db.update(table, "aggregation=" + str(aggregation_value), id_name + "=" + str(id))
+            self.__postgre_db.update(schema, table, "aggregation=" + str(aggregation_value), id_name + "=" + str(id))
 
-    def __push_aggregation(self, table, sub_table, table_id, sub_table_id):
+    def __push_aggregation(self, schema, table, sub_table, table_id, sub_table_id):
         """Calculate and push aggregation on the rest layer tables."""
-        table_entries = self.__postgre_db.get_data_from_table(table)
+        table_entries = self.__postgre_db.get_data_from_table(schema, table)
         for entry in table_entries:
             aggregation = 0
             entry_id = entry[table_id]
             entries_to_look_up = entry[sub_table_id]
 
             for look_up in entries_to_look_up:
-                # calcutate aggregations differently depending on how the table structure is
-                if len(entries_to_look_up) > 1:
-                    query = "SELECT SUM(aggregation) FROM " + sub_table + " WHERE " + sub_table_id + "=" + str(look_up)
-                    stored_value = self.__postgre_db.query(query)[0]['sum']
-                    if stored_value is None:
-                        stored_value = 0
-                    aggregation += stored_value
+                query = "SELECT SUM(aggregation) FROM " + schema + "." + sub_table + " WHERE " + sub_table_id + "=" + str(look_up)
+                stored_value = self.__postgre_db.query(query)[0]['sum']
+                if stored_value is None:
+                    stored_value = 0
+                aggregation += stored_value
+            self.__postgre_db.update(schema, table, "aggregation=" + str(aggregation), table_id + "=" + str(entry_id))
 
-                else:
-                    query = "SELECT SUM(aggregation) FROM " + sub_table + " WHERE " + sub_table_id + "=" + str(look_up)
-                    aggregation = self.__postgre_db.query(query)[0]['sum']
-                    if aggregation is None:
-                        aggregation = 0
-
-            self.__postgre_db.update(table, "aggregation=" + str(aggregation), table_id + "=" + str(entry_id))
-
-    def get_snippets(self, collection, constraints):
+    def get_snippets(self, schema, constraints):
         """Get snippets for the whole corpus.
 
         Parameter:
         constraints -- the constraint tuple list"""
-        for ind, text in enumerate(self.__mongo_db.get(collection, {})):
-            self.__postgre_db.insert("texts", {"title": text['title']})
-            self.find_text_window(text['text'], text['id'], constraints)
+        for ind, text in enumerate(self.__mongo_db.get(schema, {})):
+            self.__postgre_db.insert(schema, "texts", {"title": text['title']})
+            self.find_text_window(schema, text['text'], text['id'], constraints)
             print("Finished extracting snippets from chapter " + str(text['id']) + ".")
 
-    def aggregation(self):
+    def aggregation(self, schema):
         """Calculate aggregation bottom-up and store the interim data onto the database."""
-        aggregation_texts_snippets = self.__postgre_db.query("SELECT aggregate_texts_snippets()")
-        aggregation_snippet_offsets = self.__postgre_db.query("SELECT aggregate_snippet_offsets()")
+        aggregation_texts_snippets = self.__postgre_db.query("SELECT " + schema + ".aggregate_texts_snippets()")
+        aggregation_snippet_offsets = self.__postgre_db.query("SELECT " + schema + ".aggregate_snippet_offsets()")
 
         # push 2 lowest levels of the hierarchy
-        self.__push_aggregation_lowest_layer(
+        self.__push_aggregation_lowest_layer(schema,
             aggregation_texts_snippets, str('aggregate_texts_snippets'), "texts_snippets", "text_id")
-        self.__push_aggregation_lowest_layer(
+        self.__push_aggregation_lowest_layer(schema,
             aggregation_snippet_offsets, str('aggregate_snippet_offsets'), "snippet_offsets", "id")
 
         # push rest of the hierarchy
-        self.__push_aggregation(
+        self.__push_aggregation(schema,
             "pattern_single_pattern", "snippet_offsets", str('pattern_id'), str('single_pattern_id'))
-        self.__push_aggregation("has_object", "pattern_single_pattern", str('bscale_id'), str('pattern_id'))
-        self.__push_aggregation("has_attribute", "has_object", str('bsort_id'), str('bscale_id'))
+        self.__push_aggregation(schema, "has_object", "pattern_single_pattern", str('bscale_id'), str('pattern_id'))
+        self.__push_aggregation(schema, "has_attribute", "has_object", str('bsort_id'), str('bscale_id'))
 
-    def aggregate_bscale(self, new_bscale, bsort, *args):
-        if args is not None:
-            bscale_table = self.__postgre_db.get_data_from_table("bscale")
-            bscale_ids = []
-            for scale in args:
-                scale_found = False
-                for bscale in bscale_table:
-                    if scale == bscale['bscale']:
-                        bscale_ids.append(bscale['id'])
-                        scale_found = True
-                if not scale_found:
-                    raise Exception("Chosen Bscale do not exist.")
-            if not self.__postgre_db.is_in_table("bscale", "bscale=" + add_quotes(new_bscale)):
-                self.__postgre_db.insert("bscale", {"bscale": add_quotes(new_bscale)})
-            new_bscale_id = self.__postgre_db.get_id("bscale", "bscale=" + add_quotes(new_bscale))
-            bsort_id = self.__postgre_db.get_id("bsort", "bsort=" + add_quotes(bsort))
-            if self.__postgre_db.is_in_table("has_attribute", "bsort_id=" + str(bsort_id)):
-                old_list = self.__postgre_db.get("has_attribute", "bsort_id=" + str(bsort_id), "bscale_id")
-                new_list = old_list.append(new_bscale_id)
-                self.__postgre_db.update("has_attribute", "bscale_id=" + add_quotes(str(new_list)), "bsort_id=" + str(bsort_id))
-            else:
-                self.__postgre_db.insert("has_attribute", {"bsort_id": bsort_id, "bscale_id": [new_bscale_id], "aggregation": 0})
-
-            scale_obj = self.__postgre_db.get_data_from_table("has_object")
-            pattern_ids = []
-            for scale_id in bscale_ids:
-                for item in scale_obj:
-                    if scale_id == item['bscale_id']:
-                        pattern_ids.append(item['pattern_id'])
-
+    def aggregate_bscale(self, schema, new_bscale, bsort, *args):
+        pattern_info = self.__add_new_bscale(schema, new_bscale, bsort, *args)
+        if pattern_info is not None:
+            pattern_ids = pattern_info[0]
+            new_bscale_id = pattern_info[1]
             new_pattern_list = list(set.union(*[set(item) for item in pattern_ids]))
             aggregation = 0
             for item in new_pattern_list:
-                aggregation += self.__postgre_db.get("pattern_single_pattern", "pattern_id=" + str(item), "aggregation")
-            self.__postgre_db.insert("has_object", {"bscale_id": new_bscale_id, "pattern_id": new_pattern_list, "aggregation": aggregation})
+                aggregation += self.__postgre_db.get(schema, "pattern_single_pattern", "pattern_id=" + str(item), "aggregation")
+            self.__postgre_db.insert(schema, "has_object", {"bscale_id": new_bscale_id, "pattern_id": new_pattern_list, "aggregation": aggregation})
 
-    def intersect_bscale(self, new_bscale, bsort, *args):
+    def intersect_bscale(self, schema, new_bscale, bsort, *args):
+        pattern_info = self.__add_new_bscale(schema, new_bscale,bsort, *args)
+        if pattern_info is not None:
+            pattern_ids = pattern_info[0]
+            new_bscale_id = pattern_info[1]
+            new_pattern_list = list(set.intersection(*[set(item) for item in pattern_ids]))
+            aggregation = 0
+            for item in new_pattern_list:
+                aggregation += self.__postgre_db.get(schema, "pattern_single_pattern", "pattern_id=" + str(item), "aggregation")
+            self.__postgre_db.insert(schema, "has_object", {"bscale_id": new_bscale_id, "pattern_id": new_pattern_list, "aggregation": aggregation})
+
+    def __add_new_bscale(self, schema, new_bscale, bsort, *args):
         if args is not None:
-            bscale_table = self.__postgre_db.get_data_from_table("bscale")
+            bscale_table = self.__postgre_db.get_data_from_table(schema, "bscale")
             bscale_ids = []
             for scale in args:
                 scale_found = False
@@ -491,29 +468,27 @@ class Prototype:
                         scale_found = True
                 if not scale_found:
                     raise Exception("Chosen Bscale does not exist.")
-            if not self.__postgre_db.is_in_table("bscale", "bscale=" + add_quotes(new_bscale)):
-                self.__postgre_db.insert("bscale", {"bscale": add_quotes(new_bscale)})
-            new_bscale_id = self.__postgre_db.get_id("bscale", "bscale=" + add_quotes(new_bscale))
-            bsort_id = self.__postgre_db.get_id("bsort", "bsort=" + add_quotes(bsort))
-            if self.__postgre_db.is_in_table("has_attribute", "bsort_id=" + str(bsort_id)):
-                old_list = self.__postgre_db.get("has_attribute", "bsort_id=" + str(bsort_id), "bscale_id")
+            if not self.__postgre_db.is_in_table(schema, "bscale", "bscale=" + add_quotes(new_bscale)):
+                self.__postgre_db.insert(schema, "bscale", {"bscale": add_quotes(new_bscale)})
+            new_bscale_id = self.__postgre_db.get_id(schema, "bscale", "bscale=" + add_quotes(new_bscale))
+            bsort_id = self.__postgre_db.get_id(schema, "bsort", "bsort=" + add_quotes(bsort))
+            if self.__postgre_db.is_in_table(schema, "has_attribute", "bsort_id=" + str(bsort_id)):
+                old_list = self.__postgre_db.get(schema, "has_attribute", "bsort_id=" + str(bsort_id), "bscale_id")
                 new_list = old_list.append(new_bscale_id)
-                self.__postgre_db.update("has_attribute", "bscale_id=" + add_quotes(str(new_list)), "bsort_id=" + str(bsort_id))
+                self.__postgre_db.update(schema, "has_attribute", "bscale_id=" + add_quotes(str(new_list)),
+                                         "bsort_id=" + str(bsort_id))
             else:
-                self.__postgre_db.insert("has_attribute", {"bsort_id": bsort_id, "bscale_id": [new_bscale_id], "aggregation": 0})
+                self.__postgre_db.insert(schema, "has_attribute",
+                                         {"bsort_id": bsort_id, "bscale_id": [new_bscale_id], "aggregation": 0})
 
-            scale_obj = self.__postgre_db.get_data_from_table("has_object")
+            scale_obj = self.__postgre_db.get_data_from_table(schema, "has_object")
             pattern_ids = []
             for scale_id in bscale_ids:
                 for item in scale_obj:
                     if scale_id == item['bscale_id']:
                         pattern_ids.append(item['pattern_id'])
 
-            new_pattern_list = list(set.intersection(*[set(item) for item in pattern_ids]))
-            aggregation = 0
-            for item in new_pattern_list:
-                aggregation += self.__postgre_db.get("pattern_single_pattern", "pattern_id=" + str(item), "aggregation")
-            self.__postgre_db.insert("has_object", {"bscale_id": new_bscale_id, "pattern_id": new_pattern_list, "aggregation": aggregation})
+            return (pattern_ids, new_bscale_id)
 
     def find_spo_and_adjectives(self):
         self.__postgre_db.delete_data_in_table("subject_object_occ")

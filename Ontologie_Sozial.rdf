@@ -1,0 +1,26 @@
+lit a q:Vocabulary .
+
+lit:Social a q:BScale .
+
+lit:Grabgeleite q:hasPattern "Grabgeleite" .
+lit:Träger q:hasPattern "Träger" .
+lit:Folger q:hasPattern "Folger" .
+lit:Mann q:hasPattern ("Mann", "Männer") .
+lit:Todte q:hasPattern "Todte" .
+lit:Todtengräber q:hasPattern "Todtengräber" .
+lit:Arme q:hasPattern "Arme" .
+lit:Kind q:hasPattern ("Kinder", "Kind") .
+lit:Menschen q:hasPattern "Menschen" .
+lit:er q:hasPattern ("er", "ihn") .
+lit:sie q:hasPattern ("sie", "ihr") .
+lit:Mädchen q:hasPattern "Mädchen" .
+lit:Hexe q:hasPattern "Hexe" .
+lit:jemand q:hasPattern "jemand" .
+
+lit:Social a q:BSort .
+
+lit:Social q:hasObject (lit:Grabgeleite, lit:Träger, lit:Folger, lit:Mann, lit:Todte, lit:Todtengräber, lit:Arme, lit:Kind, lit:Menschen, lit:er, lit:sie, lit:Mädchen, lit:Hexe, lit:jemand) .
+
+lit:Social q:hasAttribute lit:Social .
+
+lit:Social q:hasScale "nominal" .

@@ -1,0 +1,53 @@
+lit a q:Vocabulary .
+
+lit:Nature a q:BScale .
+
+lit:Blumenkranz q:hasPattern "Blumenkranz" .
+lit:Sommerfrühe q:hasPattern "Sommerfrühe" .
+lit:Erde q:hasPattern "Erde" .
+lit:Sonne q:hasPattern "Sonne" .
+lit:Sonnenschein q:hasPattern "Sonnenschein" .
+lit:Rasen q:hasPattern "Rasen" .
+lit:Steine q:hasPattern "Steine" .
+lit:Sandhügel q:hasPattern "Sandhügel" .
+lit:Wind q:hasPattern "Wind" .
+lit:Regen q:hasPattern "Regen" .
+lit:Himmel q:hasPattern "Himmel" .
+lit:Sommerabende q:hasPattern "Sommerabende" .
+lit:Winter q:hasPattern "Winter" .
+lit:Schnee q:hasPattern "Schnee" .
+lit:Frühling q:hasPattern "Frühling" .
+lit:Sommer q:hasPattern "Sommer" .
+lit:Schneeglöckchen q:hasPattern "Schneeglöckchen" .
+lit:Rosen q:hasPattern "Rosen" .
+lit:Knospen q:hasPattern "Knospen" .
+lit:Grün q:hasPattern "Grün" .
+lit:Gras q:hasPattern ("Gras", "Gräser") .
+lit:Marienblatt q:hasPattern "Marienblatt" .
+lit:Nesseln q:hasPattern "Nesseln" .
+lit:Disteln q:hasPattern "Disteln" .
+lit:Farrenkraut q:hasPattern "Farrenkraut" .
+lit:Gewächs q:hasPattern "Gewächs" .
+lit:Unkraut q:hasPattern "Unkraut" .
+lit:Mondnacht q:hasPattern "Mondnacht" .
+lit:Nachtblüthen q:hasPattern "Nachtblüthen" .
+lit:Lüfte q:hasPattern "Lüfte" .
+lit:Vorfrühling q:hasPattern "Vorfrühling" .
+lit:Garten q:hasPattern "Garten" .
+lit:Feuer q:hasPattern "Feuer" .
+lit:Zweige q:hasPattern "Zweige" .
+lit:Immergrün q:hasPattern "Immergrün" .
+lit:Sommermittage q:hasPattern "Sommermittage" .
+lit:Grillengesang q:hasPattern "Grillengesang" .
+lit:Moosrosen q:hasPattern "Moosrosen" .
+lit:Mond q:hasPattern "Mond" .
+lit:Mondscheinbeleuchtung q:hasPattern "Mondscheinbeleuchtung" .
+lit:Rosenkranz q:hasPattern "Rosenkranz" .
+
+lit:Nature a q:BSort .
+
+lit:Nature q:hasObject (lit:Rosenkranz, lit:Mondscheinbeleuchtung, lit:Mond, lit:Moosrosen, lit:Grillengesang, lit:Sommermittage, lit:Immergrün, lit:Zweige, lit:Feuer, lit:Garten, lit:Vorfrühling, lit:Lüfte, lit:Nachtblüthen, lit:Mondnacht, lit:Unkraut, lit:Gewächs, lit:Farrenkraut, lit:Disteln, lit:Nesseln, lit:Marienblatt, lit:Gras, lit:Grün, lit:Knospen, lit:Rosen, lit:Schneeglöckchen, lit:Sommer, lit:Frühling, lit:Schnee, lit: Winter, lit:Sommerabende, lit:Himmel, lit:Regen, lit:Wind, lit:Sandhügel, lit:Steine, lit:Rasen, lit:Sonne, lit:Sonnenschein, lit:Erde, lit:Sommerfrühe, lit:Blumenkranz) .
+
+lit:Nature q:hasAttribute lit:Nature .
+
+lit:Nature q:hasScale "nominal" .

@@ -1,0 +1,28 @@
+lit a q:Vocabulary .
+
+lit:Place a q:BScale .
+
+lit:Kirchhof q:hasPattern "Kirchhof" .
+lit:Grube q:hasPattern "Grube" .
+lit:Weg q:hasPattern "Weg" .
+lit:Rasen q:hasPattern "Rasen" .
+lit:Viertel q:hasPattern "Viertel" .
+lit:Sandhügel q:hasPattern "Sandhügel" .
+lit:Ecke q:hasPattern "Ecke" .
+lit:Stadt q:hasPattern "Stadt" .
+lit:Zimmer q:hasPattern "Zimmer" .
+lit:Haus q:hasPattern "Haus" .
+lit:Welt q:hasPattern "Welt" .
+lit:draußen q:hasPattern "draußen" .
+lit:Treppe q:hasPattern "Treppe" .
+lit:Hausflur q:hasPattern "Hausflur" .
+lit:Straße q:hasPattern "Straße" .
+lit:Garten q:hasPattern "Garten" .
+lit:Bett q:hasPattern "Bett" .
+lit:Bank q:hasPattern "Bank" .
+
+
+
+lit:Place a q:BSort .
+
+lit:Place q:hasAttribute (lit:Building, lit:Country, lit:Town) .

@@ -36,9 +36,9 @@ class RDFParser:
         self.__search = Forward()
         self.__search << (self.__is_a | self.__has_x)
 
-    def get_pattern_and_push(self, filename):
+    def get_pattern_and_push(self, schema, filename):
         pattern = self.get_pattern_from_rdf(filename)
-        self.push_data(pattern[0], pattern[1], pattern[2], pattern[3])
+        self.push_data(schema, pattern[0], pattern[1], pattern[2], pattern[3])
 
     def get_pattern_from_rdf(self, filename):
         """Extract all needed pattern from a rdf file and then push them onto the database."""
@@ -65,54 +65,53 @@ class RDFParser:
 
         return pattern_list, attribute_list, object_list, scale_list
 
-    def push_data(self, pattern_list, attribute_list, object_list, scale_list):
+    def push_data(self, schema, pattern_list, attribute_list, object_list, scale_list):
         """Pushes found data onto the database."""
-        self.__push_pattern(pattern_list)
-        self.__push_attribute(attribute_list)
-        self.__push_objects(object_list)
-        self.__push_scales(scale_list)
+        self.__push_pattern(schema, pattern_list)
+        self.__push_attribute(schema, attribute_list)
+        self.__push_objects(schema, object_list)
+        self.__push_scales(schema, scale_list)
 
-    def __push_pattern(self, pattern_list):
+    def __push_pattern(self, schema, pattern_list):
         """Push found rdf pattern onto the database."""
         for key in pattern_list:
             pattern = pattern_list[key]
 
             # push pattern
             new_s_pattern = []
-            self.__db.insert("pattern", {"pattern": key})
+            self.__db.insert(schema, "pattern", {"pattern": key})
 
             # push single pattern
             for single_pattern in pattern:
-                # TODO current assumption: there's only unique single pattern
-                self.__db.insert("single_pattern", {"single_pattern": single_pattern})
-                single_pattern_id = self.__db.get_id("single_pattern", "single_pattern=" + add_quotes(single_pattern))
+                self.__db.insert(schema, "single_pattern", {"single_pattern": single_pattern})
+                single_pattern_id = self.__db.get_id(schema, "single_pattern", "single_pattern=" + add_quotes(single_pattern))
                 new_s_pattern.append(single_pattern_id)
 
-            pattern_id = self.__db.get_id("pattern", "pattern=" + add_quotes(key))
-            self.__db.insert("pattern_single_pattern", {
+            pattern_id = self.__db.get_id(schema, "pattern", "pattern=" + add_quotes(key))
+            self.__db.insert(schema, "pattern_single_pattern", {
                 "pattern_id": pattern_id, "single_pattern_id": new_s_pattern, "aggregation": 0})
 
-    def __push_attribute(self, attribute_list):
+    def __push_attribute(self, schema, attribute_list):
         """Push found rdf attributes onto the database."""
         for key in attribute_list:
             attributes = attribute_list[key]
 
             # push bsort
             new_attributes = []
-            self.__db.insert("bsort", {"bsort": key})
+            self.__db.insert(schema, "bsort", {"bsort": key})
 
             # push bscale and has_attribute relation
             for attribute in attributes:
                 # look out for duplicates
-                if not self.__db.is_in_table("bscale", "bscale=" + add_quotes(attribute)):
-                    self.__db.insert(
+                if not self.__db.is_in_table(schema, "bscale", "bscale=" + add_quotes(attribute)):
+                    self.__db.insert(schema,
                         "bscale", {"bscale": attribute, "nominal": False, "ordinal": False, "interval": False})
-                new_attributes.append(self.__db.get_id("bscale", "bscale=" + add_quotes(attribute)))
+                new_attributes.append(self.__db.get_id(schema, "bscale", "bscale=" + add_quotes(attribute)))
 
-            bsort_id = self.__db.get_id("bsort", "bsort=" + add_quotes(key))
-            self.__db.insert("has_attribute", {"bsort_id": bsort_id, "bscale_id": new_attributes, "aggregation": 0})
+            bsort_id = self.__db.get_id(schema, "bsort", "bsort=" + add_quotes(key))
+            self.__db.insert(schema, "has_attribute", {"bsort_id": bsort_id, "bscale_id": new_attributes, "aggregation": 0})
 
-    def __push_objects(self, object_list):
+    def __push_objects(self, schema, object_list):
         """Push found rdf objects onto the database."""
         for key in object_list:
             objects = object_list[key]
@@ -120,11 +119,11 @@ class RDFParser:
 
             # push bscale x pattern relation
             for object in objects:
-                new_attributes.append(self.__db.get_id("pattern", "pattern=" + add_quotes(object)))
-            bscale_id = self.__db.get_id("bscale", "bscale=" + add_quotes(key))
-            self.__db.insert("has_object", {"bscale_id": bscale_id, "pattern_id": new_attributes, "aggregation": 0})
+                new_attributes.append(self.__db.get_id(schema, "pattern", "pattern=" + add_quotes(object)))
+            bscale_id = self.__db.get_id(schema, "bscale", "bscale=" + add_quotes(key))
+            self.__db.insert(schema, "has_object", {"bscale_id": bscale_id, "pattern_id": new_attributes, "aggregation": 0})
 
-    def __push_scales(self, scale_list):
+    def __push_scales(self, schema, scale_list):
         """Push found rdf bscale attributes onto the database."""
         for key in scale_list:
             #
@@ -138,9 +137,9 @@ class RDFParser:
             else:
                 raise Exception("Invalid scale attribute.")
 
-            if self.__db.is_in_table("bscale", "bscale=" + add_quotes(key)):
-                bscale_id = self.__db.get_id("bscale", "bscale=" + add_quotes(key))
-                self.__db.update("bscale", row + "=" + add_quotes('True'), "id=" + str(bscale_id))
+            if self.__db.is_in_table(schema, "bscale", "bscale=" + add_quotes(key)):
+                bscale_id = self.__db.get_id(schema, "bscale", "bscale=" + add_quotes(key))
+                self.__db.update(schema, "bscale", row + "=" + add_quotes('True'), "id=" + str(bscale_id))
 
 
 def read_in_rdf_file(filename):

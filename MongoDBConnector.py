@@ -20,10 +20,11 @@ class MongoDBConnector:
             print("Mongo DB connection could not be built.")
 
         self.__db = self.__client.database
-        self.delete_all("dostojewski")
-        self.create_collection("dostojewski")
-        self.create_collection("storm")
-        self.add_articles("dostojewski", "C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
+        #self.delete_all("dostojewski")
+        #self.delete_all("storm")
+        #self.create_collection("dostojewski")
+        #self.create_collection("storm")
+        #self.add_articles("dostojewski", "C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
 
     def add_articles(self, collection, file_directory):
         """Add one article into database."""
