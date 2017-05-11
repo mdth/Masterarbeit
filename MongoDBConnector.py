@@ -25,6 +25,7 @@ class MongoDBConnector:
         #self.create_collection("dostojewski")
         #self.create_collection("storm")
         #self.add_articles("dostojewski", "C:/Users/din_m/PycharmProjects/Masterarbeit/Der Idiot/")
+        #self.add_articles("storm", "C:/Users/din_m/PycharmProjects/Masterarbeit/Posthuma/")
 
     def add_articles(self, collection, file_directory):
         """Add one article into database."""

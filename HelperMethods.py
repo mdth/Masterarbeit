@@ -1,7 +1,6 @@
 import re
 import csv
 
-
 def add_quotes(string):
     return "'" + string + "'"
 
@@ -42,5 +41,5 @@ def read_in_txt_file(filename):
     if not filename.endswith(".txt"):
         raise Exception("Invalid file format.")
 
-    with open(filename, 'r') as file:
+    with open(filename, 'r', encoding="utf-8") as file:
         return file.read()

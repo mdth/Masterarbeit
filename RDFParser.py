@@ -79,11 +79,13 @@ class RDFParser:
 
             # push pattern
             new_s_pattern = []
-            self.__db.insert(schema, "pattern", {"pattern": key})
+            if not self.__db.is_in_table(schema, "pattern", "pattern=" + add_quotes(key)):
+                self.__db.insert(schema, "pattern", {"pattern": key})
 
             # push single pattern
             for single_pattern in pattern:
-                self.__db.insert(schema, "single_pattern", {"single_pattern": single_pattern})
+                if not self.__db.is_in_table(schema, "single_pattern", "single_pattern=" + add_quotes(single_pattern)):
+                    self.__db.insert(schema, "single_pattern", {"single_pattern": single_pattern})
                 single_pattern_id = self.__db.get_id(schema, "single_pattern", "single_pattern=" + add_quotes(single_pattern))
                 new_s_pattern.append(single_pattern_id)
 

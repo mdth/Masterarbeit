@@ -7,22 +7,24 @@ lit:Grube q:hasPattern "Grube" .
 lit:Weg q:hasPattern "Weg" .
 lit:Rasen q:hasPattern "Rasen" .
 lit:Viertel q:hasPattern "Viertel" .
-lit:Sandhügel q:hasPattern "Sandhügel" .
+lit:Sandhuegel q:hasPattern "Sandhügel" .
 lit:Ecke q:hasPattern "Ecke" .
 lit:Stadt q:hasPattern "Stadt" .
 lit:Zimmer q:hasPattern "Zimmer" .
 lit:Haus q:hasPattern "Haus" .
 lit:Welt q:hasPattern "Welt" .
-lit:draußen q:hasPattern "draußen" .
+lit:draussen q:hasPattern "draußen" .
 lit:Treppe q:hasPattern "Treppe" .
 lit:Hausflur q:hasPattern "Hausflur" .
-lit:Straße q:hasPattern "Straße" .
+lit:Strasse q:hasPattern "Straße" .
 lit:Garten q:hasPattern "Garten" .
 lit:Bett q:hasPattern "Bett" .
 lit:Bank q:hasPattern "Bank" .
 
-
-
 lit:Place a q:BSort .
 
-lit:Place q:hasAttribute (lit:Building, lit:Country, lit:Town) .
+lit:Place q:hasObject (lit:Kirchhof, lit:Grube, lit:Weg, lit:Rasen, lit:Viertel, lit:Sandhuegel, lit:Ecke, lit:Welt, lit:Stadt, lit:Zimmer, lit:Haus, lit:draussen, lit:Treppe, lit:Hausflur, lit:Strasse, lit:Garten, lit:Bett, lit:Bank) .
+
+lit:Place q:hasAttribute lit:Place .
+
+lit:Place q:hasScale "nominal" .

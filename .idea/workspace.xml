@@ -5,14 +5,70 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8967fbb0-d593-4f05-9572-bb5e10e7e15f" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/All Chapters - Der Idiot.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/GG Teil 1.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Ontologie_Orte.txt" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Posthuma.txt" afterPath="$PROJECT_DIR$/Posthuma/Posthuma.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 1.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 1.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 10.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 10.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 11.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 11.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 12.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 12.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 13.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 13.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 14.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 14.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 15.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 15.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 16.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 16.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 17.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 17.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 18.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 18.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 19.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 19.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 2.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 2.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 20.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 20.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 21.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 21.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 22.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 22.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 23.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 23.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 24.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 24.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 25.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 25.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 26.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 26.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 27.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 27.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 28.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 28.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 29.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 29.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 3.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 3.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 30.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 30.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 31.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 31.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 32.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 32.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 33.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 33.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 34.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 34.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 35.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 35.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 36.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 36.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 37.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 37.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 38.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 38.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 39.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 39.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 4.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 4.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 40.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 40.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 41.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 41.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 42.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 42.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 43.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 43.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 44.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 44.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 45.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 45.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 46.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 46.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 47.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 47.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 48.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 48.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 49.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 49.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 5.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 5.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 50.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 50.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 6.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 6.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 7.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 7.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 8.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 8.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 9.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 9.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HelperMethods.py" afterPath="$PROJECT_DIR$/HelperMethods.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Main.py" afterPath="$PROJECT_DIR$/Main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MongoDBConnector.py" afterPath="$PROJECT_DIR$/MongoDBConnector.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ontologie_Farbe.rdf" afterPath="$PROJECT_DIR$/Ontologie_Farbe.rdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ontologie_Natur.rdf" afterPath="$PROJECT_DIR$/Ontologie_Natur.rdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ontologie_Orte.rdf" afterPath="$PROJECT_DIR$/Ontologie_Orte.rdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ontologie_Sozial.rdf" afterPath="$PROJECT_DIR$/Ontologie_Sozial.rdf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PostGreDBConnector.py" afterPath="$PROJECT_DIR$/PostGreDBConnector.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Prototype.py" afterPath="$PROJECT_DIR$/Prototype.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RDFParser.py" afterPath="$PROJECT_DIR$/RDFParser.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Web_Scratcher.py" afterPath="$PROJECT_DIR$/Web_Scratcher.py" />
     </list>
     <ignored path="Masterarbeit.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,33 +88,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Parser.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PMI/Parser.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-              <folding>
-                <element signature="e#0#12#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TestSPOParser.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Unittests/TestSPOParser.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="66" column="76" selection-start-line="66" selection-start-column="31" selection-end-line="66" selection-end-column="76" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Prototype.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Prototype.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Prototype.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="480" column="39" selection-start-line="480" selection-start-column="39" selection-end-line="480" selection-end-column="39" />
+            <state relative-caret-position="242">
+              <caret line="415" column="79" selection-start-line="415" selection-start-column="79" selection-end-line="415" selection-end-column="79" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -66,24 +100,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MongoDBConnector.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MongoDBConnector.py">
+      <file leaf-file-name="HelperMethods.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HelperMethods.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="22" column="9" selection-start-line="22" selection-start-column="9" selection-end-line="22" selection-end-column="9" />
+            <state relative-caret-position="313">
+              <caret line="43" column="37" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
               <folding>
-                <element signature="e#0#14#0" expanded="true" />
+                <element signature="e#0#9#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Chapter 1.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Der Idiot/Chapter 1.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="55" selection-start-line="4" selection-start-column="55" selection-end-line="4" selection-end-column="55" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -91,8 +115,8 @@
       <file leaf-file-name="PostGreDBConnector.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PostGreDBConnector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+            <state relative-caret-position="222">
+              <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -100,25 +124,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
+            <state relative-caret-position="415">
+              <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RDFParser.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/RDFParser.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="108" column="63" selection-start-line="108" selection-start-column="63" selection-end-line="108" selection-end-column="63" />
-              <folding>
-                <element signature="e#0#127#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -151,7 +163,6 @@
         <option value="C:/Python35/Lib/site-packages/nltk/tag/test.py" />
         <option value="$PROJECT_DIR$/MongoDBConnection.py" />
         <option value="$PROJECT_DIR$/classes.puml" />
-        <option value="$PROJECT_DIR$/test.rdf" />
         <option value="$PROJECT_DIR$/parsing.py" />
         <option value="$PROJECT_DIR$/TestRDFParser.py" />
         <option value="$PROJECT_DIR$/POSTagger.py" />
@@ -169,11 +180,9 @@
         <option value="$PROJECT_DIR$/Pre-Prototypen/test.py" />
         <option value="$PROJECT_DIR$/Pre-Prototypen/test_pyparsing.py" />
         <option value="$PROJECT_DIR$/Pre-Prototypen/test_pyparsing2.py" />
-        <option value="$PROJECT_DIR$/HelperMethods.py" />
         <option value="$PROJECT_DIR$/Unittests/Test.py" />
         <option value="$PROJECT_DIR$/Unittests/TestNounAdjectiveParser.py" />
         <option value="$PROJECT_DIR$/GG Teil 1.txt" />
-        <option value="$PROJECT_DIR$/Web_Scratcher.py" />
         <option value="$PROJECT_DIR$/Unittests/TestSPOParser.py" />
         <option value="$PROJECT_DIR$/Unittests/testtest.py" />
         <option value="$PROJECT_DIR$/test.py" />
@@ -181,12 +190,19 @@
         <option value="$PROJECT_DIR$/locations.rdf" />
         <option value="$PROJECT_DIR$/constraints.csv" />
         <option value="$PROJECT_DIR$/PMI/Parser.py" />
-        <option value="$PROJECT_DIR$/RDFParser.py" />
         <option value="$PROJECT_DIR$/Der Idiot/Chapter 1.txt" />
-        <option value="$PROJECT_DIR$/Main.py" />
-        <option value="$PROJECT_DIR$/MongoDBConnector.py" />
+        <option value="$PROJECT_DIR$/RDFParser.py" />
+        <option value="$PROJECT_DIR$/test.rdf" />
+        <option value="$PROJECT_DIR$/Ontologie_Farbe.rdf" />
+        <option value="$PROJECT_DIR$/Ontologie_Natur.rdf" />
+        <option value="$PROJECT_DIR$/Ontologie_Sozial.rdf" />
+        <option value="$PROJECT_DIR$/Ontologie_Orte.rdf" />
+        <option value="$PROJECT_DIR$/HelperMethods.py" />
         <option value="$PROJECT_DIR$/Prototype.py" />
+        <option value="$PROJECT_DIR$/Web_Scratcher.py" />
+        <option value="$PROJECT_DIR$/MongoDBConnector.py" />
         <option value="$PROJECT_DIR$/PostGreDBConnector.py" />
+        <option value="$PROJECT_DIR$/Main.py" />
       </list>
     </option>
   </component>
@@ -233,52 +249,7 @@
         </subPane>
       </pane>
       <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Masterarbeit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Masterarbeit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Masterarbeit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Masterarbeit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Masterarbeit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Unittests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Masterarbeit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Masterarbeit" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Der Idiot" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
+        <subPane />
       </pane>
       <pane id="Scratches" />
     </panes>
@@ -306,12 +277,15 @@
     <property name="full.screen.before.presentation.mode" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\din_m\PycharmProjects\Masterarbeit\Der Idiot" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\din_m\PycharmProjects\Masterarbeit\Der Idiot" />
+      <recent name="C:\Users\din_m\PycharmProjects\Masterarbeit\Posthuma" />
       <recent name="C:\Users\din_m\PycharmProjects\Masterarbeit\Unittests" />
       <recent name="C:\Users\din_m\PycharmProjects\Masterarbeit\PMI" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\din_m\PycharmProjects\Masterarbeit" />
+      <recent name="C:\Users\din_m\PycharmProjects\Masterarbeit\Der Idiot" />
     </key>
   </component>
   <component name="RunManager" selected="Python.Main">
@@ -330,28 +304,6 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Unittests/testtest.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Unittests in TestNounAdjectiveParser" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Unittests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Masterarbeit" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Unittests/TestNounAdjectiveParser.py" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
     <configuration default="false" name="Unittests in TestSPOParser" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
@@ -406,6 +358,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="Masterarbeit" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Web_Scratcher" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Masterarbeit" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Web_Scratcher.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -546,18 +515,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.testtest" />
-      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in TestNounAdjectiveParser" />
-      <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in TestSPOParser" />
-      <item index="3" class="java.lang.String" itemvalue="Python.Main" />
-      <item index="4" class="java.lang.String" itemvalue="Python.test" />
+      <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in TestSPOParser" />
+      <item index="2" class="java.lang.String" itemvalue="Python.Main" />
+      <item index="3" class="java.lang.String" itemvalue="Python.test" />
+      <item index="4" class="java.lang.String" itemvalue="Python.Web_Scratcher" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.Main" />
-        <item index="1" class="java.lang.String" itemvalue="Python.test" />
-        <item index="2" class="java.lang.String" itemvalue="Python.testtest" />
-        <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in TestSPOParser" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in TestNounAdjectiveParser" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Web_Scratcher" />
+        <item index="2" class="java.lang.String" itemvalue="Python.test" />
+        <item index="3" class="java.lang.String" itemvalue="Python.testtest" />
+        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in TestSPOParser" />
       </list>
     </recent_temporary>
   </component>
@@ -883,7 +852,14 @@
       <option name="project" value="LOCAL" />
       <updated>1494327308810</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Added schema selection to seperate the q-calculus for different corpora. Works until aggregation.">
+      <created>1494497116032</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1494497116033</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -932,12 +908,12 @@
     <editor active="true" />
     <layout>
       <window_info id="PlantUML" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32966226" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11493412" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18155198" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32790223" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2967359" sideWeight="0.5146413" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19979715" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2908012" sideWeight="0.48535872" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29228488" sideWeight="0.48535872" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -960,15 +936,15 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19979715" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29208925" sideWeight="0.48535872" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29228488" sideWeight="0.48535872" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.115625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18155198" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3249258" sideWeight="0.4897511" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32484725" sideWeight="0.4897511" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38706365" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38594705" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -983,7 +959,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fixed PostGre Bug when adding snippets with special character &gt;'&lt;. Searching snippets and pushing all necessary objects, pattern, etc. is working." />
     <MESSAGE value="parsing.py in OO-Prototyp umgewandelt." />
     <MESSAGE value="Unterteilung in private und public methods." />
     <MESSAGE value="Refactoring, adding push_texts_snippets." />
@@ -1008,14 +983,15 @@
     <MESSAGE value="Spacy multithreading with nlp.pipe()" />
     <MESSAGE value="get pmi results as list of dict" />
     <MESSAGE value="Fixing some bugs and adding new ontologies for second text. Change schemata for dbs to have more than one text in the db without coincidentally correlating snippets and texts with each other." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixing some bugs and adding new ontologies for second text. Change schemata for dbs to have more than one text in the db without coincidentally correlating snippets and texts with each other." />
+    <MESSAGE value="Added schema selection to seperate the q-calculus for different corpora. Works until aggregation." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added schema selection to seperate the q-calculus for different corpora. Works until aggregation." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/Main.py</url>
-          <line>26</line>
+          <line>27</line>
           <option name="timeStamp" value="89" />
         </line-breakpoint>
       </breakpoints>
@@ -1031,62 +1007,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/Python35/Lib/site-packages/textblob/blob.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="130" column="13" selection-start-line="130" selection-start-column="8" selection-end-line="130" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python35/Lib/sre_compile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="513" column="0" selection-start-line="513" selection-start-column="0" selection-end-line="513" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python35/Lib/re.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="181" column="0" selection-start-line="181" selection-start-column="0" selection-end-line="181" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python35/Lib/site-packages/textblob_de/ext/_pattern/text/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="984" column="0" selection-start-line="984" selection-start-column="0" selection-end-line="984" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python35/Lib/site-packages/textblob_de/tokenizers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="166" column="0" selection-start-line="166" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PMI/linking_verbs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="18" column="55" selection-start-line="18" selection-start-column="55" selection-end-line="18" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python35/Lib/site-packages/textblob_de/lemmatizers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PMI/germanParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PMI/SPOParser.py" />
     <entry file="file://$PROJECT_DIR$/Pre-Prototypen/PyParsing3.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -1159,20 +1079,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Der Idiot/Chapter 2.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/All Chapters - Der Idiot.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="33" column="591" selection-start-line="33" selection-start-column="591" selection-end-line="33" selection-end-column="591" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python35/Lib/site-packages/treetaggerwrapper.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -1201,13 +1107,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HelperMethods.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="44" column="27" selection-start-line="44" selection-start-column="27" selection-end-line="44" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.PyCharm2016.2/system/python_stubs/-1313743207/spacy/symbols.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="12808">
@@ -1233,14 +1132,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="213">
           <caret line="218" column="16" selection-start-line="218" selection-start-column="14" selection-end-line="218" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Chapter 1.txt" />
-    <entry file="file://$PROJECT_DIR$/Web_Scratcher.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1287,46 +1178,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/locations.rdf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="11" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/persons.rdf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="39" column="39" selection-start-line="39" selection-start-column="39" selection-end-line="39" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RDFParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="108" column="63" selection-start-line="108" selection-start-column="63" selection-end-line="108" selection-end-column="63" />
-          <folding>
-            <element signature="e#0#127#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Unittests/TestPrototype.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="103" column="37" selection-start-line="103" selection-start-column="37" selection-end-line="103" selection-end-column="37" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PMI/Parser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1346,16 +1202,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Unittests/TestSPOParser.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -1364,40 +1210,192 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PostGreDBConnector.py">
+    <entry file="file://C:/Python35/Lib/site-packages/pyparsing.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+        <state relative-caret-position="415">
+          <caret line="1625" column="12" selection-start-line="1625" selection-start-column="12" selection-end-line="1625" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persons.rdf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="20" selection-start-line="0" selection-start-column="20" selection-end-line="0" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/locations.rdf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.rdf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ontologie_Farbe.rdf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="43" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RDFParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="867">
+          <caret line="51" column="59" selection-start-line="51" selection-start-column="59" selection-end-line="51" selection-end-column="59" />
           <folding>
-            <element signature="e#0#17#0" expanded="true" />
+            <element signature="e#0#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ontologie_Natur.rdf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="398">
+          <caret line="50" column="8" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ontologie_Sozial.rdf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="18" column="42" selection-start-line="18" selection-start-column="42" selection-end-line="18" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Ontologie_Orte.rdf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="236">
+          <caret line="25" column="200" selection-start-line="25" selection-start-column="200" selection-end-line="25" selection-end-column="200" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PMI/Parser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Prototype.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="415" column="79" selection-start-line="415" selection-start-column="79" selection-end-line="415" selection-end-column="79" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Der Idiot/Chapter 2.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Der Idiot/Chapter 1.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Der Idiot/Chapter 1.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Der Idiot/Chapter 6.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Der Idiot/Chapter 5.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/All Chapters - Der Idiot.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="33" column="591" selection-start-line="33" selection-start-column="591" selection-end-line="33" selection-end-column="591" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Web_Scratcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HelperMethods.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="43" column="37" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/MongoDBConnector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="22" column="9" selection-start-line="22" selection-start-column="9" selection-end-line="22" selection-end-column="9" />
+        <state relative-caret-position="330">
+          <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Der Idiot/Chapter 1.txt">
+    <entry file="file://$PROJECT_DIR$/PostGreDBConnector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="55" selection-start-line="4" selection-start-column="55" selection-end-line="4" selection-end-column="55" />
-          <folding />
+        <state relative-caret-position="222">
+          <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Prototype.py">
+    <entry file="file://$PROJECT_DIR$/Main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
-          <caret line="480" column="39" selection-start-line="480" selection-start-column="39" selection-end-line="480" selection-end-column="39" />
+        <state relative-caret-position="415">
+          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -16,7 +16,7 @@ class PostGreDBConnector:
         except ConnectionError:
             print("PostGre DB connection could not be built.")
 
-        #self.delete_all_data()
+        self.delete_all_data()
         #self.drop_all_tables()
         #self.create_schema("dostojewski")
         #self.create_schema("storm")
