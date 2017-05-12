@@ -16,7 +16,7 @@ class PostGreDBConnector:
         except ConnectionError:
             print("PostGre DB connection could not be built.")
 
-        self.delete_all_data()
+        #self.delete_all_data()
         #self.drop_all_tables()
         #self.create_schema("dostojewski")
         #self.create_schema("storm")
@@ -59,6 +59,14 @@ class PostGreDBConnector:
         self._add_table("CREATE TABLE " + schema + "subject_object_occ (id serial primary key, subject int, object int, count int, pmi float)")
         self._add_table("CREATE TABLE " + schema + "object_verb_occ (id serial primary key, object int, verb int, count int, pmi float)")
         self._add_table("CREATE TABLE " + schema + "subject_verb_occ (id serial primary key, subject int, verb int, count int, pmi float)")
+
+        # correlating pattern
+        self._add_table("CREATE TABLE " + schema + "bscale_single_pattern (id serial primary key, bscale_id int, single_pattern_id int, single_pattern text, count int)")
+        self._add_table(
+            "CREATE TABLE " + schema + "correlating_bscales (id serial primary key, bscale_a int, bscale_b int, count int, pmi float)")
+        # TODO does this even make sense?
+        self._add_table(
+            "CREATE TABLE " + schema + "correlating_pattern (id serial primary key, bscale_pattern1 int, bscale_pattern2 int, count int, pmi float)")
 
     def __create_functions(self, schema):
         """Create all necessary functions to aggregate the results saved in the database."""
@@ -169,9 +177,9 @@ class PostGreDBConnector:
         if len(tables) > 0 :
             for ind, table in enumerate(tables):
                 if ind == 0:
-                    table_names = str(table.split('.')[1])
+                    table_names = str(table)
                 else:
-                    table_names = table_names + ", " + str(table.split('.')[1])
+                    table_names = table_names + ", " + str(table)
             self.__db.query("DROP TABLE " + table_names)
         else:
             print("Nothing to delete.")

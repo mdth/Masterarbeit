@@ -1,74 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/Prototype.py" line="301" />
+    <bookmark url="file://$PROJECT_DIR$/Prototype.py" line="303" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8967fbb0-d593-4f05-9572-bb5e10e7e15f" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/All Chapters - Der Idiot.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/GG Teil 1.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Ontologie_Orte.txt" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Posthuma.txt" afterPath="$PROJECT_DIR$/Posthuma/Posthuma.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 10.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 10.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 11.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 11.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 12.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 12.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 13.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 13.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 14.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 14.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 15.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 15.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 16.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 16.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 17.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 17.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 18.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 18.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 19.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 19.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 2.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 2.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 20.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 20.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 21.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 21.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 22.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 22.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 23.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 23.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 24.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 24.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 25.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 25.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 26.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 26.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 27.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 27.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 28.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 28.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 29.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 29.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 3.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 3.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 30.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 30.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 31.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 31.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 32.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 32.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 33.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 33.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 34.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 34.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 35.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 35.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 36.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 36.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 37.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 37.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 38.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 38.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 39.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 39.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 4.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 4.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 40.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 40.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 41.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 41.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 42.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 42.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 43.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 43.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 44.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 44.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 45.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 45.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 46.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 46.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 47.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 47.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 48.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 48.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 49.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 49.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 5.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 5.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 50.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 50.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 6.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 6.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 7.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 7.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 8.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 8.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Der Idiot/Chapter 9.txt" afterPath="$PROJECT_DIR$/Der Idiot/Chapter 9.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HelperMethods.py" afterPath="$PROJECT_DIR$/HelperMethods.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Main.py" afterPath="$PROJECT_DIR$/Main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MongoDBConnector.py" afterPath="$PROJECT_DIR$/MongoDBConnector.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ontologie_Farbe.rdf" afterPath="$PROJECT_DIR$/Ontologie_Farbe.rdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ontologie_Natur.rdf" afterPath="$PROJECT_DIR$/Ontologie_Natur.rdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ontologie_Orte.rdf" afterPath="$PROJECT_DIR$/Ontologie_Orte.rdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Ontologie_Sozial.rdf" afterPath="$PROJECT_DIR$/Ontologie_Sozial.rdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PMI/Parser.py" afterPath="$PROJECT_DIR$/PMI/Parser.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PostGreDBConnector.py" afterPath="$PROJECT_DIR$/PostGreDBConnector.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RDFParser.py" afterPath="$PROJECT_DIR$/RDFParser.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Web_Scratcher.py" afterPath="$PROJECT_DIR$/Web_Scratcher.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Prototype.py" afterPath="$PROJECT_DIR$/Prototype.py" />
     </list>
     <ignored path="Masterarbeit.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -88,11 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Prototype.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Prototype.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Prototype.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="415" column="79" selection-start-line="415" selection-start-column="79" selection-end-line="415" selection-end-column="79" />
+            <state relative-caret-position="204">
+              <caret line="503" column="69" selection-start-line="503" selection-start-column="69" selection-end-line="503" selection-end-column="69" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -100,13 +41,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HelperMethods.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/HelperMethods.py">
+      <file leaf-file-name="Parser.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/PMI/Parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="313">
-              <caret line="43" column="37" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
+            <state relative-caret-position="119">
+              <caret line="26" column="39" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
               <folding>
-                <element signature="e#0#9#0" expanded="true" />
+                <element signature="e#0#12#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -115,8 +56,8 @@
       <file leaf-file-name="PostGreDBConnector.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PostGreDBConnector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+            <state relative-caret-position="208">
+              <caret line="148" column="28" selection-start-line="148" selection-start-column="8" selection-end-line="148" selection-end-column="28" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -124,11 +65,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MongoDBConnector.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MongoDBConnector.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
+              <folding>
+                <element signature="e#0#14#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="415">
-              <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+              <caret line="74" column="53" selection-start-line="74" selection-start-column="53" selection-end-line="74" selection-end-column="53" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -189,7 +142,6 @@
         <option value="$PROJECT_DIR$/persons.rdf" />
         <option value="$PROJECT_DIR$/locations.rdf" />
         <option value="$PROJECT_DIR$/constraints.csv" />
-        <option value="$PROJECT_DIR$/PMI/Parser.py" />
         <option value="$PROJECT_DIR$/Der Idiot/Chapter 1.txt" />
         <option value="$PROJECT_DIR$/RDFParser.py" />
         <option value="$PROJECT_DIR$/test.rdf" />
@@ -198,11 +150,12 @@
         <option value="$PROJECT_DIR$/Ontologie_Sozial.rdf" />
         <option value="$PROJECT_DIR$/Ontologie_Orte.rdf" />
         <option value="$PROJECT_DIR$/HelperMethods.py" />
-        <option value="$PROJECT_DIR$/Prototype.py" />
         <option value="$PROJECT_DIR$/Web_Scratcher.py" />
         <option value="$PROJECT_DIR$/MongoDBConnector.py" />
         <option value="$PROJECT_DIR$/PostGreDBConnector.py" />
         <option value="$PROJECT_DIR$/Main.py" />
+        <option value="$PROJECT_DIR$/PMI/Parser.py" />
+        <option value="$PROJECT_DIR$/Prototype.py" />
       </list>
     </option>
   </component>
@@ -237,6 +190,41 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Masterarbeit" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Masterarbeit" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Masterarbeit" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Masterarbeit" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Masterarbeit" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PMI" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Problems" />
         <subPane subId="Project Files">
@@ -248,10 +236,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="ProjectPane">
-        <subPane />
-      </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -859,7 +843,21 @@
       <option name="project" value="LOCAL" />
       <updated>1494497116033</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Fetch &quot;Der Idiot&quot; again with WebScratcher, because encoding was wrong and messed with evaluation results.">
+      <created>1494502647434</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1494502647434</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Finishing database schema change. Not tested yet.">
+      <created>1494503846518</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1494503846518</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -908,7 +906,7 @@
     <editor active="true" />
     <layout>
       <window_info id="PlantUML" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32966226" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18155198" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18155198" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32790223" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2967359" sideWeight="0.5146413" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19979715" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -917,7 +915,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38594705" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38575667" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -959,8 +957,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="parsing.py in OO-Prototyp umgewandelt." />
-    <MESSAGE value="Unterteilung in private und public methods." />
     <MESSAGE value="Refactoring, adding push_texts_snippets." />
     <MESSAGE value="Adding single_pattern - snippets - offset relation. It's still buggy, need to rework the find function in get_sentence_textsnippets. The db table for the relationship is a workaround for now." />
     <MESSAGE value="Adding aggregation bottom up. Covered for the lowest layer tables." />
@@ -984,15 +980,17 @@
     <MESSAGE value="get pmi results as list of dict" />
     <MESSAGE value="Fixing some bugs and adding new ontologies for second text. Change schemata for dbs to have more than one text in the db without coincidentally correlating snippets and texts with each other." />
     <MESSAGE value="Added schema selection to seperate the q-calculus for different corpora. Works until aggregation." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added schema selection to seperate the q-calculus for different corpora. Works until aggregation." />
+    <MESSAGE value="Fetch &quot;Der Idiot&quot; again with WebScratcher, because encoding was wrong and messed with evaluation results." />
+    <MESSAGE value="Finishing database schema change. Not tested yet." />
+    <option name="LAST_COMMIT_MESSAGE" value="Finishing database schema change. Not tested yet." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/Main.py</url>
-          <line>27</line>
-          <option name="timeStamp" value="89" />
+          <url>file://$PROJECT_DIR$/Prototype.py</url>
+          <line>477</line>
+          <option name="timeStamp" value="90" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -1002,7 +1000,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="90" />
+      <option name="time" value="91" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1075,7 +1073,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="177">
           <caret line="475" column="4" selection-start-line="475" selection-start-column="4" selection-end-line="475" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1135,13 +1132,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GG Teil 1.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="42" column="1" selection-start-line="42" selection-start-column="1" selection-end-line="42" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/GG Teil 1.txt" />
     <entry file="file://$PROJECT_DIR$/bscale_test.rdf">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1174,7 +1165,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="1" column="24" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1182,15 +1172,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="103" column="37" selection-start-line="103" selection-start-column="37" selection-end-line="103" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python35/Lib/site-packages/pg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="1776" column="8" selection-start-line="1776" selection-start-column="8" selection-end-line="1776" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1198,7 +1179,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1206,7 +1186,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="66" column="76" selection-start-line="66" selection-start-column="31" selection-end-line="66" selection-end-column="76" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1222,7 +1201,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="20" selection-start-line="0" selection-start-column="20" selection-end-line="0" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1230,7 +1208,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1238,7 +1215,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1246,17 +1222,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="10" column="43" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RDFParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="867">
-          <caret line="51" column="59" selection-start-line="51" selection-start-column="59" selection-end-line="51" selection-end-column="59" />
-          <folding>
-            <element signature="e#0#127#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1264,7 +1229,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="398">
           <caret line="50" column="8" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1272,7 +1236,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="301">
           <caret line="18" column="42" selection-start-line="18" selection-start-column="42" selection-end-line="18" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1280,27 +1243,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="236">
           <caret line="25" column="200" selection-start-line="25" selection-start-column="200" selection-end-line="25" selection-end-column="200" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PMI/Parser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Prototype.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="415" column="79" selection-start-line="415" selection-start-column="79" selection-end-line="415" selection-end-column="79" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1308,7 +1250,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1316,7 +1257,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1324,7 +1264,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1332,7 +1271,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1340,23 +1278,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/All Chapters - Der Idiot.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="33" column="591" selection-start-line="33" selection-start-column="591" selection-end-line="33" selection-end-column="591" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/All Chapters - Der Idiot.txt" />
     <entry file="file://$PROJECT_DIR$/Web_Scratcher.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1364,15 +1293,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="313">
           <caret line="43" column="37" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RDFParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="104" column="25" selection-start-line="104" selection-start-column="19" selection-end-line="104" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python35/Lib/site-packages/pg.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="1689" column="0" selection-start-line="1689" selection-start-column="0" selection-end-line="1689" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/MongoDBConnector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
+        <state relative-caret-position="340">
           <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
@@ -1380,12 +1321,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PostGreDBConnector.py">
+    <entry file="file://$PROJECT_DIR$/PMI/Parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+        <state relative-caret-position="119">
+          <caret line="26" column="39" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
           <folding>
-            <element signature="e#0#17#0" expanded="true" />
+            <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1393,9 +1334,29 @@
     <entry file="file://$PROJECT_DIR$/Main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="415">
-          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+          <caret line="74" column="53" selection-start-line="74" selection-start-column="53" selection-end-line="74" selection-end-column="53" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PostGreDBConnector.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="148" column="28" selection-start-line="148" selection-start-column="8" selection-end-line="148" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Prototype.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="503" column="69" selection-start-line="503" selection-start-column="69" selection-end-line="503" selection-end-column="69" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>

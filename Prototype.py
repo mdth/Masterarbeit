@@ -29,7 +29,7 @@ class Prototype:
         self.__sentence_mode = sentence_mode
         self.__window_size = window_size
         self.tokenizer = WhitespaceTokenizer()
-        #self.parser = Parser()
+        self.parser = Parser()
 
     def exit(self):
         """Close down the prototype."""
@@ -40,6 +40,8 @@ class Prototype:
         self.__mongo_db.create_collection(schema_name)
         self.__postgre_db.create_schema(schema_name)
 
+    def create_new_schema(self, schema_name):
+        self.__postgre_db.create_schema(schema_name)
 
     def get_postagger(self):
         """Gets the current POS Tagger in use."""
@@ -446,7 +448,7 @@ class Prototype:
             self.__postgre_db.insert(schema, "has_object", {"bscale_id": new_bscale_id, "pattern_id": new_pattern_list, "aggregation": aggregation})
 
     def intersect_bscale(self, schema, new_bscale, bsort, *args):
-        pattern_info = self.__add_new_bscale(schema, new_bscale,bsort, *args)
+        pattern_info = self.__add_new_bscale(schema, new_bscale, bsort, *args)
         if pattern_info is not None:
             pattern_ids = pattern_info[0]
             new_bscale_id = pattern_info[1]
@@ -469,14 +471,15 @@ class Prototype:
                 if not scale_found:
                     raise Exception("Chosen Bscale does not exist.")
             if not self.__postgre_db.is_in_table(schema, "bscale", "bscale=" + add_quotes(new_bscale)):
-                self.__postgre_db.insert(schema, "bscale", {"bscale": add_quotes(new_bscale)})
+                self.__postgre_db.insert(schema, "bscale", {"bscale": new_bscale})
+                #TODO nominal, ordinal, interval
             new_bscale_id = self.__postgre_db.get_id(schema, "bscale", "bscale=" + add_quotes(new_bscale))
             bsort_id = self.__postgre_db.get_id(schema, "bsort", "bsort=" + add_quotes(bsort))
             if self.__postgre_db.is_in_table(schema, "has_attribute", "bsort_id=" + str(bsort_id)):
                 old_list = self.__postgre_db.get(schema, "has_attribute", "bsort_id=" + str(bsort_id), "bscale_id")
-                new_list = old_list.append(new_bscale_id)
-                self.__postgre_db.update(schema, "has_attribute", "bscale_id=" + add_quotes(str(new_list)),
-                                         "bsort_id=" + str(bsort_id))
+                old_list.append(new_bscale_id)
+                self.__postgre_db.update(schema, "has_attribute", "bscale_id=" + add_quotes(
+                    replace_brackets(str(old_list))), "bsort_id=" + str(bsort_id))
             else:
                 self.__postgre_db.insert(schema, "has_attribute",
                                          {"bsort_id": bsort_id, "bscale_id": [new_bscale_id], "aggregation": 0})
@@ -490,10 +493,50 @@ class Prototype:
 
             return (pattern_ids, new_bscale_id)
 
+    def find_correlating_pattern(self, schema):
+        all_snippets_table = self.__postgre_db.get_data_from_table(schema, "snippets")
+        all_snippets = [snippet['snippet'] for snippet in all_snippets_table]
+        all_bscales_table = self.__postgre_db.get_data_from_table(schema, "bscale")
+        all_bscales = [bscale['id'] for bscale in all_bscales_table]
+
+        # TODO temporary
+        self.__postgre_db.delete_data_in_table(schema, "bscale_single_pattern")
+        self.__postgre_db.ddelete_data_in_table(schema, "correlating_bscales")
+
+        for bscale_id in all_bscales:
+            pattern_list = self.__postgre_db.get(schema, "has_object", "bscale_id=" + str(bscale_id), "pattern_id")
+            for pattern_id in pattern_list:
+                single_pattern_id_list = self.__postgre_db.get(
+                    schema, "pattern_single_pattern", "pattern_id=" + str(pattern_id), "single_pattern_id")
+                for single_pattern_id in single_pattern_id_list:
+                    single_pattern = self.__postgre_db.get(schema, "single_pattern", "id=" + str(single_pattern_id), "single_pattern")
+                    self.__postgre_db.insert(schema, "bscale_single_pattern", {"bscale_id": bscale_id, "single_pattern_id": single_pattern_id, "single_pattern": single_pattern , "count": 0})
+        print("Added new bscale_pattern rel.")
+        for snippet in self.parser.nlp.pipe(all_snippets, batch_size=3000, n_threads=-1):
+            correlating_pattern = self.parser.get_correlating_nouns_and_adjectives(snippet)
+            print(correlating_pattern)
+            for ind, item in enumerate(correlating_pattern):
+                if self.__postgre_db.is_in_table(schema, "bscale_single_pattern",
+                                                 "single_pattern=" + add_quotes(item)):
+                    bscale_item_id = self.__postgre_db.get_id(schema, "bscale_single_pattern", "single_pattern=" + str(add_quotes(item)))
+                    index = ind + 1
+                    while index < len(correlating_pattern):
+                        next_item = correlating_pattern[index]
+                        if self.__postgre_db.is_in_table(schema, "bscale_single_pattern",
+                                                 "single_pattern=" + add_quotes(next_item)):
+                            bscale_next_item_id = self.__postgre_db.get_id(schema, "bscale_single_pattern", "single_pattern=" + str(add_quotes(next_item)))
+                            if bscale_item_id != bscale_next_item_id:
+                                if not self.__postgre_db.is_in_table(
+                                        schema, "correlating_bscales", "bscale_a=" + str(bscale_item_id) + " and bscale_b=" + str(bscale_next_item_id)):
+                                    self.__postgre_db.insert(schema, "correlating_bscales", {
+                                        "bscale_a": bscale_item_id, "bscale_b": bscale_next_item_id,"count":0})
+                                else:
+                                    old_count = self.__postgre_db.get(schema, "correlating_bscales", "bscale_a=" + str(bscale_item_id) + " and bscale_b=" + str(bscale_next_item_id), "count")
+                                    new_count = old_count + 1
+                                    self.__postgre_db.update(schema, "correlating_bscales", "count=" + str(new_count), "bscale_a=" + str(bscale_item_id) + " and bscale_b=" + str(bscale_next_item_id))
+                        index += 1
+
     def find_spo_and_adjectives(self, schema):
-        self.__postgre_db.delete_data_in_table(schema, "subject_object_occ")
-        self.__postgre_db.delete_data_in_table(schema, "subject_verb_occ")
-        self.__postgre_db.delete_data_in_table(schema, "object_verb_occ")
         all_snippets_table = self.__postgre_db.get_data_from_table(schema, "snippets")
         all_snippets = [snippet['snippet'] for snippet in all_snippets_table]
         for snippet in self.parser.nlp.pipe(all_snippets, batch_size=3000, n_threads=-1):
@@ -556,10 +599,11 @@ class Prototype:
             return count
 
     def calculate_pmi(self, schema):
+        print("Calculating PMI for " + schema)
         corpus_count = 0
         for item in self.__mongo_db.get(schema, {}):
             corpus_count += len(item['text'])
-
+        print("Lemmatizing corpus.")
         lemmatized_text = []
         for ind, text in enumerate(self.__mongo_db.get(schema, {})):
             doc = text['text']
@@ -567,26 +611,17 @@ class Prototype:
                 if ch in doc:
                     doc = doc.replace(ch, '"')
             lemmatized_text += self.parser.lemmatize_chunk(doc)
-            print(ind)
-        print(len(lemmatized_text))
+            print("Part " + str(ind) + "lemmatized.")
         word_counts = Counter(lemmatized_text)
-        print(word_counts)
         self.aggregate_occurences(schema, "subject", word_counts)
-        print("subject done")
         self.aggregate_occurences(schema, "object", word_counts)
-        print("obj done")
         self.aggregate_occurences(schema, "adjective", word_counts)
-        print("adf done")
         self.aggregate_occurences(schema, "verb", word_counts)
-        print("verb done")
+        print("Finished aggregating occurences.")
         self.calculate_pmi_helper(schema, corpus_count, "subject_adjective_occ", "subject", "adjective")
-        print("sub_adjective")
         self.calculate_pmi_helper(schema, corpus_count, "subject_verb_occ", "subject", "verb")
-        print("sub_verb")
         self.calculate_pmi_helper(schema, corpus_count, "subject_object_occ", "subject", "object")
-        print("sub_obj")
         self.calculate_pmi_helper(schema, corpus_count, "object_verb_occ", "object", "verb")
-        print("obj_verb")
         # TODO self.calculate_pmi_helper(schema, corpus_count, "noun_verb_occ", "subject", "verb")
 
     def aggregate_occurences(self, schema, word_table, counter):

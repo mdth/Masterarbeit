@@ -11,6 +11,7 @@ class Parser:
     OBJECTS = ["pd", "mo", "oa", "da", "oc"]
     SUBJECT = ["sb"]
     VERBS = ["VERB", "AUX"]
+    NOUN_ADJECTIVES = NOUNS + ["ADJ"]
 
     svo_obj = namedtuple('svo_object', ['subject', 'object', 'verb'])
 
@@ -20,6 +21,10 @@ class Parser:
         self.nlp = spacy.load('de')
         print('Spacy was successfully initialized.')
         self.lemmatizer = treetaggerwrapper.TreeTagger(TAGLANG='de')
+
+    def get_correlating_nouns_and_adjectives(self, tokens):
+        """This functions returns a list of all nouns and adjectives in a text snippet."""
+        return list(item.string.strip() for item in tokens if item.pos_ in self.NOUN_ADJECTIVES)
 
     def get_related_noun(self, chunk):
         """
