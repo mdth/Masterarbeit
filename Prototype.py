@@ -4,9 +4,12 @@ from collections import Counter, namedtuple
 from POSTagger import POSTagger
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import WhitespaceTokenizer
+from nltk.tokenize import word_tokenize
 from PMI.Parser import Parser
-from math import log10
+from math import log2
 from pprint import pprint
+from nltk import bigrams
+from nltk import trigrams
 
 
 class Prototype:
@@ -260,10 +263,10 @@ class Prototype:
         SentObj = namedtuple('Sentence_Object', ['snippet', 'offset_start', 'offset_end'])
         textsnippets.append(SentObj(snippet=sentence, offset_start=offset_start, offset_end=offset_end))
 
-    def __adjust_offset(self, offset):
-        # TODO
+    def __adjust_offset(self, offset, sentence, pos_token):
+        pattern = sentence[pos_token]
         new_offset = offset - 1
-        return new_offset
+        return new_offset, pattern
 
     def __get_sentence_window_more_words(self, split_pattern, sentences, constraints):
         """Get sentence snippets with pattern containing of more than 2 words according to window size."""
@@ -414,7 +417,7 @@ class Prototype:
 
         Parameter:
         constraints -- the constraint tuple list"""
-        for ind, text in enumerate(self.__mongo_db.get(schema, {})):
+        for ind, text in enumerate(self.__mongo_db.get("storm", {})):
             self.__postgre_db.insert(schema, "texts", {"title": text['title']})
             self.find_text_window(schema, text['text'], text['id'], constraints)
             print("Finished extracting snippets from chapter " + str(text['id']) + ".")
@@ -501,7 +504,7 @@ class Prototype:
 
         # TODO temporary
         self.__postgre_db.delete_data_in_table(schema, "bscale_single_pattern")
-        self.__postgre_db.ddelete_data_in_table(schema, "correlating_bscales")
+        self.__postgre_db.delete_data_in_table(schema, "correlating_bscales")
 
         for bscale_id in all_bscales:
             pattern_list = self.__postgre_db.get(schema, "has_object", "bscale_id=" + str(bscale_id), "pattern_id")
@@ -511,10 +514,8 @@ class Prototype:
                 for single_pattern_id in single_pattern_id_list:
                     single_pattern = self.__postgre_db.get(schema, "single_pattern", "id=" + str(single_pattern_id), "single_pattern")
                     self.__postgre_db.insert(schema, "bscale_single_pattern", {"bscale_id": bscale_id, "single_pattern_id": single_pattern_id, "single_pattern": single_pattern , "count": 0})
-        print("Added new bscale_pattern rel.")
         for snippet in self.parser.nlp.pipe(all_snippets, batch_size=3000, n_threads=-1):
             correlating_pattern = self.parser.get_correlating_nouns_and_adjectives(snippet)
-            print(correlating_pattern)
             for ind, item in enumerate(correlating_pattern):
                 if self.__postgre_db.is_in_table(schema, "bscale_single_pattern",
                                                  "single_pattern=" + add_quotes(item)):
@@ -529,7 +530,7 @@ class Prototype:
                                 if not self.__postgre_db.is_in_table(
                                         schema, "correlating_bscales", "bscale_a=" + str(bscale_item_id) + " and bscale_b=" + str(bscale_next_item_id)):
                                     self.__postgre_db.insert(schema, "correlating_bscales", {
-                                        "bscale_a": bscale_item_id, "bscale_b": bscale_next_item_id,"count":0})
+                                        "bscale_a": bscale_item_id, "bscale_b": bscale_next_item_id,"count":1})
                                 else:
                                     old_count = self.__postgre_db.get(schema, "correlating_bscales", "bscale_a=" + str(bscale_item_id) + " and bscale_b=" + str(bscale_next_item_id), "count")
                                     new_count = old_count + 1
@@ -602,7 +603,8 @@ class Prototype:
         print("Calculating PMI for " + schema)
         corpus_count = 0
         for item in self.__mongo_db.get(schema, {}):
-            corpus_count += len(item['text'])
+            corpus_count += len(word_tokenize(item['text']))
+        print(corpus_count)
         print("Lemmatizing corpus.")
         lemmatized_text = []
         for ind, text in enumerate(self.__mongo_db.get(schema, {})):
@@ -611,24 +613,36 @@ class Prototype:
                 if ch in doc:
                     doc = doc.replace(ch, '"')
             lemmatized_text += self.parser.lemmatize_chunk(doc)
-            print("Part " + str(ind) + "lemmatized.")
-        word_counts = Counter(lemmatized_text)
-        self.aggregate_occurences(schema, "subject", word_counts)
-        self.aggregate_occurences(schema, "object", word_counts)
-        self.aggregate_occurences(schema, "adjective", word_counts)
-        self.aggregate_occurences(schema, "verb", word_counts)
+            print("Part " + str(ind) + " lemmatized.")
+        self.aggregate_occurences(schema, "subject", lemmatized_text)
+        self.aggregate_occurences(schema, "object", lemmatized_text)
+        self.aggregate_occurences(schema, "adjective", lemmatized_text)
+        self.aggregate_occurences(schema, "verb", lemmatized_text)
         print("Finished aggregating occurences.")
         self.calculate_pmi_helper(schema, corpus_count, "subject_adjective_occ", "subject", "adjective")
         self.calculate_pmi_helper(schema, corpus_count, "subject_verb_occ", "subject", "verb")
         self.calculate_pmi_helper(schema, corpus_count, "subject_object_occ", "subject", "object")
         self.calculate_pmi_helper(schema, corpus_count, "object_verb_occ", "object", "verb")
-        # TODO self.calculate_pmi_helper(schema, corpus_count, "noun_verb_occ", "subject", "verb")
 
-    def aggregate_occurences(self, schema, word_table, counter):
-        table =  self.__postgre_db.get_data_from_table(schema, word_table + "_occ")
+    def aggregate_occurences(self, schema, word_table, lemmatized_text):
+        table = self.__postgre_db.get_data_from_table(schema, word_table + "_occ")
         for item in table:
             word = item[word_table]
-            count = self.aggregate_occurences_help(counter, word)
+            split_word = word.split(" ")
+            length = len(split_word)
+            if length > 1:
+                if length == 2:
+                    counter = list(bigrams(lemmatized_text))
+                    word_tuple = (split_word[0], split_word[1])
+                elif length == 3:
+                    counter = list(trigrams(lemmatized_text))
+                    word_tuple = (split_word[0], split_word[1], split_word[2])
+                else:
+                    counter = []
+                count = counter.count(word_tuple)
+            else:
+                word = item[word_table]
+                count = self.aggregate_occurences_help(Counter(lemmatized_text), word)
             print(word, str(count))
             self.__postgre_db.update(schema, word_table + "_occ", "count=" + str(count), "id=" + str(item['id']))
 
@@ -641,7 +655,7 @@ class Prototype:
             word2_id = item[word2]
             word1_occ = self.__postgre_db.get(schema, word1 + "_occ", "id=" + str(word1_id), "count")
             word2_occ = self.__postgre_db.get(schema, word2 + "_occ", "id=" + str(word2_id), "count")
-            pmi = log10(co_occ_freq / (float(word1_occ / corpus_count) * float(word2_occ / corpus_count)))
+            pmi = log2(co_occ_freq / (float(word1_occ / corpus_count) * float(word2_occ / corpus_count)))
             self.__postgre_db.update(schema, co_occurence, "pmi=" + str(pmi), "id=" + str(item_id))
 
     def check_pattern(self, pattern, token):
@@ -651,7 +665,7 @@ class Prototype:
         pattern -- the pattern to search for
         token -- the token to match with the pattern
         """
-        split_token = re.split('\W+', token, 1)
+        split_token = re.split('\W+', token)
         if split_token[0] == '':
             split_token = split_token[1]
         else:
@@ -659,7 +673,7 @@ class Prototype:
         return split_token == pattern
 
     def get_result(self, schema):
-        pprint(self.__postgre_db.query("""SELECT S.subject, V.verb, SV.pmi FROM """ + schema + """.subject_verb_occ SV, """ + schema + """.subject_occ S, """ + schema + """.verb_occ V WHERE SV.subject = S.id AND SV.verb = V.id ORDER BY subject DESC"""))
-        pprint(self.__postgre_db.query("""SELECT O.object, V.verb, OV.pmi FROM """ + schema + """.object_verb_occ OV, """ + schema + """.object_occ O, """ + schema + """.verb_occ V WHERE OV.object = O.id AND OV.verb = V.id ORDER BY object DESC"""))
-        pprint(self.__postgre_db.query("""SELECT O.object, S.subject, SO.pmi FROM """ + schema + """.subject_object_occ SO, """ + schema + """.subject_occ S, """ + schema + """.object_occ O WHERE SO.object = O.id AND SO.subject = S.id ORDER BY subject DESC"""))
-        pprint(self.__postgre_db.query("""SELECT S.subject, A.adjective, SA.pmi FROM """ + schema + """.subject_adjective_occ SA, """ + schema + """.subject_occ S, """ + schema + """.adjective_occ A WHERE SA.subject = S.id AND SA.adjective = A.id ORDER BY subject DESC"""))
+        pprint(self.__postgre_db.query("""SELECT S.subject, V.verb, SV.pmi FROM """ + schema + """.subject_verb_occ SV, """ + schema + """.subject_occ S, """ + schema + """.verb_occ V WHERE SV.subject = S.id AND SV.verb = V.id ORDER BY subject DESC, pmi DESC"""))
+        pprint(self.__postgre_db.query("""SELECT O.object, V.verb, OV.pmi FROM """ + schema + """.object_verb_occ OV, """ + schema + """.object_occ O, """ + schema + """.verb_occ V WHERE OV.object = O.id AND OV.verb = V.id ORDER BY object DESC, pmi DESC"""))
+        pprint(self.__postgre_db.query("""SELECT O.object, S.subject, SO.pmi FROM """ + schema + """.subject_object_occ SO, """ + schema + """.subject_occ S, """ + schema + """.object_occ O WHERE SO.object = O.id AND SO.subject = S.id ORDER BY subject DESC, pmi DESC"""))
+        pprint(self.__postgre_db.query("""SELECT S.subject, A.adjective, SA.pmi FROM """ + schema + """.subject_adjective_occ SA, """ + schema + """.subject_occ S, """ + schema + """.adjective_occ A WHERE SA.subject = S.id AND SA.adjective = A.id ORDER BY subject DESC, pmi DESC"""))

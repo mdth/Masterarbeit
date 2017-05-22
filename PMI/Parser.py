@@ -11,14 +11,14 @@ class Parser:
     OBJECTS = ["pd", "mo", "oa", "da", "oc"]
     SUBJECT = ["sb"]
     VERBS = ["VERB", "AUX"]
-    NOUN_ADJECTIVES = NOUNS + ["ADJ"]
+    NOUN_ADJECTIVES = NOUNS + ["ADJ", "PRON"]
 
     svo_obj = namedtuple('svo_object', ['subject', 'object', 'verb'])
 
     def __init__(self):
         """Initialize a ...."""
         print('Initializing Spacy...')
-        self.nlp = spacy.load('de')
+        #self.nlp = spacy.load('de')
         print('Spacy was successfully initialized.')
         self.lemmatizer = treetaggerwrapper.TreeTagger(TAGLANG='de')
 
