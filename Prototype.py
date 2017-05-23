@@ -432,8 +432,8 @@ class Prototype:
         self.__push_aggregation(schema, "has_object", "pattern_single_pattern", str('bscale_id'), str('pattern_id'))
         self.__push_aggregation(schema, "has_attribute", "has_object", str('bsort_id'), str('bscale_id'))
 
-    def aggregate_bscale(self, schema, new_bscale, bsort, *args):
-        pattern_info = self.__add_new_bscale(schema, new_bscale, bsort, *args)
+    def aggregate_bscale(self, schema, new_bscale, bsort, scale_type, *args):
+        pattern_info = self.__add_new_bscale(schema, new_bscale, bsort, scale_type, *args)
         if pattern_info is not None:
             pattern_ids = pattern_info[0]
             new_bscale_id = pattern_info[1]
@@ -443,8 +443,8 @@ class Prototype:
                 aggregation += self.__postgre_db.get(schema, "pattern_single_pattern", "pattern_id=" + str(item), "aggregation")
             self.__postgre_db.insert(schema, "has_object", {"bscale_id": new_bscale_id, "pattern_id": new_pattern_list, "aggregation": aggregation})
 
-    def intersect_bscale(self, schema, new_bscale, bsort, *args):
-        pattern_info = self.__add_new_bscale(schema, new_bscale, bsort, *args)
+    def intersect_bscale(self, schema, new_bscale, bsort, scale_type, *args):
+        pattern_info = self.__add_new_bscale(schema, new_bscale, bsort, scale_type, *args)
         if pattern_info is not None:
             pattern_ids = pattern_info[0]
             new_bscale_id = pattern_info[1]
@@ -454,7 +454,7 @@ class Prototype:
                 aggregation += self.__postgre_db.get(schema, "pattern_single_pattern", "pattern_id=" + str(item), "aggregation")
             self.__postgre_db.insert(schema, "has_object", {"bscale_id": new_bscale_id, "pattern_id": new_pattern_list, "aggregation": aggregation})
 
-    def __add_new_bscale(self, schema, new_bscale, bsort, *args):
+    def __add_new_bscale(self, schema, new_bscale, bsort, scale_type, *args):
         if args is not None:
             bscale_table = self.__postgre_db.get_data_from_table(schema, "bscale")
             bscale_ids = []
@@ -467,9 +467,9 @@ class Prototype:
                 if not scale_found:
                     raise Exception("Chosen Bscale does not exist.")
             if not self.__postgre_db.is_in_table(schema, "bscale", "bscale=" + add_quotes(new_bscale)):
-                self.__postgre_db.insert(schema, "bscale", {"bscale": new_bscale})
-                #TODO nominal, ordinal, interval
+                self.__postgre_db.insert(schema, "bscale", {"bscale": new_bscale, "nominal": False, "ordinal": False, "interval": False})
             new_bscale_id = self.__postgre_db.get_id(schema, "bscale", "bscale=" + add_quotes(new_bscale))
+            self.__postgre_db.update(schema, "bscale", scale_type + "=" + add_quotes('True'), "id=" + str(new_bscale_id))
             bsort_id = self.__postgre_db.get_id(schema, "bsort", "bsort=" + add_quotes(bsort))
             if self.__postgre_db.is_in_table(schema, "has_attribute", "bsort_id=" + str(bsort_id)):
                 old_list = self.__postgre_db.get(schema, "has_attribute", "bsort_id=" + str(bsort_id), "bscale_id")
@@ -538,25 +538,26 @@ class Prototype:
             for item in spo:
                 if item is not None:
                     # subject is pattern
-                    if self.__postgre_db.is_in_table(schema, "single_pattern", "single_pattern=" + add_quotes(item.subject)):
-                        if item.object != '':
+                    if item.subject != "'":
+                        if self.__postgre_db.is_in_table(schema, "single_pattern", "single_pattern=" + add_quotes(item.subject)):
                             self.push_parser_items(schema, item.subject, "subject_occ", "subject")
+                            self.push_parser_items(schema, item.verb, "verb_occ", "verb")
+                            self.push_parser_item_relationship(
+                                schema, item.subject, item.verb, "subject_verb_occ", "subject", "verb")
+                            if item.object != '':
+                                self.push_parser_items(schema, item.object, "object_occ", "object")
+                                self.push_parser_item_relationship(schema,
+                                        item.subject, item.object, "subject_object_occ", "subject", "object")
+                        #object is pattern
+                        elif self.__postgre_db.is_in_table(schema, "single_pattern", "single_pattern=" + add_quotes(item.object)):
                             self.push_parser_items(schema, item.object, "object_occ", "object")
                             self.push_parser_items(schema, item.verb, "verb_occ", "verb")
                             self.push_parser_item_relationship(schema,
-                                    item.subject, item.verb, "subject_verb_occ", "subject", "verb")
-                            self.push_parser_item_relationship(schema,
-                                    item.subject, item.object, "subject_object_occ", "subject", "object")
-                    #object is pattern
-                    elif self.__postgre_db.is_in_table(schema, "single_pattern", "single_pattern=" + add_quotes(item.object)):
-                        if item.subject != '':
-                            self.push_parser_items(schema, item.subject, "subject_occ", "subject")
-                            self.push_parser_items(schema, item.object, "object_occ", "object")
-                            self.push_parser_items(schema, item.verb, "verb_occ", "verb")
-                            self.push_parser_item_relationship(schema,
-                                    item.subject, item.object, "subject_object_occ", "subject", "object")
-                            self.push_parser_item_relationship(schema,
-                                    item.object, item.verb, "object_verb_occ", "object", "verb")
+                                                               item.object, item.verb, "object_verb_occ", "object", "verb")
+                            if item.subject != '':
+                                self.push_parser_items(schema, item.subject, "subject_occ", "subject")
+                                self.push_parser_item_relationship(schema,
+                                        item.subject, item.object, "subject_object_occ", "subject", "object")
 
             noun_adjectives = self.parser.nouns_adj_spacy(snippet)
             for item in noun_adjectives:
@@ -666,6 +667,10 @@ class Prototype:
         return split_token == pattern
 
     def get_result(self, schema):
+        print(self.__postgre_db.query("""SELECT SUM(SV.count) FROM """ + schema + """.subject_verb_occ SV"""))
+        print(self.__postgre_db.query("""SELECT SUM(SV.count) FROM """ + schema + """.object_verb_occ SV"""))
+        print(self.__postgre_db.query("""SELECT SUM(SV.count) FROM """ + schema + """.subject_object_occ SV"""))
+        print(self.__postgre_db.query("""SELECT SUM(SV.count) FROM """ + schema + """.subject_adjective_occ SV"""))
         pprint(self.__postgre_db.query("""SELECT S.subject, V.verb, SV.pmi FROM """ + schema + """.subject_verb_occ SV, """ + schema + """.subject_occ S, """ + schema + """.verb_occ V WHERE SV.subject = S.id AND SV.verb = V.id ORDER BY subject DESC, pmi DESC"""))
         pprint(self.__postgre_db.query("""SELECT O.object, V.verb, OV.pmi FROM """ + schema + """.object_verb_occ OV, """ + schema + """.object_occ O, """ + schema + """.verb_occ V WHERE OV.object = O.id AND OV.verb = V.id ORDER BY object DESC, pmi DESC"""))
         pprint(self.__postgre_db.query("""SELECT O.object, S.subject, SO.pmi FROM """ + schema + """.subject_object_occ SO, """ + schema + """.subject_occ S, """ + schema + """.object_occ O WHERE SO.object = O.id AND SO.subject = S.id ORDER BY subject DESC, pmi DESC"""))

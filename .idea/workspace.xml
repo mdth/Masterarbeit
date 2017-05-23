@@ -11,8 +11,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PostGreDBConnector.py" afterPath="$PROJECT_DIR$/PostGreDBConnector.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Prototype.py" afterPath="$PROJECT_DIR$/Prototype.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RDFParser.py" afterPath="$PROJECT_DIR$/RDFParser.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/locations.rdf" afterPath="$PROJECT_DIR$/locations.rdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/persons.rdf" afterPath="$PROJECT_DIR$/persons.rdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Unittests/TestSPOParser.py" afterPath="$PROJECT_DIR$/Unittests/TestSPOParser.py" />
     </list>
     <ignored path="Masterarbeit.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,8 +34,8 @@
       <file leaf-file-name="Prototype.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Prototype.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="482" column="0" selection-start-line="482" selection-start-column="0" selection-end-line="482" selection-end-column="0" />
+            <state relative-caret-position="313">
+              <caret line="539" column="40" selection-start-line="539" selection-start-column="40" selection-end-line="539" selection-end-column="40" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -47,8 +46,8 @@
       <file leaf-file-name="Parser.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/PMI/Parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="102" column="11" selection-start-line="102" selection-start-column="11" selection-end-line="102" selection-end-column="11" />
+            <state relative-caret-position="2754">
+              <caret line="163" column="61" selection-start-line="163" selection-start-column="61" selection-end-line="163" selection-end-column="61" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -56,11 +55,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="TestSPOParser.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Unittests/TestSPOParser.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="120" column="58" selection-start-line="120" selection-start-column="58" selection-end-line="120" selection-end-column="58" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="26" column="1" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
+            <state relative-caret-position="395">
+              <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -81,20 +90,8 @@
       <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="39" column="18" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="persons.rdf" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/persons.rdf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="394">
-              <caret line="32" column="277" selection-start-line="32" selection-start-column="277" selection-end-line="32" selection-end-column="277" />
+            <state relative-caret-position="259">
+              <caret line="38" column="21" selection-start-line="38" selection-start-column="21" selection-end-line="38" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -147,7 +144,6 @@
         <option value="$PROJECT_DIR$/Unittests/Test.py" />
         <option value="$PROJECT_DIR$/Unittests/TestNounAdjectiveParser.py" />
         <option value="$PROJECT_DIR$/GG Teil 1.txt" />
-        <option value="$PROJECT_DIR$/Unittests/TestSPOParser.py" />
         <option value="$PROJECT_DIR$/Unittests/testtest.py" />
         <option value="$PROJECT_DIR$/constraints.csv" />
         <option value="$PROJECT_DIR$/Der Idiot/Chapter 1.txt" />
@@ -159,14 +155,15 @@
         <option value="$PROJECT_DIR$/HelperMethods.py" />
         <option value="$PROJECT_DIR$/Web_Scratcher.py" />
         <option value="$PROJECT_DIR$/MongoDBConnector.py" />
-        <option value="$PROJECT_DIR$/Prototype.py" />
         <option value="$PROJECT_DIR$/locations.rdf" />
         <option value="$PROJECT_DIR$/persons.rdf" />
+        <option value="$PROJECT_DIR$/Unittests/TestSPOParser.py" />
         <option value="$PROJECT_DIR$/RDFParser.py" />
-        <option value="$PROJECT_DIR$/PostGreDBConnector.py" />
-        <option value="$PROJECT_DIR$/Main.py" />
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/PMI/Parser.py" />
+        <option value="$PROJECT_DIR$/Main.py" />
+        <option value="$PROJECT_DIR$/Prototype.py" />
+        <option value="$PROJECT_DIR$/PostGreDBConnector.py" />
       </list>
     </option>
   </component>
@@ -532,10 +529,10 @@
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.Main" />
-        <item index="1" class="java.lang.String" itemvalue="Python.test" />
-        <item index="2" class="java.lang.String" itemvalue="Python.Web_Scratcher" />
-        <item index="3" class="java.lang.String" itemvalue="Python.testtest" />
-        <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in TestSPOParser" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in TestSPOParser" />
+        <item index="2" class="java.lang.String" itemvalue="Python.test" />
+        <item index="3" class="java.lang.String" itemvalue="Python.Web_Scratcher" />
+        <item index="4" class="java.lang.String" itemvalue="Python.testtest" />
       </list>
     </recent_temporary>
   </component>
@@ -552,13 +549,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1466166261777</updated>
-    </task>
-    <task id="LOCAL-00001" summary="Make files compatible with Python 3. Also read in Der Idiot from Web. Encoding is to do.">
-      <created>1466171006492</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1466171006492</updated>
     </task>
     <task id="LOCAL-00002" summary="Web Scratcher done">
       <created>1466173977439</created>
@@ -896,38 +886,45 @@
       <option name="project" value="LOCAL" />
       <updated>1495441761806</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Last bug fixes: rdf, offset, parser">
+      <created>1495530968899</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1495530968901</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Unittests_in_TestSPOParser - 2017.04.25 at 19h 19m 18s.xml">
+    <history-entry file="Unittests_in_TestSPOParser - 2017.05.23 at 13h 50m 00s.xml">
       <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestSPOParser - 2017.04.25 at 19h 26m 36s.xml">
+    <history-entry file="Unittests_in_TestSPOParser - 2017.05.23 at 14h 05m 22s.xml">
       <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestSPOParser - 2017.04.26 at 12h 00m 33s.xml">
+    <history-entry file="Unittests_in_TestSPOParser - 2017.05.23 at 14h 08m 14s.xml">
       <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestSPOParser - 2017.04.26 at 12h 00m 39s.xml">
+    <history-entry file="Unittests_in_TestSPOParser - 2017.05.23 at 17h 05m 48s.xml">
       <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestSPOParser - 2017.04.26 at 12h 00m 47s.xml">
+    <history-entry file="Unittests_in_TestSPOParser - 2017.05.23 at 17h 10m 37s.xml">
       <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestSPOParser - 2017.04.26 at 12h 00m 49s.xml">
+    <history-entry file="Unittests_in_TestSPOParser - 2017.05.23 at 17h 14m 27s.xml">
       <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestSPOParser - 2017.04.26 at 12h 02m 43s.xml">
+    <history-entry file="Unittests_in_TestSPOParser - 2017.05.23 at 17h 17m 35s.xml">
       <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestSPOParser - 2017.04.26 at 13h 08m 51s.xml">
+    <history-entry file="Unittests_in_TestSPOParser - 2017.05.23 at 17h 21m 01s.xml">
       <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestSPOParser - 2017.04.26 at 13h 16m 11s.xml">
+    <history-entry file="Unittests_in_TestSPOParser - 2017.05.23 at 17h 24m 41s.xml">
       <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
-    <history-entry file="Unittests_in_TestSPOParser - 2017.04.26 at 13h 21m 33s.xml">
+    <history-entry file="Unittests_in_TestSPOParser - 2017.05.23 at 17h 25m 39s.xml">
       <configuration name="Unittests in TestSPOParser" configurationId="tests" />
     </history-entry>
   </component>
@@ -942,7 +939,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="PlantUML" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32966226" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18155198" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -950,7 +947,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2967359" sideWeight="0.5146413" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19979715" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32195845" sideWeight="0.48535872" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32195845" sideWeight="0.48535872" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -996,7 +993,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Adding aggregation bottom up. Covered for the lowest layer tables." />
     <MESSAGE value="Adding aggregation bottom up. Covered the whole structure. Snippets are counted multiple times if occuring twice or more times." />
     <MESSAGE value="-Changing snippet aggregation. &#10;-Adding Bscale attributes. &#10;-Adding Sahar's code for adjective and verb extraction and PMI. Adjective extraction is working for simple and longer sentences. Short sentences with only ADJ + NOUN + CONJ + ADJ + NOUN don't seem to work for now." />
     <MESSAGE value="-Enhancing sentence window by using NLTK and bug-fixing offset problem as well as sentence border problems." />
@@ -1021,7 +1017,8 @@
     <MESSAGE value="Finishing database schema change. Not tested yet." />
     <MESSAGE value="Adding calculation of ontology correlation PMI." />
     <MESSAGE value="Last bug fixes: offset" />
-    <option name="LAST_COMMIT_MESSAGE" value="Last bug fixes: offset" />
+    <MESSAGE value="Last bug fixes: rdf, offset, parser" />
+    <option name="LAST_COMMIT_MESSAGE" value="Last bug fixes: rdf, offset, parser" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1032,7 +1029,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="91" />
+      <option name="time" value="97" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1069,13 +1066,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="127">
           <caret line="121" column="0" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python35/Lib/site-packages/treetaggerwrapper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="1491" column="0" selection-start-line="1491" selection-start-column="0" selection-end-line="1491" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1136,13 +1126,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Unittests/Test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="20" column="70" selection-start-line="20" selection-start-column="70" selection-end-line="20" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Unittests/testtest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -1154,20 +1137,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="1" column="24" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Unittests/TestPrototype.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="103" column="37" selection-start-line="103" selection-start-column="37" selection-end-line="103" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Unittests/TestSPOParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="66" column="76" selection-start-line="66" selection-start-column="31" selection-end-line="66" selection-end-column="76" />
         </state>
       </provider>
     </entry>
@@ -1292,20 +1261,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HelperMethods.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="38" column="14" selection-start-line="38" selection-start-column="14" selection-end-line="38" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Unittests/TestNounAdjectiveParser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PMI/germanParser.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1343,12 +1298,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RDFParser.py">
+    <entry file="file://$PROJECT_DIR$/Unittests/Test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="20" column="70" selection-start-line="20" selection-start-column="70" selection-end-line="20" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Unittests/TestNounAdjectiveParser.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
-          <caret line="25" column="20" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="20" />
+          <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python35/Lib/site-packages/treetaggerwrapper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="1287" column="0" selection-start-line="1287" selection-start-column="0" selection-end-line="1287" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Unittests/TestPrototype.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="33" column="21" selection-start-line="33" selection-start-column="21" selection-end-line="33" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RDFParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-302">
+          <caret line="121" column="34" selection-start-line="121" selection-start-column="34" selection-end-line="121" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HelperMethods.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="38" column="21" selection-start-line="38" selection-start-column="21" selection-end-line="38" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Unittests/TestSPOParser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="120" column="58" selection-start-line="120" selection-start-column="58" selection-end-line="120" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="395">
+          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
           <folding>
-            <element signature="e#0#142#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Prototype.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="539" column="40" selection-start-line="539" selection-start-column="40" selection-end-line="539" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1361,40 +1390,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="26" column="1" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="39" column="18" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Prototype.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="482" column="0" selection-start-line="482" selection-start-column="0" selection-end-line="482" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PMI/Parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="102" column="11" selection-start-line="102" selection-start-column="11" selection-end-line="102" selection-end-column="11" />
+        <state relative-caret-position="2754">
+          <caret line="163" column="61" selection-start-line="163" selection-start-column="61" selection-end-line="163" selection-end-column="61" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>

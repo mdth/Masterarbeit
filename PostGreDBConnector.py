@@ -64,9 +64,8 @@ class PostGreDBConnector:
         self._add_table("CREATE TABLE " + schema + "bscale_single_pattern (id serial primary key, bscale_id int, single_pattern_id int, single_pattern text, count int)")
         self._add_table(
             "CREATE TABLE " + schema + "correlating_bscales (id serial primary key, bscale_a int, bscale_b int, count int, pmi float)")
-        # TODO does this even make sense?
         self._add_table(
-            "CREATE TABLE " + schema + "correlating_pattern (id serial primary key, bscale_pattern1 int, bscale_pattern2 int, count int, pmi float)")
+            "CREATE TABLE " + schema + "correlating_pattern (id serial primary key, pattern1 int, pattern2 int, count int, pmi float)")
 
     def __create_functions(self, schema):
         """Create all necessary functions to aggregate the results saved in the database."""

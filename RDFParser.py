@@ -1,4 +1,4 @@
-from pyparsing import alphanums, printables, dblQuotedString, Forward, Literal, Group, OneOrMore, Optional, removeQuotes, Suppress, \
+from pyparsing import alphanums, dblQuotedString, Forward, Literal, Group, OneOrMore, Optional, removeQuotes, Suppress, \
     Word
 from HelperMethods import add_quotes
 
@@ -120,7 +120,6 @@ class RDFParser:
 
             # push bscale x pattern relation
             for object in objects:
-                print(object)
                 new_attributes.append(self.__db.get_id(schema, "pattern", "pattern=" + add_quotes(object)))
             bscale_id = self.__db.get_id(schema, "bscale", "bscale=" + add_quotes(key))
             self.__db.insert(schema, "has_object", {"bscale_id": bscale_id, "pattern_id": new_attributes, "aggregation": 0})

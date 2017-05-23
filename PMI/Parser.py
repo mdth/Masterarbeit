@@ -106,7 +106,7 @@ class Parser:
                                 # root verb is next to conjunction word
                                 subject = conj_word.string.strip()
                                 object = svo_pairs[0].object
-                                svo_pairs.append(self.svo_obj(subject=subject, object=svo_pairs[0].object, verb=verb))
+                                svo_pairs.append(self.svo_obj(subject=subject, object=object, verb=verb))
                             else:
                                 object = conj_word.string.strip()
                                 subject = self.extract_subject(root, self.SUBJECT)
@@ -124,57 +124,84 @@ class Parser:
             return None
 
     def extract_object(self, verb, object_criteria):
-        object = ''
+        object = None
         objects = [item for item in verb.rights if item.dep_ in object_criteria]
         possible_objects = [obj for obj in objects if obj.head.string == verb.string]
         if len(possible_objects) == 1:
             if possible_objects[0].dep_ == 'oc':
-                object_temp = possible_objects[0].lefts
-                if list(item for item in object_temp):
-                    object = [item.string.strip() for item in object_temp]
-                    if not object:
-                        object = ''
+                object_temp = list(possible_objects[0].lefts)
+                if object_temp:
+                    if len(object_temp) == 1:
+                        object = object_temp[0]
             else:
-                object = possible_objects[0].string.strip()
+                object = possible_objects[0]
         elif len(possible_objects) > 1:
             if possible_objects[0].dep_ == 'da' and possible_objects[1].dep_ == 'oa':
-                object = possible_objects[1].string.strip()
+                object = possible_objects[1]
             elif possible_objects[0].dep_ == 'oa' and possible_objects[1].dep_ == 'mo':
-                object = possible_objects[1].string.strip()
+                object = possible_objects[1]
         else:
             pass
-        return self.lemmatize_word(object)
+
+        if object is not None:
+            if object.ent_type:
+                object = self.find_long_ne(object)
+            else:
+                object = self.lemmatize_word(object.string)
+        else:
+            object = ''
+        return object
 
     def extract_subject(self, verb, subject_criteria):
-        #TODO maybe match subject like if length == 0 then could not find subject
         subject = ''
         subjects = [item for item in verb.lefts if item.dep_ in subject_criteria]
         for sub in subjects:
             if sub.head.string == verb.string:
-                subject = self.find_long_ne(sub)
-                break
+                if sub.ent_type:
+                    subject = self.find_long_ne(sub)
+                    break
+                else:
+                    subject = self.lemmatize_word(sub.string)
         return subject
 
     def find_long_ne(self, noun):
         nounright = [item for item in noun.rights]
-        if len(nounright) > 0:
-            noun = noun.string.strip()
+        nounleft = [item for item in noun.lefts]
+        noun = noun.string.strip()
+        # found middle word of multi-word subject
+        if len(nounright) > 0 and len(nounleft) > 0:
             for sub_noun in nounright:
                 if sub_noun.ent_type:
                     noun = noun + ' ' + sub_noun.string.strip()
-            noun = self.lemmatize_chunk(noun)[0]
+            for sub_noun in nounleft:
+                if sub_noun.ent_type:
+                    noun = noun + ' ' + sub_noun.string.strip()
+            noun = " ".join(item for item in self.lemmatize_chunk(noun))
+        elif len(nounright) > 0:
+            for sub_noun in nounright:
+                if sub_noun.ent_type:
+                    noun = noun + ' ' + sub_noun.string.strip()
+            noun = " ".join(item for item in self.lemmatize_chunk(noun))
+        elif len(nounleft) > 0:
+            for sub_noun in nounleft:
+                if sub_noun.ent_type:
+                    noun = sub_noun.string.strip() + ' ' + noun
+            noun = " ".join(item for item in self.lemmatize_chunk(noun))
+        elif len(nounright) == 0 and len(nounleft) == 0:
+            noun = self.lemmatize_word(noun)
         else:
-            noun = self.lemmatize_word(noun.string.strip())
+            noun = ''
         return noun
 
     def extract_passive_SVO(self, verb):
         subject = self.extract_object(verb, self.SUBJECT)
         object = self.extract_subject(verb, self.OBJECTS)
-        return self.svo_obj(subject=subject, object=object, verb=verb.string.strip())
+        verb = self.lemmatize_word(verb.string)
+        return self.svo_obj(subject=subject, object=object, verb=verb)
 
     def is_passive(self, verb):
         """Checks if sentence or part-sentence is in passive form by looking for a subject right from the verb."""
-        if len([item for item in verb.rights if item.dep in self.SUBJECT]) == 0:
+        if len(list(item for item in verb.rights if item.dep_ in self.SUBJECT)) == 0:
             return False
         else:
             return True
