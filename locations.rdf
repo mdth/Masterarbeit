@@ -15,7 +15,7 @@ lit:Paris q:hasPattern "Paris" .
 lit:Moskau q:hasPattern "Moskau" .
 lit:Otradnoje q:hasPattern "Otradnoje" .
 
-lit:Place a q:BSort .
+lit:Location a q:BSort .
 
 lit:Town q:hasObject (lit:Petersburg, lit:Pawlowsk, lit:Kolmino, lit:Paris, lit:Moskau) .
 lit:Country q:hasObject (lit:Russland, lit:Schweiz, lit:Frankreich, lit:Polen) .

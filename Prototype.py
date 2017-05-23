@@ -116,7 +116,8 @@ class Prototype:
                 if constraints is not None:
                     self.__check_constraints(constraints, (ind, end_index - 1), ind, split_pattern, None, None, textsnippets, tokens)
                 else:
-                    self.__get_word_window_help((ind, end_index - 1), textsnippets, textlength, tokens)
+                    pattern = " ".join(item for item in split_pattern)
+                    self.__get_word_window_help((ind, end_index - 1), textsnippets, textlength, tokens, pattern)
         return textsnippets
 
     def __get_word_window_one_word_help(self, pattern, tokens, constraints):
@@ -128,14 +129,13 @@ class Prototype:
                 if constraints is not None:
                     self.__check_constraints(constraints, (ind, ind), ind, pattern, None, None, textsnippets, tokens)
                 else:
-                    self.__get_word_window_help((ind, ind), textsnippets, textlength, tokens)
+                    self.__get_word_window_help((ind, ind), textsnippets, textlength, tokens, pattern)
         return textsnippets
 
-    def __get_word_window_help(self, token_pos, textsnippets, textlength, tokens):
+    def __get_word_window_help(self, token_pos, textsnippets, textlength, tokens, pattern):
         snippet = self.__get_textsnippets(token_pos[0], token_pos[1], textlength, tokens)
-        offsets = list(self.tokenizer.span_tokenize(snippet))
-        offset_start = offsets[self.__window_size][0]
-        offset_end = offsets[self.__window_size][1]
+        offset_start = re.search(pattern, snippet).span()[0]
+        offset_end = offset_start + (len(pattern) - 1)
         SentObj = namedtuple('Sentence_Object', ['snippet', 'offset_start', 'offset_end'])
         textsnippets.append(SentObj(snippet=snippet, offset_start=offset_start, offset_end=offset_end))
 
@@ -191,7 +191,7 @@ class Prototype:
                     if constraints is not None:
                         self.__check_constraints(constraints, (i, i), ind, pattern, sent, sentences, textsnippets, tokens)
                     else:
-                        self.__get_sentence_window_help(i, ind, sentences, textsnippets)
+                        self.__get_sentence_window_help(ind, sentences, textsnippets, pattern)
         return textsnippets
 
     def __check_constraints(self, constraints, token_pos, sent_num, pattern, sent, sentences, textsnippets, tokens):
@@ -231,7 +231,7 @@ class Prototype:
 
                 if self.__sentence_mode:
                     if (0 <= pos + index < len(tokens)) and self.check_pattern(add_info[1], tokens[pos + index]):
-                        self.__get_sentence_window_help(pos, sent_num, sentences, textsnippets)
+                        self.__get_sentence_window_help(sent_num, sentences, textsnippets, pattern)
                     else:
                         while index != 0:
                             if index > 0:
@@ -239,11 +239,11 @@ class Prototype:
                             else:
                                 index += 1
                             if (0 < pos + index < len(tokens)) and self.check_pattern(add_info[1], tokens[pos + index]):
-                                self.__get_sentence_window_help(pos, sent_num, sentences, textsnippets)
+                                self.__get_sentence_window_help(sent_num, sentences, textsnippets, pattern)
                                 break
                 else:
                     if (0 <= pos + index < len(tokens)) and self.check_pattern(add_info[1], tokens[pos + index]):
-                        self.__get_word_window_help(token_pos, textsnippets, len(tokens), tokens)
+                        self.__get_word_window_help(token_pos, textsnippets, len(tokens), tokens, pattern)
                     else:
                         while index != 0:
                             if index > 0:
@@ -251,22 +251,16 @@ class Prototype:
                             else:
                                 index += 1
                             if (0 < pos + index < len(tokens)) and self.check_pattern(add_info[1], tokens[pos + index]):
-                                self.__get_word_window_help(token_pos, textsnippets, sent, tokens)
+                                self.__get_word_window_help(token_pos, textsnippets, sent, tokens, pattern)
                                 break
 
-    def __get_sentence_window_help(self, pos_token, ind, sentences, textsnippets):
+    def __get_sentence_window_help(self, ind, sentences, textsnippets, pattern):
         sentence = self.__get_sentences(ind, sentences)
         # get offsets
-        offsets = list(self.tokenizer.span_tokenize(sentence))
-        offset_start = offsets[pos_token][0]
-        offset_end = offsets[pos_token][1]
+        offset_start = re.search(pattern, sentence).span()[0]
+        offset_end = offset_start + (len(pattern) - 1)
         SentObj = namedtuple('Sentence_Object', ['snippet', 'offset_start', 'offset_end'])
         textsnippets.append(SentObj(snippet=sentence, offset_start=offset_start, offset_end=offset_end))
-
-    def __adjust_offset(self, offset, sentence, pos_token):
-        pattern = sentence[pos_token]
-        new_offset = offset - 1
-        return new_offset, pattern
 
     def __get_sentence_window_more_words(self, split_pattern, sentences, constraints):
         """Get sentence snippets with pattern containing of more than 2 words according to window size."""
@@ -293,8 +287,8 @@ class Prototype:
                     self.__check_constraints(constraints, (begin_index, end_index), ind, split_pattern, sent, sentences,
                                              textsnippets, tokens)
                 else:
-                    # TODO end_index nicht genau genug für word_window
-                    self.__get_sentence_window_help(end_index, ind, sentences, textsnippets)
+                    pattern = " ".join(item for item in split_pattern)
+                    self.__get_sentence_window_help(ind, sentences, textsnippets, pattern)
         return textsnippets
 
     def __get_sentences(self, ind, sentences):
@@ -307,7 +301,6 @@ class Prototype:
             if left_window_border < 0:
                 left_window_border = 0
             if right_window_border >= len(sentences):
-                # TODO does this need to be more precise?
                 right_window_border = len(sentences)
             return " ".join(sentences[left_window_border:right_window_border])
 
@@ -417,7 +410,7 @@ class Prototype:
 
         Parameter:
         constraints -- the constraint tuple list"""
-        for ind, text in enumerate(self.__mongo_db.get("storm", {})):
+        for ind, text in enumerate(self.__mongo_db.get(schema, {})):
             self.__postgre_db.insert(schema, "texts", {"title": text['title']})
             self.find_text_window(schema, text['text'], text['id'], constraints)
             print("Finished extracting snippets from chapter " + str(text['id']) + ".")

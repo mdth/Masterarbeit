@@ -18,7 +18,7 @@ class Parser:
     def __init__(self):
         """Initialize a ...."""
         print('Initializing Spacy...')
-        #self.nlp = spacy.load('de')
+        self.nlp = spacy.load('de')
         print('Spacy was successfully initialized.')
         self.lemmatizer = treetaggerwrapper.TreeTagger(TAGLANG='de')
 
@@ -82,37 +82,35 @@ class Parser:
         """ this function return the main SVO of the sentence """
         svo_pairs = []
         # search svo for the root verb
-        roots = [item for item in tokens if item.dep_ == "ROOT"]
-        root = next((item for item in roots if item.pos_ in self.VERBS), None)
-        if root is not None:
+        roots = list(item for item in tokens if item.dep_ == "ROOT" and item.pos_ in self.VERBS)
+        for root in roots:
             if self.is_passive(root):
                 svo_pairs.append(self.extract_passive_SVO(root))
             else:
                 svo_pairs.append(self.svo_searcher(root))
-
-            dependencies = [item.dep_ for item in tokens]
-            item_tokens = [item for item in tokens]
-            if ("cj" in dependencies) and ("cd" not in dependencies):
-                # more than one main clause
-                second_verb = next(item for item in tokens if item.dep_ == "cj")
-                svo_pairs.append(self.svo_searcher(second_verb))
-            if "cd" in dependencies:
-                conj_word = next((item for item in tokens if item.dep_ == "cj"), None)
-                if conj_word is not None:
-                    if conj_word.pos_ in self.VERBS:
-                        svo_pairs.append(self.svo_searcher(conj_word))
-                    else:
-                        verb = self.lemmatize_word(root.string)
-                        verb_index = item_tokens.index(root)
-                        if item_tokens[verb_index - 1].dep_ == "cj":
-                            # root verb is next to conjunction word
-                            subject = conj_word.string.strip()
-                            object = svo_pairs[0].object
-                            svo_pairs.append(self.svo_obj(subject=subject, object=svo_pairs[0].object, verb=verb))
+                dependencies = [item.dep_ for item in tokens]
+                item_tokens = [item for item in tokens]
+                if ("cj" in dependencies) and ("cd" not in dependencies):
+                    # more than one main clause
+                    second_verb = next(item for item in tokens if item.dep_ == "cj")
+                    svo_pairs.append(self.svo_searcher(second_verb))
+                if "cd" in dependencies:
+                    conj_word = next((item for item in tokens if item.dep_ == "cj"), None)
+                    if conj_word is not None:
+                        if conj_word.pos_ in self.VERBS:
+                            svo_pairs.append(self.svo_searcher(conj_word))
                         else:
-                            object = conj_word.string.strip()
-                            subject = self.extract_subject(root, self.SUBJECT)
-                            svo_pairs.append(self.svo_obj(subject=subject, object=object, verb=verb))
+                            verb = self.lemmatize_word(root.string)
+                            verb_index = item_tokens.index(root)
+                            if item_tokens[verb_index - 1].dep_ == "cj":
+                                # root verb is next to conjunction word
+                                subject = conj_word.string.strip()
+                                object = svo_pairs[0].object
+                                svo_pairs.append(self.svo_obj(subject=subject, object=svo_pairs[0].object, verb=verb))
+                            else:
+                                object = conj_word.string.strip()
+                                subject = self.extract_subject(root, self.SUBJECT)
+                                svo_pairs.append(self.svo_obj(subject=subject, object=object, verb=verb))
         return svo_pairs
 
     def svo_searcher(self, verb):
