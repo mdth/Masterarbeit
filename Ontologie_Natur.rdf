@@ -13,7 +13,7 @@ lit:Sandhuegel q:hasPattern "Sandhügel" .
 lit:Wind q:hasPattern "Wind" .
 lit:Regen q:hasPattern "Regen" .
 lit:Himmel q:hasPattern "Himmel" .
-lit:Sommerabende q:hasPattern "Sommerabende" .
+lit:Sommerabende q:hasPattern "Sommerabenden" .
 lit:Winter q:hasPattern "Winter" .
 lit:Schnee q:hasPattern "Schnee" .
 lit:Fruehling q:hasPattern "Frühling" .
@@ -31,13 +31,13 @@ lit:Gewaechs q:hasPattern "Gewächs" .
 lit:Unkraut q:hasPattern "Unkraut" .
 lit:Mondnacht q:hasPattern "Mondnacht" .
 lit:Nachtbluethen q:hasPattern "Nachtblüthen" .
-lit:Luefte q:hasPattern "Lüfte" .
+lit:Luefte q:hasPattern "Lüften" .
 lit:Vorfruehling q:hasPattern "Vorfrühling" .
 lit:Garten q:hasPattern "Garten" .
 lit:Feuer q:hasPattern "Feuer" .
 lit:Zweige q:hasPattern "Zweige" .
 lit:Immergruen q:hasPattern "Immergrün" .
-lit:Sommermittage q:hasPattern "Sommermittage" .
+lit:Sommermittage q:hasPattern "Sommermittagen" .
 lit:Grillengesang q:hasPattern "Grillengesang" .
 lit:Moosrosen q:hasPattern "Moosrosen" .
 lit:Mond q:hasPattern "Mond" .

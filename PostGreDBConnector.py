@@ -16,10 +16,8 @@ class PostGreDBConnector:
         except ConnectionError:
             print("PostGre DB connection could not be built.")
 
-        #self.delete_all_data()
-        #self.drop_all_tables()
-        #self.create_schema("dostojewski")
-        #self.create_schema("storm")
+        self.delete_all_data()
+        self.drop_all_tables()
 
     def close_connection(self):
         self.__db.close()
@@ -63,9 +61,7 @@ class PostGreDBConnector:
         # correlating pattern
         self._add_table("CREATE TABLE " + schema + "bscale_single_pattern (id serial primary key, bscale_id int, single_pattern_id int, single_pattern text, count int)")
         self._add_table(
-            "CREATE TABLE " + schema + "correlating_bscales (id serial primary key, bscale_a int, bscale_b int, count int, pmi float)")
-        self._add_table(
-            "CREATE TABLE " + schema + "correlating_pattern (id serial primary key, pattern1 int, pattern2 int, count int, pmi float)")
+            "CREATE TABLE " + schema + "correlating_pattern (id serial primary key, pattern_a int, pattern_b int, count int, pmi float)")
 
     def __create_functions(self, schema):
         """Create all necessary functions to aggregate the results saved in the database."""

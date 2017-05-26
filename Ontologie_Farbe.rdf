@@ -2,7 +2,7 @@ lit a q:Vocabulary .
 
 lit:Colour a q:BScale .
 
-lit:roth q:hasPattern "roth" .
+lit:roth q:hasPattern "rothe" .
 lit:weiss q:hasPattern "weiß" .
 lit:Faerbung q:hasPattern "Färbung" .
 

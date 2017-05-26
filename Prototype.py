@@ -1,7 +1,6 @@
 import re
 from HelperMethods import add_quotes, replace_brackets, replace_special_characters
 from collections import Counter, namedtuple
-from POSTagger import POSTagger
 from nltk.tokenize import sent_tokenize
 from nltk.tokenize import WhitespaceTokenizer
 from nltk.tokenize import word_tokenize
@@ -15,21 +14,19 @@ from nltk import trigrams
 class Prototype:
     """Prototype system that searches for RDF pattern (aka Q-Calculus pattern) to find textsnippets."""
 
-    def __init__(self, mongo_db, postgre_db, postagger="spacy-tagger", sentence_mode=True, window_size=0):
+    def __init__(self, mongo_db, postgre_db, sentence_mode=True, punctuation_mode=False, window_size=0):
         """Initialize a prototype with a specified configurations.
 
         Parameters:
         mongo_db -- Mongo DB connection
         postgre_db -- PostGre DB connection
-        postagger -- POS Tagger (default "spacy-tagger")
         sentence_mode -- whether or not to use sentence window mode (default True)
         window_size -- the size of the sentence or word window (default 0)
         """
         self.__mongo_db = mongo_db
         self.__postgre_db = postgre_db
-        self.__postagger = postagger
-        #self.__postagger = POSTagger(postagger)
         self.__sentence_mode = sentence_mode
+        self.___punctuation_mode = punctuation_mode
         self.__window_size = window_size
         self.tokenizer = WhitespaceTokenizer()
         self.parser = Parser()
@@ -40,15 +37,7 @@ class Prototype:
         self.__postgre_db.close_connection()
 
     def create_new_collection(self, schema_name):
-        self.__mongo_db.create_collection(schema_name)
         self.__postgre_db.create_schema(schema_name)
-
-    def create_new_schema(self, schema_name):
-        self.__postgre_db.create_schema(schema_name)
-
-    def get_postagger(self):
-        """Gets the current POS Tagger in use."""
-        return self.__postagger
 
     def get_window_size(self):
         """Gets the current window size."""
@@ -57,10 +46,6 @@ class Prototype:
     def get_sentence_mode(self):
         """Returns True if sentence window mode is activated, else False."""
         return self.__sentence_mode
-
-    def change_postagger(self, name):
-        """Change the current POS tagger to a new one."""
-        self.__postagger = POSTagger(name)
 
     def change_window_size(self, size):
         """Change the current window size to a new size."""
@@ -75,13 +60,22 @@ class Prototype:
         else:
             raise ValueError("Please type in a valid positive number.")
 
-    def toggle_sentence_window_mode(self):
+    def activate_sentence_window_mode(self):
         """Activate sentence window mode."""
         self.__sentence_mode = True
 
-    def toggle_word_window_mode(self):
+    def activate_word_window_mode(self):
         """De-activate sentence window mode."""
         self.__sentence_mode = False
+
+    def activate_punctuation_mode(self):
+        self.___punctuation_mode = True
+
+    def deactivate_punctuation_mode(self):
+        self.___punctuation_mode = False
+
+    def get_punctuation_mode(self):
+        return self.___punctuation_mode
 
     def get_word_window(self, pattern, tokens, constraints):
         """Get a word window list with a specific number of words.
@@ -318,10 +312,16 @@ class Prototype:
                 text = text.replace(ch, '"')
 
         tokenized_text = self.tokenizer.tokenize(text)
+        if self.___punctuation_mode:
+            punctuation_text = re.split('[!?.,;:]', text)
+            punctuation_text = [item for item in punctuation_text if item != '']
         for pattern in self.__postgre_db.get_data_from_table(schema, "single_pattern"):
-            if self.__sentence_mode:
+            if self.___punctuation_mode and self.__sentence_mode:
                 windows_objects = self.get_sentence_window(
-                    pattern['single_pattern'], sent_tokenize(text, language='german'), constraints)
+                    pattern['single_pattern'], punctuation_text, constraints)
+            elif self.__sentence_mode:
+                windows_objects = self.get_sentence_window(
+                pattern['single_pattern'], sent_tokenize(text, language='german'), constraints)
             else:
                 windows_objects = self.get_word_window(pattern['single_pattern'], tokenized_text, constraints)
 
@@ -495,10 +495,6 @@ class Prototype:
         all_bscales_table = self.__postgre_db.get_data_from_table(schema, "bscale")
         all_bscales = [bscale['id'] for bscale in all_bscales_table]
 
-        # TODO temporary
-        self.__postgre_db.delete_data_in_table(schema, "bscale_single_pattern")
-        self.__postgre_db.delete_data_in_table(schema, "correlating_bscales")
-
         for bscale_id in all_bscales:
             pattern_list = self.__postgre_db.get(schema, "has_object", "bscale_id=" + str(bscale_id), "pattern_id")
             for pattern_id in pattern_list:
@@ -512,22 +508,36 @@ class Prototype:
             for ind, item in enumerate(correlating_pattern):
                 if self.__postgre_db.is_in_table(schema, "bscale_single_pattern",
                                                  "single_pattern=" + add_quotes(item)):
-                    bscale_item_id = self.__postgre_db.get_id(schema, "bscale_single_pattern", "single_pattern=" + str(add_quotes(item)))
+                    pattern_id = self.__postgre_db.get(schema, "bscale_single_pattern", "single_pattern=" + str(add_quotes(item)), "single_pattern_id")
                     index = ind + 1
                     while index < len(correlating_pattern):
                         next_item = correlating_pattern[index]
                         if self.__postgre_db.is_in_table(schema, "bscale_single_pattern",
                                                  "single_pattern=" + add_quotes(next_item)):
-                            bscale_next_item_id = self.__postgre_db.get_id(schema, "bscale_single_pattern", "single_pattern=" + str(add_quotes(next_item)))
-                            if bscale_item_id != bscale_next_item_id:
-                                if not self.__postgre_db.is_in_table(
-                                        schema, "correlating_bscales", "bscale_a=" + str(bscale_item_id) + " and bscale_b=" + str(bscale_next_item_id)):
-                                    self.__postgre_db.insert(schema, "correlating_bscales", {
-                                        "bscale_a": bscale_item_id, "bscale_b": bscale_next_item_id,"count":1})
-                                else:
-                                    old_count = self.__postgre_db.get(schema, "correlating_bscales", "bscale_a=" + str(bscale_item_id) + " and bscale_b=" + str(bscale_next_item_id), "count")
+                            pattern_next_item_id = self.__postgre_db.get(schema, "bscale_single_pattern", "single_pattern=" + str(add_quotes(next_item)), "single_pattern_id")
+                            if pattern_id != pattern_next_item_id:
+                                first_combination_in_table = self.__postgre_db.is_in_table(
+                                        schema, "correlating_pattern", "pattern_a=" + str(pattern_id) + " and pattern_b=" + str(pattern_next_item_id))
+                                second_combination_in_table = self.__postgre_db.is_in_table(
+                                    schema, "correlating_pattern",
+                                    "pattern_a=" + str(pattern_next_item_id) + " and pattern_b=" + str(pattern_id))
+
+                                # update entry if already exists in table correlating_pattern
+                                if first_combination_in_table:
+                                    old_count = self.__postgre_db.get(schema, "correlating_pattern", "pattern_a=" + str(pattern_id) + " and pattern_b=" + str(pattern_next_item_id), "count")
                                     new_count = old_count + 1
-                                    self.__postgre_db.update(schema, "correlating_bscales", "count=" + str(new_count), "bscale_a=" + str(bscale_item_id) + " and bscale_b=" + str(bscale_next_item_id))
+                                    self.__postgre_db.update(schema, "correlating_pattern", "count=" + str(new_count), "pattern_a=" + str(pattern_id) + " and pattern_b=" + str(pattern_next_item_id))
+                                elif second_combination_in_table:
+                                    old_count = self.__postgre_db.get(schema, "correlating_pattern", "pattern_a=" + str(
+                                        pattern_next_item_id) + " and pattern_b=" + str(pattern_id), "count")
+                                    new_count = old_count + 1
+                                    self.__postgre_db.update(schema, "correlating_pattern", "count=" + str(new_count),
+                                                             "pattern_a=" + str(pattern_next_item_id) + " and pattern_b=" + str(
+                                                                 pattern_id))
+                                else:
+                                    # create new entry for pattern pair if none exists
+                                    self.__postgre_db.insert(schema, "correlating_pattern", {
+                                        "pattern_a": pattern_id, "pattern_b": pattern_next_item_id, "count": 1})
                         index += 1
 
     def find_spo_and_adjectives(self, schema):
@@ -651,6 +661,57 @@ class Prototype:
             word2_occ = self.__postgre_db.get(schema, word2 + "_occ", "id=" + str(word2_id), "count")
             pmi = log2(co_occ_freq / (float(word1_occ / corpus_count) * float(word2_occ / corpus_count)))
             self.__postgre_db.update(schema, co_occurence, "pmi=" + str(pmi), "id=" + str(item_id))
+
+    def calculate_pmi_use_case2(self, schema):
+        print("Calculating PMI for " + schema)
+        corpus_count = 0
+        text = []
+        for item in self.__mongo_db.get(schema, {}):
+            text += word_tokenize(item['text'], language='german')
+            corpus_count += len(word_tokenize(item['text'], language='german'))
+        print(corpus_count)
+        counter = Counter(text)
+        single_pattern_table = self.__postgre_db.get_data_from_table(schema, "bscale_single_pattern")
+        # counting single pattern occurrences
+        for item in single_pattern_table:
+            word = item['single_pattern']
+            count = counter[word]
+            self.__postgre_db.update(schema, "bscale_single_pattern", "count=" + str(count), "single_pattern=" + add_quotes(word))
+
+        # pmi calculation
+        co_occ_table = self.__postgre_db.get_data_from_table(schema, "correlating_pattern")
+        for item in co_occ_table:
+            item_id = item['id']
+            co_occ_freq = float(item['count'] / corpus_count)
+            word1_id = item['pattern_a']
+            word2_id = item['pattern_b']
+            word1_occ = self.__postgre_db.get(schema, "bscale_single_pattern", "id=" + str(word1_id), "count")
+            print(word1_occ)
+            word2_occ = self.__postgre_db.get(schema, "bscale_single_pattern", "id=" + str(word2_id), "count")
+            print(word2_occ)
+            pmi = log2(co_occ_freq / (float(word1_occ / corpus_count) * float(word2_occ / corpus_count)))
+            print(pmi)
+            self.__postgre_db.update(schema, "correlating_pattern", "pmi=" + str(pmi), "id=" + str(item_id))
+
+    def get_results_use_case2(self, schema):
+        print("Colour + Nature")
+        pprint(self.__postgre_db.query(
+            """SELECT C.pmi, S.single_pattern AS pattern_a, T.single_pattern AS pattern_b FROM """ + schema + """.correlating_pattern C, """ + schema + """.bscale_single_pattern S, """ + schema + """.bscale_single_pattern T WHERE (S.bscale_id = 1 AND T.bscale_id = 2 AND C.pattern_a = S.single_pattern_id AND C.pattern_b = T.single_pattern_id) OR (S.bscale_id = 2 AND T.bscale_id = 1 AND C.pattern_a = S.single_pattern_id AND C.pattern_b = T.single_pattern_id) ORDER BY pmi DESC"""))
+        print("Colour + Location")
+        pprint(self.__postgre_db.query(
+            """SELECT C.pmi, S.single_pattern AS pattern_a, T.single_pattern AS pattern_b FROM """ + schema + """.correlating_pattern C, """ + schema + """.bscale_single_pattern S, """ + schema + """.bscale_single_pattern T WHERE (S.bscale_id = 1 AND T.bscale_id = 3 AND C.pattern_a = S.single_pattern_id AND C.pattern_b = T.single_pattern_id) OR (S.bscale_id = 3 AND T.bscale_id = 1 AND C.pattern_a = S.single_pattern_id AND C.pattern_b = T.single_pattern_id) ORDER BY pmi DESC"""))
+        print("Colour + Social")
+        pprint(self.__postgre_db.query(
+            """SELECT C.pmi, S.single_pattern AS pattern_a, T.single_pattern AS pattern_b FROM """ + schema + """.correlating_pattern C, """ + schema + """.bscale_single_pattern S, """ + schema + """.bscale_single_pattern T WHERE (S.bscale_id = 1 AND T.bscale_id = 4 AND C.pattern_a = S.single_pattern_id AND C.pattern_b = T.single_pattern_id) OR (S.bscale_id = 4 AND T.bscale_id = 1 AND C.pattern_a = S.single_pattern_id AND C.pattern_b = T.single_pattern_id) ORDER BY pmi DESC"""))
+        print("Nature + Location")
+        pprint(self.__postgre_db.query(
+            """SELECT C.pmi, S.single_pattern AS pattern_a, T.single_pattern AS pattern_b FROM """ + schema + """.correlating_pattern C, """ + schema + """.bscale_single_pattern S, """ + schema + """.bscale_single_pattern T WHERE (S.bscale_id = 2 AND T.bscale_id = 3 AND C.pattern_a = S.single_pattern_id AND C.pattern_b = T.single_pattern_id) OR (S.bscale_id = 3 AND T.bscale_id = 2 AND C.pattern_a = S.single_pattern_id AND C.pattern_b = T.single_pattern_id) ORDER BY pmi DESC"""))
+        print("Nature + Social")
+        pprint(self.__postgre_db.query(
+            """SELECT C.pmi, S.single_pattern AS pattern_a, T.single_pattern AS pattern_b FROM """ + schema + """.correlating_pattern C, """ + schema + """.bscale_single_pattern S, """ + schema + """.bscale_single_pattern T WHERE (S.bscale_id = 2 AND T.bscale_id = 4 AND C.pattern_a = S.single_pattern_id AND C.pattern_b = T.single_pattern_id) OR (S.bscale_id = 4 AND T.bscale_id = 2 AND C.pattern_a = S.single_pattern_id AND C.pattern_b = T.single_pattern_id) ORDER BY pmi DESC"""))
+        print("Location + Social")
+        pprint(self.__postgre_db.query(
+            """SELECT C.pmi, S.single_pattern AS pattern_a, T.single_pattern AS pattern_b FROM """ + schema + """.correlating_pattern C, """ + schema + """.bscale_single_pattern S, """ + schema + """.bscale_single_pattern T WHERE (S.bscale_id = 3 AND T.bscale_id = 4 AND C.pattern_a = S.single_pattern_id AND C.pattern_b = T.single_pattern_id) OR (S.bscale_id = 4 AND T.bscale_id = 3 AND C.pattern_a = S.single_pattern_id AND C.pattern_b = T.single_pattern_id) ORDER BY pmi DESC"""))
 
     def check_pattern(self, pattern, token):
         """Strip token and check if the token matches the defined pattern.

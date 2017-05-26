@@ -10,7 +10,7 @@ class TestPrototype(unittest.TestCase):
     postgredb = PostGreDBConnector()
 
     def setUp(self):
-        self.Prototype = Prototype(mongo_db=self.mongodb, postagger="spacy-tagger", postgre_db=self.postgredb,
+        self.Prototype = Prototype(mongo_db=self.mongodb, postgre_db=self.postgredb,
                                    sentence_mode=False, window_size=1)
 
     def test_change_window_size(self):
@@ -22,9 +22,9 @@ class TestPrototype(unittest.TestCase):
             self.Prototype.change_window_size("a")
 
     def test_toggle_sentence_mode(self):
-        self.Prototype.toggle_sentence_window_mode()
+        self.Prototype.activate_sentence_window_mode()
         self.assertTrue(self.Prototype.get_sentence_mode())
-        self.Prototype.toggle_word_window_mode()
+        self.Prototype.activate_word_window_mode()
         self.assertFalse(self.Prototype.get_sentence_mode())
 
     @unittest.skip("doesn't work yet because of postagger initialization")
@@ -96,7 +96,7 @@ class TestPrototype(unittest.TestCase):
 
     def test_get_sentence_window_simple(self):
         # no constraints, one word, window size 0
-        self.Prototype.toggle_sentence_window_mode()
+        self.Prototype.activate_sentence_window_mode()
         self.Prototype.change_window_size(0)
         pattern = "dog"
         text = ["The brown dog is sleeping."]
@@ -106,7 +106,7 @@ class TestPrototype(unittest.TestCase):
 
     def test_get_sentence_window_bigger_size(self):
         # no constraints, one sentence, window size 3
-        self.Prototype.toggle_sentence_window_mode()
+        self.Prototype.activate_sentence_window_mode()
         self.Prototype.change_window_size(2)
         pattern = "dog"
         text = ["The brown dog is sleeping on the couch.", "He is such a nice fluff ball."]
@@ -116,7 +116,7 @@ class TestPrototype(unittest.TestCase):
 
     def test_get_sentence_window_two_word_pattern(self):
         # no constraints, three sentence pattern, window size 1
-        self.Prototype.toggle_sentence_window_mode()
+        self.Prototype.activate_sentence_window_mode()
         self.Prototype.change_window_size(1)
         pattern = "große Stadt"
         text = ["Hallo.", "Eine große Stadt.", "Leckere Schokolade."]
@@ -126,7 +126,7 @@ class TestPrototype(unittest.TestCase):
 
     def test_get_sentence_window_constraint(self):
         # constraints, three sentence pattern, window size 2
-        self.Prototype.toggle_sentence_window_mode()
+        self.Prototype.activate_sentence_window_mode()
         self.Prototype.change_window_size(0)
         pattern = "dog"
         text = ["Our dear old brown dog is eating a lot."]
@@ -142,7 +142,7 @@ class TestPrototype(unittest.TestCase):
 
     def test_get_sentence_window_constraint2(self):
         # more constraints, three sentence pattern, window size 2
-        self.Prototype.toggle_sentence_window_mode()
+        self.Prototype.activate_sentence_window_mode()
         self.Prototype.change_window_size(0)
         pattern = "dog"
         text = ["Our dear old brown dog is great.", "The dog days are over."]

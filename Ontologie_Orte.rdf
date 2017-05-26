@@ -8,13 +8,13 @@ lit:Weg q:hasPattern "Weg" .
 lit:Rasen q:hasPattern "Rasen" .
 lit:Viertel q:hasPattern "Viertel" .
 lit:Sandhuegel q:hasPattern "Sandhügel" .
-lit:Ecke q:hasPattern "Ecke" .
+lit:Ecke q:hasPattern "Ecken" .
 lit:Stadt q:hasPattern "Stadt" .
 lit:Zimmer q:hasPattern "Zimmer" .
-lit:Haus q:hasPattern "Haus" .
+lit:Haus q:hasPattern "Hauses" .
 lit:Welt q:hasPattern "Welt" .
 lit:draussen q:hasPattern "draußen" .
-lit:Treppe q:hasPattern "Treppe" .
+lit:Treppe q:hasPattern "Treppen" .
 lit:Hausflur q:hasPattern "Hausflur" .
 lit:Strasse q:hasPattern "Straße" .
 lit:Garten q:hasPattern "Garten" .

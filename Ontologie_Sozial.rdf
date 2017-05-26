@@ -15,10 +15,10 @@ lit:Arme q:hasPattern "Arme" .
 lit:Menschen q:hasPattern "Menschen" .
 lit:Maedchen q:hasPattern "Mädchen" .
 lit:Hexe q:hasPattern "Hexe" .
-lit:jemand q:hasPattern "jemand" .
+lit:jemand q:hasPattern "Jemand" .
 lit:Mann q:hasPattern ("Mann", "Männer") .
-lit:er q:hasPattern ("er", "ihn") .
-lit:sie q:hasPattern ("sie", "ihr") .
+lit:er q:hasPattern ("er", "Er", "ihn") .
+lit:sie q:hasPattern ("sie", "Sie", "ihr") .
 lit:Kind q:hasPattern ("Kinder", "Kind") .
 
 lit:Social q:hasObject (lit:Grabgeleite, lit:Traeger, lit:Folger, lit:Mann, lit:Todte, lit:Todtengraeber, lit:Arme, lit:Kind, lit:Menschen, lit:er, lit:sie, lit:Maedchen, lit:Hexe, lit:jemand) .
